@@ -16,12 +16,12 @@ namespace Burgerman
         private Animation movingUp;
         private Animation movingRight;
         private Animation movingLeft;
-
+        private float speed = 1.8f;
 
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
-            //Scale = Scale*0.5f;
+            Scale = Scale*2.0f;
             //Origin = new Vector2(spriteTexture.Width/2,spriteTexture.Height/2);
             movingUp = new Animation(this);
             movingUp.Frames.Add(new Rectangle(128, 0, 128, 166));
@@ -42,45 +42,44 @@ namespace Burgerman
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                PositionX--;
+                PositionX-= speed;
                 setAnimation(movingRight);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                PositionX++;
+                PositionX += speed;
                 setAnimation(movingRight);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                PositionY--;
+                PositionY -= speed;
                 setAnimation(movingUp);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                PositionY++;
+                PositionY += speed;
                 setAnimation(movingRight);
             }
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f)
             {
-                PositionX += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
+                PositionX += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X * speed;
                 setAnimation(movingRight);
             }
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0.2f)
             {
-                PositionX += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
+                PositionX += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X * speed;
                 setAnimation(movingRight);
             }
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
             {
-
-                PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
+                PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * speed;
                 setAnimation(movingUp);
             }
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.2f)
             {
-                PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
+                PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * speed;
                 setAnimation(movingRight);
             }
             PositionY +=0.3f;

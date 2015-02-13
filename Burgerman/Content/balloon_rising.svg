@@ -14,8 +14,11 @@
    id="svg3068"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="balloon.svg"
-   enable-background="new">
+   sodipodi:docname="balloon_rising.svg"
+   enable-background="new"
+   inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\balloon_rising.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs3070" />
   <sodipodi:namedview
@@ -251,7 +254,10 @@
        d="m 276.85359,513.35914 -2.0921,117.76943 -1.01015,0"
        id="path3108"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\balloon_animated\rising.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 469.23073,512.10389 -9.61132,113.97392"

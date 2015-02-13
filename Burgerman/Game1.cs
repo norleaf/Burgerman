@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
+
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
@@ -28,6 +28,7 @@ namespace Burgerman
         private Child child;
         private Soldier soldier;
         private Helicopter helicopter;
+        private Texture2D backgroundTexture;
         public static List<Sprite> sprites { get; set; } 
         
         private CollissionHandler collissionHandler;
@@ -84,11 +85,13 @@ namespace Burgerman
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
-            
+            backgroundTexture = Content.Load<Texture2D>("background.jpg");
+
             player = new Balloon(ballonTexture, new Vector2(550, 130));
-            child = new Child(childTexture, new Vector2(410, 550), player);
-            soldier = new Soldier(soldierTexture, new Vector2(700,550));
+            child = new Child(childTexture, new Vector2(410, 880), player);
+            soldier = new Soldier(soldierTexture, new Vector2(1700,880));
             helicopter = new Helicopter(helicopterTexture, new Vector2(1200, 130));
+            //background = new Sprite(backgroundTexture, new Vector2(0,0));
             sprites.Add(player);
             sprites.Add(child);
             sprites.Add(soldier);
@@ -119,6 +122,7 @@ namespace Burgerman
             
             // TODO: Add your update logic here
             collissionHandler.Update(gameTime);
+            
             foreach (Sprite sprite in sprites)
             {
                 sprite.Update(gameTime);
@@ -138,6 +142,10 @@ namespace Burgerman
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //spriteBatch.Draw(dikkiDinosaurTexture2D, dikkiDinosaurPosition, Color.White);
+            for (int i = 0; i < 1920; i++)
+            {
+                spriteBatch.Draw(backgroundTexture, new Vector2(i, 0), null);
+            }
             foreach (Sprite sprite in sprites)
             {
                 sprite.Draw(gameTime,spriteBatch);
