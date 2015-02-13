@@ -64,11 +64,13 @@
     <Content Include="Content\balloon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\balloon.svg" />
     <Content Include="Content\balloon_animated\animatedballoon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\balloon_animated\balloon.png" />
     <Content Include="Content\balloon_animated\balloon_rising.png" />
+    <Content Include="Content\balloon_rising.svg" />
     <Content Include="Content\child.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -79,11 +81,14 @@
     <Content Include="Content\Helicopter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Helicopter.png" />
+    <Content Include="Content\Helicopter.svg" />
     <Content Include="Content\hot-air-balloon.svg" />
     <Content Include="Content\soldier.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\soldier.svg" />
+    <Content Include="Content\soldier2.svg" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
