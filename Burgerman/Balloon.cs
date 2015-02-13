@@ -10,9 +10,13 @@ using Burgerman;
 
 namespace Burgerman
 {
-    class Balloon: Sprite
+    class Balloon: AnimatedSprite
     {
-      
+
+        private Animation movingUp;
+        private Animation movingRight;
+        private Animation movingLeft;
+
 
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -23,10 +27,22 @@ namespace Burgerman
 
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Left)) PositionX--;
-            if (Keyboard.GetState().IsKeyDown(Keys.Right)) PositionX++;
-            if (Keyboard.GetState().IsKeyDown(Keys.Up)) PositionY--;
-            if (Keyboard.GetState().IsKeyDown(Keys.Down)) PositionY++;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                PositionX--;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                PositionX++;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                PositionY--;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                PositionY++;
+            }
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f)
             {
@@ -39,6 +55,7 @@ namespace Burgerman
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
             {
+
                 PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
             }
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.2f)

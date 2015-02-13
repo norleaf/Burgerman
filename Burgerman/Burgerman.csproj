@@ -35,6 +35,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="Animation.cs" />
     <Compile Include="Balloon.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="ColissionHandler.cs" />
@@ -61,15 +63,20 @@
     <Content Include="Content\child.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\child.svg" />
     <Content Include="Content\g3195.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\hot-air-balloon.svg" />
     <Content Include="Content\soldier.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\soldier.svg" />
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Framework\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
