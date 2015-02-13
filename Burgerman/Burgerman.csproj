@@ -41,6 +41,7 @@
     <Compile Include="Child.cs" />
     <Compile Include="ColissionHandler.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Helicopter.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +74,9 @@
     </Content>
     <Content Include="Content\child.svg" />
     <Content Include="Content\g3195.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Helicopter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\hot-air-balloon.svg" />

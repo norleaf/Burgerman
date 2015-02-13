@@ -27,6 +27,7 @@ namespace Burgerman
         private Balloon player;
         private Child child;
         private Soldier soldier;
+        private Helicopter helicopter;
         public static List<Sprite> sprites { get; set; } 
         
         private CollissionHandler collissionHandler;
@@ -82,13 +83,16 @@ namespace Burgerman
             Texture2D childTexture = Content.Load<Texture2D>("child.png");
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
+            Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
             
             player = new Balloon(ballonTexture, new Vector2(550, 130));
             child = new Child(childTexture, new Vector2(410, 550), player);
             soldier = new Soldier(soldierTexture, new Vector2(700,550));
+            helicopter = new Helicopter(helicopterTexture, new Vector2(1200, 130));
             sprites.Add(player);
             sprites.Add(child);
             sprites.Add(soldier);
+            sprites.Add(helicopter);
             collissionHandler = new CollissionHandler(sprites);
             collissionHandler.CollisionListenersList.Add(child);
             // TODO: use this.Content to load your game content here

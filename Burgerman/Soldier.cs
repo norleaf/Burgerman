@@ -24,7 +24,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            PositionX--;
+            PositionX-=0.5f;
             if (PositionX < -30)
             {
                 PositionX = 1300;
