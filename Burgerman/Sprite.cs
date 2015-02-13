@@ -75,7 +75,7 @@ namespace Burgerman
         public void Die()
         {
             //Game1 game = Game1.getInstance();
-            Game1.sprites.Remove(this);
+           // Game1.sprites.Remove(this);
         }
     }
 }

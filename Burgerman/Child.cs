@@ -45,7 +45,8 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            other.Die();
+            Scale = 0;
+            //other.Die();
         }
     }
 }
