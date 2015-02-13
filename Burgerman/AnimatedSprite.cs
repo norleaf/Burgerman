@@ -25,8 +25,13 @@ namespace Burgerman
             : base(spriteTexture, position)
         {
             // set sourcerectangle
-            SourceRectangle = new Rectangle(0, 114, 72, 78);
+            SourceRectangle = new Rectangle(0, 0, spriteTexture.Width, spriteTexture.Height);
 
+        }
+
+        public void setAnimation(Animation anim)
+        {
+            animation = anim;
         }
 
         //public void LeftStickMove(Vector2 moveVector)

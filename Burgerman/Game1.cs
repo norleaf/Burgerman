@@ -80,8 +80,8 @@ namespace Burgerman
             sprites = new List<Sprite>();
             //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
             Texture2D childTexture = Content.Load<Texture2D>("child.png");
-            Texture2D ballonTexture = Content.Load<Texture2D>("balloon.png");
-            Texture2D soldierTexture = Content.Load<Texture2D>("soldier.png");
+            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
+            Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             
             player = new Balloon(ballonTexture, new Vector2(550, 130));
             child = new Child(childTexture, new Vector2(410, 550), player);
