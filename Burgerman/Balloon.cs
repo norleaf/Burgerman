@@ -17,6 +17,7 @@ namespace Burgerman
         private Animation movingRight;
         private Animation movingLeft;
         private float speed = 1.8f;
+        public override Vector2 Origin { get; set; }
 
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -30,7 +31,8 @@ namespace Burgerman
             movingRight.Frames.Add(new Rectangle(0, 0, 128, 166));
 
             setAnimation(movingRight);
-           // SourceRectangle = new Rectangle(0,0,128,166);
+            Origin = new Vector2(Origin.X - movingRight.Frames[0].Width/2,Origin.Y);
+            // SourceRectangle = new Rectangle(0,0,128,166);
         }
 
         public override void Update(GameTime gameTime)
@@ -71,7 +73,6 @@ namespace Burgerman
                 PositionX += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X * speed;
                 setAnimation(movingRight);
             }
-
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
             {
                 PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * speed;

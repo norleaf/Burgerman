@@ -15,7 +15,7 @@ namespace Burgerman
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-            Origin = new Vector2(spriteTexture.Width / 2, spriteTexture.Height / 2);
+            Origin = new Vector2(spriteTexture.Width / 2, spriteTexture.Height );
 
         }
         public virtual float Scale { get; set; }
@@ -24,13 +24,32 @@ namespace Burgerman
 
         public virtual float Rotation { get; set; }
 
+
+        //private Vector2 _position;
+
+        //public Vector2 Position {
+        //    get { return Position; }
+        //    set
+        //    {
+        //        _position.X = value.X + Origin.X;
+        //        _position.Y = value.X + Origin.Y;
+        //    }
+        //}
+
+        //private Vector2 posistion;
+
+        //public void setPos(Vector2 pos)
+        //{
+            
+        //}
+
         public Vector2 Position
         {
             get { return new Vector2(PositionX, PositionY); }
             set
             {
-                PositionX = value.X + Origin.X;
-                PositionY = value.Y + Origin.Y;
+                PositionX = value.X;
+                PositionY = value.Y;
             }
         }
         public float PositionY { get; set; }
@@ -57,7 +76,7 @@ namespace Burgerman
                     spritesize = new Vector2(SourceRectangle.Width, SourceRectangle.Height);
                 }
                 result = new Rectangle((int)PositionX, (int)PositionY, (int)(spritesize.X * Scale), (int)(spritesize.Y * Scale));
-                result.Offset((int)(-Origin.X * Scale), (int)(-Origin.Y * Scale));
+         //       result.Offset((int)(-Origin.X * Scale), (int)(-Origin.Y * Scale));
                 return result;
             }
         }

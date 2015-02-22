@@ -43,6 +43,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Helicopter.cs" />
     <Compile Include="Interface1.cs" />
+    <Compile Include="PalmTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Soldier.cs" />
@@ -87,6 +88,9 @@
     <Content Include="Content\Helicopter.png" />
     <Content Include="Content\Helicopter.svg" />
     <Content Include="Content\hot-air-balloon.svg" />
+    <Content Include="Content\palm.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\soldier.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

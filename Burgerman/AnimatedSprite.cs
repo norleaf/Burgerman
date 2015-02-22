@@ -32,6 +32,7 @@ namespace Burgerman
         public void setAnimation(Animation anim)
         {
             animation = anim;
+            
         }
 
         //public void LeftStickMove(Vector2 moveVector)

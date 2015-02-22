@@ -23,17 +23,19 @@ namespace Burgerman
     {
         private static Game1 instance;
         GraphicsDeviceManager graphics;
+        private Screen screen = Screen.AllScreens.First(e => e.Primary);
+        private int screenWidth ;
+        private int screenHeight;
         SpriteBatch spriteBatch;
         private Balloon player;
         private Child child;
         private Soldier soldier;
         private Helicopter helicopter;
         private Texture2D backgroundTexture;
+        
         public static List<Sprite> sprites { get; set; } 
         
         private CollissionHandler collissionHandler;
-
-        private float terrainInclination;
 
         public static Game1 getInstance()
         {
@@ -62,7 +64,8 @@ namespace Burgerman
             // TODO: Add your initialization logic here
             graphics.PreferredBackBufferWidth = 1150;
             graphics.PreferredBackBufferHeight = 600;
-            var screen = Screen.AllScreens.First(e => e.Primary);
+            screenWidth = screen.Bounds.Width;
+            screenHeight = screen.Bounds.Height;
             Window.IsBorderless = true;
             Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
             graphics.PreferredBackBufferWidth = screen.Bounds.Width;
@@ -85,13 +88,22 @@ namespace Burgerman
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
+            Texture2D palmtreeTexture = Content.Load<Texture2D>("palm.png");
             backgroundTexture = Content.Load<Texture2D>("background.jpg");
+            
 
             player = new Balloon(ballonTexture, new Vector2(550, 130));
-            child = new Child(childTexture, new Vector2(410, 880), player);
-            soldier = new Soldier(soldierTexture, new Vector2(1700,880));
+            child = new Child(childTexture, new Vector2(410, screenHeight*0.8f), player);
+            soldier = new Soldier(soldierTexture, new Vector2(1700, screenHeight * 0.8f));
             helicopter = new Helicopter(helicopterTexture, new Vector2(1200, 130));
-            //background = new Sprite(backgroundTexture, new Vector2(0,0));
+            Random ran = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+
+                PalmTree palm = new PalmTree(palmtreeTexture, new Vector2(ran.Next(1920), screenHeight * 0.8f));
+                palm.Scale = ((float)ran.Next(7,11)/10);
+                sprites.Add(palm);
+            }
             sprites.Add(player);
             sprites.Add(child);
             sprites.Add(soldier);
@@ -142,10 +154,8 @@ namespace Burgerman
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //spriteBatch.Draw(dikkiDinosaurTexture2D, dikkiDinosaurPosition, Color.White);
-            for (int i = 0; i < 1920; i++)
-            {
-                spriteBatch.Draw(backgroundTexture, new Vector2(i, 0), null);
-            }
+            spriteBatch.Draw(backgroundTexture,new Vector2(0,0),null,null,new Vector2(0,0),0f,new Vector2(1920,1));
+          
             foreach (Sprite sprite in sprites)
             {
                 sprite.Draw(gameTime,spriteBatch);
