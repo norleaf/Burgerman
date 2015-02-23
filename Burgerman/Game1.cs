@@ -114,7 +114,17 @@ namespace Burgerman
             sprites.Add(child);
             sprites.Add(soldier);
             sprites.Add(helicopter);
-            collissionHandler = new CollissionHandler(sprites);
+
+            List<ColissionSprite> colissionSprites = new List<ColissionSprite>();
+            foreach (Sprite sprite in sprites)
+            {
+                if (sprite is ColissionSprite)
+                {
+                    
+                    colissionSprites.Add((ColissionSprite)sprite);
+                }
+            }
+            collissionHandler = new CollissionHandler(colissionSprites);
             collissionHandler.CollisionListenersList.Add(child);
             // TODO: use this.Content to load your game content here
         }

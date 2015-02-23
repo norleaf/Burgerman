@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    internal class AnimatedSprite : Sprite
+    internal class AnimatedSprite : ColissionSprite
     {
         private Animation animation;
         private State _state;

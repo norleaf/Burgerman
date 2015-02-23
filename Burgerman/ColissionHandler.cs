@@ -7,10 +7,10 @@ namespace Burgerman
 {
     class CollissionHandler : IUpdateable
     {
-        private List<Sprite> _allElements;
+        private List<ColissionSprite> _allElements;
         private List<ICollidable> _collisionListenersList;
  
-        public CollissionHandler(List<Sprite> allElements)
+        public CollissionHandler(List<ColissionSprite> allElements)
         {
             _allElements = allElements;
             _collisionListenersList = new List<ICollidable>();
