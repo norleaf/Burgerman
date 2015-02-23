@@ -89,6 +89,7 @@ namespace Burgerman
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
             Texture2D palmtreeTexture = Content.Load<Texture2D>("palm.png");
+            Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
             backgroundTexture = Content.Load<Texture2D>("background.jpg");
             
 
@@ -104,6 +105,11 @@ namespace Burgerman
                 palm.Scale = ((float)ran.Next(7,11)/10);
                 sprites.Add(palm);
             }
+            for (int i = 0; i < screenWidth/30+1; i++)
+            {
+                sprites.Add(new Sprite(groundTexture,new Vector2(30*i,880)));
+            }
+            
             sprites.Add(player);
             sprites.Add(child);
             sprites.Add(soldier);
