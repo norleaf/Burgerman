@@ -24,11 +24,12 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            PositionX-=0.5f;
+            PositionX-=0.7f;
             if (PositionX < -30)
             {
-                PositionX = 1300;
+                PositionX += Game1.getInstance().ScreenSize.X+30;
             }
+            Scroll();
         }
     }
 }

@@ -15,10 +15,7 @@ namespace Burgerman
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-        //    Origin = new Vector2(spriteTexture.Width / 2, spriteTexture.Height );
-            _center = new Vector2(spriteTexture.Width / 2, spriteTexture.Height/2);
             _bottom = spriteTexture.Height;
-        //    Position = new Vector2(PositionX,PositionY - spriteTexture.Height);
         }
 
         private float _bottom;
@@ -29,12 +26,12 @@ namespace Burgerman
             set { _bottom = value; }
         }
 
-        private Vector2 _center;
+
         public virtual Vector2 Center
         {
-            get { return Vector2.Add(Position,_center); }
-            set { _center = value; }
+            get { return new Vector2(BoundingBox.Center.X, BoundingBox.Center.Y); }
         }
+
         public virtual float Scale{ get; set; }
 
         public Texture2D SpriteTexture { get; set; }
@@ -112,6 +109,16 @@ namespace Burgerman
         public void Die()
         {
            
+        }
+
+        protected void Scroll()
+        {
+            PositionX -= 0.35f;
+        }
+
+        protected void SlowScroll()
+        {
+            PositionX -= 0.15f;
         }
     }
 }

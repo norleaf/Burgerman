@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Burgerman
 {
     
-    class Child: Sprite, ICollidable
+    class Child: AnimatedSprite, ICollidable
     {
         private Vector2 _jumpVector;
         private Balloon player;
@@ -32,19 +32,23 @@ namespace Burgerman
 
         public override void Update(GameTime gameTime)
         {
-            if (PositionX < player.PositionX)
-            {
-                PositionX += 0.5f;
-            }
-            else if (PositionX > player.PositionX)
-            {
-                PositionX -= 0.5f;
-            }
+            //if (Center.X < player.Center.X)
+            //{
+            //    PositionX += 0.5f;
+            //}
+            //else if (Center.X > player.Center.X)
+            //{
+            //    PositionX -= 0.5f;
+            //}
+            Scroll();
         }
 
         public void CollideWith(Sprite other)
         {
-           // Scale = 0;
+            if (other is Soldier)
+            {
+                Game1.getInstance().markForRemoval(this);
+            }
             
         }
     }

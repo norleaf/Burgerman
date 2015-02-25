@@ -25,23 +25,37 @@ namespace Burgerman
         private static Game1 instance;
         GraphicsDeviceManager graphics;
         private Screen screen = Screen.AllScreens.First(e => e.Primary);
-        private int screenWidth ;
-        private int screenHeight;
+        private static int screenWidth ;
+        private static int screenHeight;
         SpriteBatch spriteBatch;
         private static Balloon player;
         private Child child;
         private Soldier soldier;
         private Helicopter helicopter;
         private Texture2D backgroundTexture;
+        private Texture2D palmtreeTexture;
+        private Random ran;
 
-        private static List<Sprite> _sprites; 
+        private static List<Sprite> _sprites;
+        
         private static List<Sprite> _newSprites;
+        private double _timeSinceLastTree = 0;
+        private int _treeDelay = 7000;
+
+        public Vector2 ScreenSize
+        {
+            get { return new Vector2(screenWidth,screenHeight);}
+        }
+
+        protected static List<Sprite> DeadSprites { get; set; } 
 
         protected List<Sprite> Sprites
         {
             get { return _sprites;}
             set { _sprites = value; }
         }
+
+        protected List<Sprite> BackgroundSprites { get; set; }
 
         protected List<Sprite> NewSprites
         {
@@ -98,37 +112,50 @@ namespace Burgerman
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Sprites = new List<Sprite>();
+            BackgroundSprites = new List<Sprite>();
             NewSprites = new List<Sprite>();
             //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
             Texture2D childTexture = Content.Load<Texture2D>("child.png");
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
-            Texture2D palmtreeTexture = Content.Load<Texture2D>("palm.png");
+            Texture2D mountainTexture = Content.Load<Texture2D>("mountain.png");
+            
+            palmtreeTexture = Content.Load<Texture2D>("palm.png");
             Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
             Texture2D bullet = Content.Load<Texture2D>("bullet.png");
             backgroundTexture = Content.Load<Texture2D>("background.jpg");
-            
-            
+
+            BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 5, screenHeight * 0.8f - mountainTexture.Height));
+            BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - mountainTexture.Height));
+            BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 1, screenHeight * 0.8f - mountainTexture.Height));
             player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
          //   Bullet testbullet = new Bullet(bullet, new Vector2(screenWidth, screenHeight / 2), player.Position);
-            child = new Child(childTexture, new Vector2(410, screenHeight*0.8f - childTexture.Height), player);
+            child = new Child(childTexture, new Vector2(screenWidth/2.0f, screenHeight*0.8f - childTexture.Height), player);
             soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
             helicopter = new Helicopter(helicopterTexture, new Vector2(1200, 130),bullet);
-            Random ran = new Random();
-            for (int i = 0; i < 10; i++)
+            ran = new Random();
+
+            BackgroundSprites.Add(mount1);
+            BackgroundSprites.Add(mount2);
+            BackgroundSprites.Add(mount3);
+
+            for (int i = 0; i < 15; i++)
             {
+                //float scale = ((float)ran.Next(7, 11) / 10);
+                //PalmTree palm = new PalmTree(palmtreeTexture, new Vector2(ran.Next(screenWidth+100), screenHeight * 0.8f - palmtreeTexture.Height*scale));
+                //palm.Scale = scale;
                 float scale = ((float)ran.Next(7, 11) / 10);
-                PalmTree palm = new PalmTree(palmtreeTexture, new Vector2(ran.Next(1920), screenHeight * 0.8f - palmtreeTexture.Height*scale));
-                palm.Scale = scale;
-                Sprites.Add(palm);
+                int offset = ran.Next(screenWidth + 100);
+                BackgroundSprites.Add(PalmTree.MakeNewTree(palmtreeTexture, scale, offset));
             }
-            for (int i = 0; i < screenWidth/30+1; i++)
+            for (int i = 0; i < screenWidth/30+3; i++)
             {
-                Sprites.Add(new Sprite(groundTexture,new Vector2(30*i, screenHeight * 0.8f)));
+                BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, screenHeight * 0.8f)));
             }
 
      //       Sprites.Add(testbullet);
+            
             Sprites.Add(player);
             Sprites.Add(child);
             Sprites.Add(soldier);
@@ -155,6 +182,8 @@ namespace Burgerman
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// 
+        /// 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -162,9 +191,22 @@ namespace Burgerman
             
             // TODO: Add your update logic here
             CollissionHandler.Update(gameTime);
+            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay)
+            {
+                float scale = ((float)ran.Next(7, 11) / 10);
+                int offset = screenWidth + ran.Next(200);
+                BackgroundSprites.Add(PalmTree.MakeNewTree(palmtreeTexture, scale, offset));
+                _timeSinceLastTree = gameTime.TotalGameTime.TotalMilliseconds;
+                _treeDelay = 3500 + ran.Next(3500);
+            }
             addNewSprites();
-        //    Console.WriteLine("size of sprites list: " + Sprites.Count);
+            removeDeadSprites();
+            Console.WriteLine("size of sprites list: " + Sprites.Count);
             foreach (Sprite sprite in Sprites)
+            {
+                sprite.Update(gameTime);
+            }
+            foreach (Sprite sprite in BackgroundSprites)
             {
                 sprite.Update(gameTime);
             }
@@ -184,11 +226,15 @@ namespace Burgerman
             spriteBatch.Begin();
             //spriteBatch.Draw(dikkiDinosaurTexture2D, dikkiDinosaurPosition, Color.White);
             spriteBatch.Draw(backgroundTexture,new Vector2(0,0),null,null,new Vector2(0,0),0f,new Vector2(1920,1));
-          
+            foreach (Sprite sprite in BackgroundSprites)
+            {
+                sprite.Draw(gameTime, spriteBatch);
+            }
             foreach (Sprite sprite in Sprites)
             {
                 sprite.Draw(gameTime,spriteBatch);
             }
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -202,14 +248,13 @@ namespace Burgerman
                     NewSprites = new List<Sprite>();
                 }
                 NewSprites.Add(sprite);
-                Console.WriteLine("sprite added");
-                Console.WriteLine("size of newSprites list: " + NewSprites.Count);
+        
             }
         }
 
         private void addNewSprites()
         {
-            Console.WriteLine("size of newSprites list: " + NewSprites.Count);
+        //    Console.WriteLine("size of newSprites list: " + NewSprites.Count);
             foreach (Sprite sprite in _newSprites)
             {
                 Sprites.Add(sprite);
@@ -222,6 +267,28 @@ namespace Burgerman
         public Balloon getPlayer()
         {
             return player;
+        }
+
+        internal void markForRemoval(Sprite sprite)
+        {
+            if (DeadSprites == null)
+            {
+                DeadSprites = new List<Sprite>();
+            }
+            DeadSprites.Add(sprite);
+        }
+
+        private void removeDeadSprites()
+        {
+            if (DeadSprites != null)
+            {
+                foreach (Sprite deadSprite in DeadSprites)
+                {
+                    Sprites.Remove(deadSprite);
+                    BackgroundSprites.Remove(deadSprite);
+                }
+                DeadSprites.Clear();
+            }
         }
     }
 }

@@ -22,17 +22,34 @@ namespace Burgerman
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
-            //Scale = Scale*2.0f;
-            //Origin = new Vector2(spriteTexture.Width/2,spriteTexture.Height/2);
+           
             movingUp = new Animation(this);
             movingUp.Frames.Add(new Rectangle(128, 0, 128, 166));
-           // movingUp.Frames.Add(new Rectangle(0, 0, 128, 166));
             movingRight = new Animation(this);
             movingRight.Frames.Add(new Rectangle(0, 0, 128, 166));
 
             setAnimation(movingRight);
-            Origin = new Vector2(Origin.X - movingRight.Frames[0].Width/2,Origin.Y);
-            // SourceRectangle = new Rectangle(0,0,128,166);
+        }
+
+        public override Rectangle BoundingBox
+        {
+            get
+            {
+                Rectangle result;
+                Vector2 spritesize;
+
+                if (SourceRectangle.IsEmpty)
+                {
+                    spritesize = new Vector2(SpriteTexture.Width, SpriteTexture.Height);
+                }
+                else
+                {
+                    spritesize = new Vector2(SourceRectangle.Width, SourceRectangle.Height);
+                }
+                int padding = 20;
+                result = new Rectangle((int)PositionX+padding, (int)PositionY+padding, (int)(spritesize.X * Scale)-padding, (int)(spritesize.Y * Scale) - padding);
+                return result;
+            }
         }
 
         public override void Update(GameTime gameTime)

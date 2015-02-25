@@ -15,7 +15,7 @@ namespace Burgerman
         private int _upOrDown = 0;
         private double _millisecondsAtEntry = 0;
         private double _millisecondsAtLastShot = 0;
-        private int _firingDelay = 2000;
+        private int _firingDelay = 1500;
         private Game1 game;
         private Texture2D bulletTexture;
 
