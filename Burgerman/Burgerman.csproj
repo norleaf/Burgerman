@@ -38,9 +38,9 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Balloon.cs" />
+    <Compile Include="Bullet.cs" />
     <Compile Include="Child.cs" />
-    <Compile Include="ColissionHandler.cs" />
-    <Compile Include="ColissionSprite.cs" />
+    <Compile Include="CollissionHandler.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Helicopter.cs" />
     <Compile Include="Interface1.cs" />
@@ -76,6 +76,9 @@
     <Content Include="Content\balloon_animated\balloon.png" />
     <Content Include="Content\balloon_animated\balloon_rising.png" />
     <Content Include="Content\balloon_rising.svg" />
+    <Content Include="Content\bullet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\child.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

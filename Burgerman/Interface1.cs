@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 
-interface ICollidable
+public interface ICollidable
 {
     void CollideWith(Sprite other);
 

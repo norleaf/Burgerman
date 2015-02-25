@@ -10,7 +10,7 @@ using Burgerman;
 
 namespace Burgerman
 {
-    class Balloon: AnimatedSprite
+    public class Balloon: AnimatedSprite, ICollidable
     {
 
         private Animation movingUp;
@@ -22,7 +22,7 @@ namespace Burgerman
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
-            Scale = Scale*2.0f;
+            //Scale = Scale*2.0f;
             //Origin = new Vector2(spriteTexture.Width/2,spriteTexture.Height/2);
             movingUp = new Animation(this);
             movingUp.Frames.Add(new Rectangle(128, 0, 128, 166));
@@ -84,6 +84,15 @@ namespace Burgerman
                 setAnimation(movingRight);
             }
             PositionY +=0.3f;
+        }
+
+        public void CollideWith(Sprite other)
+        {
+            if (other is Bullet)
+            {
+                Scale = 0;
+            }
+            
         }
     }
 }

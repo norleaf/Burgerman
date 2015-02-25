@@ -15,10 +15,28 @@ namespace Burgerman
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-            Origin = new Vector2(spriteTexture.Width / 2, spriteTexture.Height );
-
+        //    Origin = new Vector2(spriteTexture.Width / 2, spriteTexture.Height );
+            _center = new Vector2(spriteTexture.Width / 2, spriteTexture.Height/2);
+            _bottom = spriteTexture.Height;
+        //    Position = new Vector2(PositionX,PositionY - spriteTexture.Height);
         }
-        public virtual float Scale { get; set; }
+
+        private float _bottom;
+
+        public virtual float Bottom
+        {
+            get { return _bottom + Position.Y; }
+            set { _bottom = value; }
+        }
+
+        private Vector2 _center;
+        public virtual Vector2 Center
+        {
+            get { return Vector2.Add(Position,_center); }
+            set { _center = value; }
+        }
+        public virtual float Scale{ get; set; }
+
         public Texture2D SpriteTexture { get; set; }
         public virtual Rectangle SourceRectangle { get; set; }
 
@@ -93,8 +111,7 @@ namespace Burgerman
 
         public void Die()
         {
-            //Game1 game = Game1.getInstance();
-           // Game1.sprites.Remove(this);
+           
         }
     }
 }

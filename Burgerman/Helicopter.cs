@@ -13,8 +13,17 @@ namespace Burgerman
         private Random random = new Random();
         private int _wait = 0;
         private int _upOrDown = 0;
-        public Helicopter(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
+        private double _millisecondsAtEntry = 0;
+        private double _millisecondsAtLastShot = 0;
+        private int _firingDelay = 2000;
+        private Game1 game;
+        private Texture2D bulletTexture;
+
+
+        public Helicopter(Texture2D spriteTexture, Vector2 position, Texture2D bulletTexture) : base(spriteTexture, position)
         {
+            this.bulletTexture = bulletTexture;
+            game = Game1.getInstance();
             Animation flying = new Animation(this);
             flying.Delay = 100;
             flying.Frames.Add(new Rectangle(0, 0, 200, 74));
@@ -28,8 +37,14 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
-            
+
+            if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
+            {
+                Vector2 target = game.getPlayer().Center;
+                Bullet bullet = new Bullet(bulletTexture,new Vector2(PositionX + BoundingBox.Width/3,PositionY+SpriteTexture.Height/3*2), target);
+                game.SpawnSpriteAtRuntime(bullet);
+                _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
+            }
 
             if (_wait < 0)
             {

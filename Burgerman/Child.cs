@@ -24,7 +24,7 @@ namespace Burgerman
         public Child(Texture2D spriteTexture, Vector2 position, Balloon balloon)
             : base(spriteTexture, position)
         {
-            Scale = 0.5f;
+           // Scale = 0.5f;
             player = balloon;
             _jumpVector = new Vector2(0,0);
             _state = State.Walking;

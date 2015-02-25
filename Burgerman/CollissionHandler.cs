@@ -5,17 +5,23 @@ using Microsoft.Xna.Framework;
 
 namespace Burgerman
 {
-    class CollissionHandler : IUpdateable
+    public class CollissionHandler : IUpdateable
     {
-        private List<ColissionSprite> _allElements;
+        private List<Sprite> _allElements;
         private List<ICollidable> _collisionListenersList;
  
-        public CollissionHandler(List<ColissionSprite> allElements)
+        public CollissionHandler(List<Sprite> allElements)
         {
             _allElements = allElements;
             _collisionListenersList = new List<ICollidable>();
         }
- 
+
+        public List<Sprite> AllElements
+        {
+            get{ return _allElements; }
+            set { _allElements = value; }
+        }
+
         public List<ICollidable> CollisionListenersList
         {
             get { return _collisionListenersList; }
