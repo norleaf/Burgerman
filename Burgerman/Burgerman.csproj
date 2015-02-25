@@ -97,6 +97,9 @@
     <Content Include="Content\Helicopter.png" />
     <Content Include="Content\Helicopter.svg" />
     <Content Include="Content\hot-air-balloon.svg" />
+    <Content Include="Content\hut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-
+using System.Windows.Forms.VisualStyles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -120,7 +120,7 @@ namespace Burgerman
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
             Texture2D mountainTexture = Content.Load<Texture2D>("mountain.png");
-            
+            Texture2D hutTexture = Content.Load<Texture2D>("hut.png");
             palmtreeTexture = Content.Load<Texture2D>("palm.png");
             Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
             Texture2D bullet = Content.Load<Texture2D>("bullet.png");
@@ -129,8 +129,8 @@ namespace Burgerman
             BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 5, screenHeight * 0.8f - mountainTexture.Height));
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 1, screenHeight * 0.8f - mountainTexture.Height));
+            PalmTree hut = new PalmTree(hutTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - hutTexture.Height));
             player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
-         //   Bullet testbullet = new Bullet(bullet, new Vector2(screenWidth, screenHeight / 2), player.Position);
             child = new Child(childTexture, new Vector2(screenWidth/2.0f, screenHeight*0.8f - childTexture.Height), player);
             soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
             helicopter = new Helicopter(helicopterTexture, new Vector2(1200, 130),bullet);
@@ -139,12 +139,10 @@ namespace Burgerman
             BackgroundSprites.Add(mount1);
             BackgroundSprites.Add(mount2);
             BackgroundSprites.Add(mount3);
+            BackgroundSprites.Add(hut);
 
             for (int i = 0; i < 15; i++)
             {
-                //float scale = ((float)ran.Next(7, 11) / 10);
-                //PalmTree palm = new PalmTree(palmtreeTexture, new Vector2(ran.Next(screenWidth+100), screenHeight * 0.8f - palmtreeTexture.Height*scale));
-                //palm.Scale = scale;
                 float scale = ((float)ran.Next(7, 11) / 10);
                 int offset = ran.Next(screenWidth + 100);
                 BackgroundSprites.Add(PalmTree.MakeNewTree(palmtreeTexture, scale, offset));
@@ -154,7 +152,6 @@ namespace Burgerman
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, screenHeight * 0.8f)));
             }
 
-     //       Sprites.Add(testbullet);
             
             Sprites.Add(player);
             Sprites.Add(child);
