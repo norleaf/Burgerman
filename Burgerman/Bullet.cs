@@ -28,7 +28,7 @@ namespace Burgerman
             Position = Vector2.Add(Position, _moveVector*_speed);
             if (PositionX < -100 || PositionX > game.ScreenSize.X+100 || PositionY < -10 || PositionY > 2000)
             {
-                game.markForRemoval(this);
+                game.MarkForRemoval(this);
             }
         }
     }

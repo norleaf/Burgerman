@@ -13,6 +13,7 @@ namespace Burgerman
         private Vector2 _jumpVector;
         private Balloon player;
         private State _state;
+        
 
         public enum State 
         {
@@ -25,7 +26,8 @@ namespace Burgerman
             : base(spriteTexture, position)
         {
            // Scale = 0.5f;
-            player = Game1.getInstance().getPlayer();
+            Name = "Child";
+            player = Game1.getInstance().GetPlayer();
             _jumpVector = new Vector2(0,0);
             _state = State.Walking;
         }
@@ -47,9 +49,14 @@ namespace Burgerman
         {
             if (other is Soldier)
             {
-                Game1.getInstance().markForRemoval(this);
+                Game1.getInstance().MarkForRemoval(this);
             }
             
+        }
+
+        public override Sprite CloneAt(float x, float y)
+        {
+            return new Child(SpriteTexture, new Vector2(x, Game1.groundLevel - SpriteTexture.Height));
         }
     }
 }

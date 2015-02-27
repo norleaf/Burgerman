@@ -10,6 +10,9 @@ namespace Burgerman
 {
     public class Sprite
     {
+        public string Name { get; set; }
+
+        
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
             this.SpriteTexture = spriteTexture;
@@ -104,6 +107,11 @@ namespace Burgerman
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, 0f);
+        }
+
+        public virtual Sprite CloneAt(float x, float y)
+        {
+            return new Sprite(SpriteTexture,new Vector2(x,y));
         }
 
         public void Die()

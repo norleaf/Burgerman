@@ -13,6 +13,7 @@ namespace Burgerman
             : base(spriteTexture, position)
         {
            // Scale *= 0.5f;
+            Name = "Soldier";
             Animation running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
             running.Frames.Add(new Rectangle(64, 0, 64, 55));
@@ -30,6 +31,11 @@ namespace Burgerman
                 PositionX += Game1.getInstance().ScreenSize.X+30;
             }
             Scroll();
+        }
+
+        public override Sprite CloneAt(float x, float y)
+        {
+            return new Soldier(SpriteTexture, new Vector2(x, Game1.groundLevel - SpriteTexture.Height));
         }
     }
 }

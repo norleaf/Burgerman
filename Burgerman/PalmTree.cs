@@ -24,7 +24,7 @@ namespace Burgerman
             
             if (PositionX < -spriteTexture.Width)
             {
-                Game1.getInstance().markForRemoval(this);
+                Game1.getInstance().MarkForRemoval(this);
 
             }
         }

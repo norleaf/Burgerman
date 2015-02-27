@@ -23,7 +23,7 @@ namespace Burgerman
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
-           
+            Name = "Hero Ballooneer";
             movingUp = new Animation(this, 100);
             movingUp.Frames.Add(new Rectangle(100, 0, 100, 171));
             movingUp.Frames.Add(new Rectangle(200, 0, 100, 171));
@@ -122,6 +122,11 @@ namespace Burgerman
                 Scale = 0;
             }
             
+        }
+
+        public override Sprite CloneAt(float x, float y)
+        {
+            return new Balloon(SpriteTexture, new Vector2(x, y));
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Burgerman
     /// </summary>
     public class Game1 : Game
     {
+        public static float groundLevel;
         private static Game1 instance;
         GraphicsDeviceManager graphics;
         private Screen screen = Screen.AllScreens.First(e => e.Primary);
@@ -44,16 +45,11 @@ namespace Burgerman
         public Texture2D bullet;
         public Texture2D burgerTexture;
         private Random ran;
-        public Dictionary<String, Texture2D> TextureDictionary { set; get; }
+        
 
         private enum GameState { Level1, Level2, Level3 }
-        
-        
         private GameState gameState;
 
-        private static List<Sprite> _sprites;
-        
-        private static List<Sprite> _newSprites;
         private double _timeSinceLastTree = 0;
         private int _treeDelay = 7000;
 
@@ -67,19 +63,11 @@ namespace Burgerman
         protected List<Sprite> Sprites1 { get; set; }
         protected List<Sprite> Sprites2 { get; set; }
         protected List<Sprite> Sprites3 { get; set; }
-        protected List<Sprite> Sprites
-        {
-            get { return _sprites;}
-            set { _sprites = value; }
-        }
 
+        protected List<Sprite> ProtoTypes { get; set; } 
+        protected List<Sprite> Sprites { get; set; }
         protected List<Sprite> BackgroundSprites { get; set; }
-
-        protected List<Sprite> NewSprites
-        {
-            get { return _newSprites; }
-            set { _newSprites = value; }
-        }
+        protected static List<Sprite> NewSprites { get; set; }
  
         
         private CollissionHandler CollissionHandler { get; set; }
@@ -128,8 +116,10 @@ namespace Burgerman
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            groundLevel = screenHeight*8/10;
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Sprites = new List<Sprite>();
+            ProtoTypes = new List<Sprite>();
             Sprites1 = new List<Sprite>();
             Sprites2 = new List<Sprite>();
             BackgroundSprites = new List<Sprite>();
@@ -156,6 +146,11 @@ namespace Burgerman
             soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
             helicopter = new Helicopter(helicopterTexture, new Vector2(screenWidth+100, screenHeight * 2/10),bullet);
             Sprite burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
+
+            ProtoTypes.Add(player);
+            ProtoTypes.Add(child);
+            ProtoTypes.Add(helicopter);
+            ProtoTypes.Add(soldier);
             ran = new Random();
 
             BackgroundSprites.Add(mount1);
@@ -173,20 +168,20 @@ namespace Burgerman
             {
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, screenHeight * 0.8f)));
             }
-
+            //Levels: kald en levelgenerator med en liste af prototyper. Lad static metoder returnere en sprites liste
             
-            Sprites1.Add(player);
-            Sprites1.Add(soldier);
-            Sprites1.Add(helicopter);
-            Sprites1.Add(child);
+            //Sprites1.Add(player);
+            //Sprites1.Add(soldier);
+            //Sprites1.Add(helicopter);
+            //Sprites1.Add(child);
 
 
-            Sprites2.Add(helicopter.CloneAt(screenWidth,screenHeight*0.1f));
-            Sprites2.Add(helicopter.CloneAt(screenWidth*1.1f, screenHeight * 0.3f));
+            //Sprites2.Add(helicopter.CloneAt(screenWidth,screenHeight*0.1f));
+            //Sprites2.Add(helicopter.CloneAt(screenWidth*1.1f, screenHeight * 0.3f));
             
 
             gameState = GameState.Level1;
-            Sprites = Sprites1;
+            Sprites = LevelConstructor.Level1(ProtoTypes);
           
             CollissionHandler = new CollissionHandler(Sprites);
             CollissionHandler.CollisionListenersList.Add(child);
@@ -225,9 +220,9 @@ namespace Burgerman
                 _timeSinceLastTree = gameTime.TotalGameTime.TotalMilliseconds;
                 _treeDelay = 3500 + ran.Next(3500);
             }
-            addNewSprites();
-            removeDeadSprites();
-            Console.WriteLine("size of sprites list: " + Sprites.Count);
+            AddNewSprites();
+            RemoveDeadSprites();
+           // Console.WriteLine("size of sprites list: " + Sprites.Count);
 
             switch (gameState)
             {
@@ -273,23 +268,6 @@ namespace Burgerman
             {
                 sprite.Draw(gameTime, spriteBatch);
             }
-            switch (gameState)
-            {
-                case GameState.Level1:
-                {
-                     break;
-                }
-                case GameState.Level2:
-                {
-                    
-                    break;
-                }
-                case GameState.Level3:
-                {
-                    
-                    break;
-                }
-            }
             
             
             spriteBatch.End();
@@ -304,29 +282,32 @@ namespace Burgerman
                 {
                     NewSprites = new List<Sprite>();
                 }
+                
                 NewSprites.Add(sprite);
-        
+                Console.WriteLine(NewSprites.Count);
             }
         }
 
-        private void addNewSprites()
+        private void AddNewSprites()
         {
-        //    Console.WriteLine("size of newSprites list: " + NewSprites.Count);
+            Console.WriteLine("run this");
+            if(NewSprites.Count>0) Console.WriteLine(NewSprites.Count);
             foreach (Sprite sprite in NewSprites)
             {
                 Sprites.Add(sprite);
                 CollissionHandler.AllElements.Add(sprite);
             }
             NewSprites.Clear();
-           // Console.WriteLine("new sprites cleared");
         }
 
-        public Balloon getPlayer()
+        public Balloon GetPlayer()
         {
+            //Balloon player = null;
+            //player = (Balloon) Sprites.First(balloon => balloon.Name == "Hero Ballooneer");
             return player;
         }
 
-        internal void markForRemoval(Sprite sprite)
+        internal void MarkForRemoval(Sprite sprite)
         {
             if (DeadSprites == null)
             {
@@ -335,7 +316,7 @@ namespace Burgerman
             DeadSprites.Add(sprite);
         }
 
-        private void removeDeadSprites()
+        private void RemoveDeadSprites()
         {
             if (DeadSprites != null)
             {
@@ -350,13 +331,13 @@ namespace Burgerman
 
         private void checkLevelOneDone(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.TotalMilliseconds > 10000)
-            {
-                gameState = GameState.Level2;
-                Sprites = Sprites2;
-                Sprites.Add(player);
-                int i = 5;
-            }
+            //if (gameTime.TotalGameTime.TotalMilliseconds > 10000)
+            //{
+            //    gameState = GameState.Level2;
+            //    Sprites = Sprites2;
+            //    Sprites.Add(player);
+            //    int i = 5;
+            //}
         }
     }
 }

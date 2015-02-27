@@ -46,6 +46,7 @@
     <Compile Include="Ground.cs" />
     <Compile Include="Helicopter.cs" />
     <Compile Include="ICollidable.cs" />
+    <Compile Include="LevelConstructor.cs" />
     <Compile Include="PalmTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

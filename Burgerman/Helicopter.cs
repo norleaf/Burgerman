@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Services;
 using System.Security.Principal;
@@ -20,6 +21,7 @@ namespace Burgerman
         private int _salvoLength = 3000;
         private int _salvos = 3;
         private int _waitTime = 2000;
+        private int _speed = 15;
         private Game1 game;
         private Texture2D bulletTexture;
         private Texture2D spriteTexture;
@@ -28,6 +30,7 @@ namespace Burgerman
 
         public Helicopter(Texture2D spriteTexture, Vector2 position, Texture2D bulletTexture) : base(spriteTexture, position)
         {
+            Name = "Helicopter";
             this.spriteTexture = spriteTexture;
             this.bulletTexture = bulletTexture;
             game = Game1.getInstance();
@@ -75,7 +78,7 @@ namespace Burgerman
         {
             if (PositionX > game.ScreenSize.X*4/5)
             {
-                PositionX-=3.0f;
+                PositionX-=_speed;
             }
             else
             {
@@ -89,7 +92,7 @@ namespace Burgerman
             PositionY--;
             if (PositionY < -200)
             {
-                game.markForRemoval(this);
+                game.MarkForRemoval(this);
             }
         }
 
@@ -101,8 +104,10 @@ namespace Burgerman
             }
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
-                Vector2 target = game.getPlayer().Center;
+                Vector2 target = game.GetPlayer().Center;
+             //   Console.WriteLine(target.ToString());
                 Bullet bullet = new Bullet(bulletTexture, new Vector2(PositionX + BoundingBox.Width / 3, PositionY + SpriteTexture.Height / 3 * 2), target);
+              //  Console.WriteLine(bullet.ToString());
                 game.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
             }
@@ -127,7 +132,7 @@ namespace Burgerman
             }
         }
 
-        public Helicopter CloneAt(float x, float y)
+        public override Sprite CloneAt(float x, float y)
         {
             return new Helicopter(spriteTexture,new Vector2(x,y), bulletTexture);
         }
