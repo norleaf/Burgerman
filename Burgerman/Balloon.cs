@@ -18,15 +18,19 @@ namespace Burgerman
         private Animation movingLeft;
         private float speed = 1.8f;
         public override Vector2 Origin { get; set; }
+        //private bool justPressed = true;
 
         public Balloon(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
            
-            movingUp = new Animation(this);
-            movingUp.Frames.Add(new Rectangle(128, 0, 128, 166));
-            movingRight = new Animation(this);
-            movingRight.Frames.Add(new Rectangle(0, 0, 128, 166));
+            movingUp = new Animation(this, 100);
+            movingUp.Frames.Add(new Rectangle(100, 0, 100, 171));
+            movingUp.Frames.Add(new Rectangle(200, 0, 100, 171));
+            movingUp.Frames.Add(new Rectangle(300, 0, 100, 171));
+            movingUp.Frames.Add(new Rectangle(400, 0, 100, 171));
+            movingRight = new Animation(this, 200);
+            movingRight.Frames.Add(new Rectangle(0, 0, 100, 171));
 
             setAnimation(movingRight);
         }
@@ -46,7 +50,7 @@ namespace Burgerman
                 {
                     spritesize = new Vector2(SourceRectangle.Width, SourceRectangle.Height);
                 }
-                int padding = 20;
+                int padding = 0;
                 result = new Rectangle((int)PositionX+padding, (int)PositionY+padding, (int)(spritesize.X * Scale)-padding, (int)(spritesize.Y * Scale) - padding);
                 return result;
             }
@@ -71,14 +75,22 @@ namespace Burgerman
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
+              //  justPressed = false;
                 PositionY -= speed;
-                setAnimation(movingUp);
+                
+                    setAnimation(movingUp);
+                
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
+                
                 PositionY += speed;
                 setAnimation(movingRight);
             }
+            //if (Keyboard.GetState().IsKeyUp(Keys.Up))
+            //{
+            //    justPressed = true;
+            //}
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f)
             {

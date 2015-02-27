@@ -136,7 +136,7 @@ namespace Burgerman
             NewSprites = new List<Sprite>();
             //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
             childTexture = Content.Load<Texture2D>("child.png");
-            ballonTexture = Content.Load<Texture2D>("./balloon_animated/animatedballoon.png");
+            ballonTexture = Content.Load<Texture2D>("./balloon/balloon.png");
             soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
             helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
             mountainTexture = Content.Load<Texture2D>("mountain.png");

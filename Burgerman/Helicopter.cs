@@ -31,7 +31,7 @@ namespace Burgerman
             this.spriteTexture = spriteTexture;
             this.bulletTexture = bulletTexture;
             game = Game1.getInstance();
-            Animation flying = new Animation(this);
+            Animation flying = new Animation(this, 200);
             flying.Delay = 100;
             flying.Frames.Add(new Rectangle(0, 0, 200, 74));
             flying.Frames.Add(new Rectangle(200, 0, 200, 74));

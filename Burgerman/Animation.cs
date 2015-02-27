@@ -33,10 +33,10 @@ namespace Burgerman
             set { _frames = value; }
         }
 
-        public Animation(Sprite sprite)
+        public Animation(Sprite sprite, int delay)
         {
             _sprite = sprite;
-            _delay = 200;
+            _delay = delay;
             _loop = true;
         }
 

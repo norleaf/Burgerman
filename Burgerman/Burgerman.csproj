@@ -68,16 +68,10 @@
     <Content Include="Content\background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\balloon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\balloon.svg" />
-    <Content Include="Content\balloon_animated\animatedballoon.png">
+    <Content Include="Content\balloon\balloon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\balloon_animated\balloon.png" />
-    <Content Include="Content\balloon_animated\balloon_rising.png" />
-    <Content Include="Content\balloon_rising.svg" />
     <Content Include="Content\bullet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -114,6 +108,7 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\balloon_animated\" />
     <Folder Include="Framework\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
