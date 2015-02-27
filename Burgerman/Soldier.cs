@@ -13,7 +13,7 @@ namespace Burgerman
             : base(spriteTexture, position)
         {
            // Scale *= 0.5f;
-            Animation running = new Animation(this);
+            Animation running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
             running.Frames.Add(new Rectangle(64, 0, 64, 55));
             running.Frames.Add(new Rectangle(128, 0, 64, 55));

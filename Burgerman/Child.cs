@@ -21,11 +21,11 @@ namespace Burgerman
             Jumping
         }
         
-        public Child(Texture2D spriteTexture, Vector2 position, Balloon balloon)
+        public Child(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
            // Scale = 0.5f;
-            player = balloon;
+            player = Game1.getInstance().getPlayer();
             _jumpVector = new Vector2(0,0);
             _state = State.Walking;
         }

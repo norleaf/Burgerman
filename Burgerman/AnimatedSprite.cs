@@ -12,13 +12,16 @@ namespace Burgerman
     public class AnimatedSprite : Sprite
     {
         private Animation animation;
-        private State _state;
+        protected State _state;
 
         public enum State
         {
             Waiting,
             walking,
-            Jumping
+            Jumping,
+            Entering,
+            Fighting,
+            Leaving
         }
 
         public AnimatedSprite(Texture2D spriteTexture, Vector2 position)
