@@ -355,6 +355,7 @@ namespace Burgerman
                 gameState = GameState.Level2;
                 Sprites = Sprites2;
                 Sprites.Add(player);
+                int i = 5;
             }
         }
     }
