@@ -14,6 +14,13 @@ namespace Burgerman
         {
             _allElements = allElements;
             _collisionListenersList = new List<ICollidable>();
+            foreach (Sprite sprite in _allElements)
+            {
+                if (sprite is ICollidable)
+                {
+                    _collisionListenersList.Add((ICollidable)sprite);
+                }
+            }
         }
 
         public List<Sprite> AllElements

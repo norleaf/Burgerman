@@ -13,7 +13,7 @@ namespace Burgerman
 
         public Ground(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            game = Game1.getInstance();
+            game = Game1.Instance;
         }
 
         public override void Update(GameTime gameTime)

@@ -17,6 +17,7 @@ namespace Burgerman
         private Animation movingRight;
         private Animation movingLeft;
         private float speed = 1.8f;
+        private bool loaded = true;
         public override Vector2 Origin { get; set; }
         //private bool justPressed = true;
 
@@ -59,6 +60,19 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                if (loaded == true)
+                {
+                    loaded = false;
+                    ShootBurger();
+                }
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.Z))
+            {
+                loaded = true;
+            }
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
             {
                 setAnimation(movingRight);
@@ -77,9 +91,7 @@ namespace Burgerman
             {
               //  justPressed = false;
                 PositionY -= speed;
-                
                     setAnimation(movingUp);
-                
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
@@ -113,6 +125,13 @@ namespace Burgerman
                 setAnimation(movingRight);
             }
             PositionY +=0.3f;
+        }
+
+        private void ShootBurger()
+        {
+            Vector2 spawnpoint = Vector2.Add(Position,new Vector2(BoundingBox.Width/2,BoundingBox.Height-20));
+            Burger burger = new Burger(Game1.Instance.burgerTexture,spawnpoint);
+            Game1.Instance.SpawnSpriteAtRuntime(burger);
         }
 
         public void CollideWith(Sprite other)

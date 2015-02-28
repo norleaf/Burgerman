@@ -15,7 +15,7 @@ namespace Burgerman
 
         public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition) : base(spriteTexture, position)
         {
-            game = Game1.getInstance();
+            game = Game1.Instance;
             float x = balloonPosition.X - position.X;
             float y = balloonPosition.Y - position.Y;
             _moveVector = new Vector2(x,y);

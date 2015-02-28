@@ -24,7 +24,7 @@ namespace Burgerman
             
             if (PositionX < -spriteTexture.Width)
             {
-                Game1.getInstance().MarkForRemoval(this);
+                Game1.Instance.MarkForRemoval(this);
 
             }
         }
@@ -32,7 +32,7 @@ namespace Burgerman
         public static PalmTree MakeNewTree(Texture2D spriteTexture, float scale, int offset)
         {
             Random ran = new Random();
-            Game1 game = Game1.getInstance();
+            Game1 game = Game1.Instance;
             
             PalmTree tree = new PalmTree(spriteTexture, new Vector2(offset, game.ScreenSize.Y * 0.8f - spriteTexture.Height * scale));
             tree.Scale = scale;

@@ -29,7 +29,8 @@ namespace Burgerman
         private static int screenWidth ;
         private static int screenHeight;
         SpriteBatch spriteBatch;
-        private static Balloon player;
+        public static Vector2 Gravity = new Vector2(0,0.1f);
+        public Balloon Player { get; private set; }
         private Child child;
         private Soldier soldier;
         private Helicopter helicopter;
@@ -67,21 +68,24 @@ namespace Burgerman
         protected List<Sprite> ProtoTypes { get; set; } 
         protected List<Sprite> Sprites { get; set; }
         protected List<Sprite> BackgroundSprites { get; set; }
-        protected static List<Sprite> NewSprites { get; set; }
+        protected List<Sprite> NewSprites { get; set; }
  
         
         private CollissionHandler CollissionHandler { get; set; }
 
-        public static Game1 getInstance()
+        public static Game1 Instance
         {
-            if (instance == null)
+            get
             {
-                instance = new Game1();
+                if (instance == null)
+                {
+                    instance = new Game1();
+                }
+                return instance;
             }
-            return instance;
         }
-
-        public Game1()
+        
+        private Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -124,6 +128,9 @@ namespace Burgerman
             Sprites2 = new List<Sprite>();
             BackgroundSprites = new List<Sprite>();
             NewSprites = new List<Sprite>();
+
+           
+
             //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
             childTexture = Content.Load<Texture2D>("child.png");
             ballonTexture = Content.Load<Texture2D>("./balloon/balloon.png");
@@ -141,13 +148,13 @@ namespace Burgerman
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 1, screenHeight * 0.8f - mountainTexture.Height));
             PalmTree hut = new PalmTree(hutTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - hutTexture.Height));
-            player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
+            Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
             child = new Child(childTexture, new Vector2(screenWidth/2.0f, screenHeight*0.8f - childTexture.Height));
             soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
             helicopter = new Helicopter(helicopterTexture, new Vector2(screenWidth+100, screenHeight * 2/10),bullet);
             Sprite burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
 
-            ProtoTypes.Add(player);
+            ProtoTypes.Add(Player);
             ProtoTypes.Add(child);
             ProtoTypes.Add(helicopter);
             ProtoTypes.Add(soldier);
@@ -170,22 +177,14 @@ namespace Burgerman
             }
             //Levels: kald en levelgenerator med en liste af prototyper. Lad static metoder returnere en sprites liste
             
-            //Sprites1.Add(player);
-            //Sprites1.Add(soldier);
-            //Sprites1.Add(helicopter);
-            //Sprites1.Add(child);
-
-
-            //Sprites2.Add(helicopter.CloneAt(screenWidth,screenHeight*0.1f));
-            //Sprites2.Add(helicopter.CloneAt(screenWidth*1.1f, screenHeight * 0.3f));
             
-
             gameState = GameState.Level1;
             Sprites = LevelConstructor.Level1(ProtoTypes);
           
             CollissionHandler = new CollissionHandler(Sprites);
-            CollissionHandler.CollisionListenersList.Add(child);
-            CollissionHandler.CollisionListenersList.Add(player);
+            
+
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -222,7 +221,6 @@ namespace Burgerman
             }
             AddNewSprites();
             RemoveDeadSprites();
-           // Console.WriteLine("size of sprites list: " + Sprites.Count);
 
             switch (gameState)
             {
@@ -290,8 +288,7 @@ namespace Burgerman
 
         private void AddNewSprites()
         {
-            Console.WriteLine("run this");
-            if(NewSprites.Count>0) Console.WriteLine(NewSprites.Count);
+         
             foreach (Sprite sprite in NewSprites)
             {
                 Sprites.Add(sprite);
@@ -300,12 +297,7 @@ namespace Burgerman
             NewSprites.Clear();
         }
 
-        public Balloon GetPlayer()
-        {
-            //Balloon player = null;
-            //player = (Balloon) Sprites.First(balloon => balloon.Name == "Hero Ballooneer");
-            return player;
-        }
+        
 
         internal void MarkForRemoval(Sprite sprite)
         {

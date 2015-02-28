@@ -10,8 +10,8 @@ namespace Burgerman
 
         public static List<Sprite> Level1(List<Sprite> prototypes)
         {
-            float width = Game1.getInstance().ScreenSize.X;
-            float height = Game1.getInstance().ScreenSize.Y;
+            float width = Game1.Instance.ScreenSize.X;
+            float height = Game1.Instance.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
             sprites.Add(prototypes[0]);
             sprites.Add(prototypes[1].CloneAt(width / 2, 0));

@@ -27,7 +27,7 @@ namespace Burgerman
         {
            // Scale = 0.5f;
             Name = "Child";
-            player = Game1.getInstance().GetPlayer();
+            player = Game1.Instance.Player;
             _jumpVector = new Vector2(0,0);
             _state = State.Walking;
         }
@@ -49,7 +49,7 @@ namespace Burgerman
         {
             if (other is Soldier)
             {
-                Game1.getInstance().MarkForRemoval(this);
+                Game1.Instance.MarkForRemoval(this);
             }
             
         }

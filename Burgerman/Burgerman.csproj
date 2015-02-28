@@ -40,6 +40,7 @@
     <Compile Include="BackgroundSprite.cs" />
     <Compile Include="Balloon.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="Burger.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="CollissionHandler.cs" />
     <Compile Include="Game1.cs" />

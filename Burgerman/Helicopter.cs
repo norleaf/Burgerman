@@ -33,7 +33,7 @@ namespace Burgerman
             Name = "Helicopter";
             this.spriteTexture = spriteTexture;
             this.bulletTexture = bulletTexture;
-            game = Game1.getInstance();
+            game = Game1.Instance;
             Animation flying = new Animation(this, 200);
             flying.Delay = 100;
             flying.Frames.Add(new Rectangle(0, 0, 200, 74));
@@ -104,7 +104,7 @@ namespace Burgerman
             }
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
-                Vector2 target = game.GetPlayer().Center;
+                Vector2 target = game.Player.Center;
              //   Console.WriteLine(target.ToString());
                 Bullet bullet = new Bullet(bulletTexture, new Vector2(PositionX + BoundingBox.Width / 3, PositionY + SpriteTexture.Height / 3 * 2), target);
               //  Console.WriteLine(bullet.ToString());

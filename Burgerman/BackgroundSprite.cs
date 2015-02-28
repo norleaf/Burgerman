@@ -22,7 +22,7 @@ namespace Burgerman
             SlowScroll();
             if (PositionX < -spriteTexture.Width)
             {
-                PositionX += Game1.getInstance().ScreenSize.X + spriteTexture.Width;
+                PositionX += Game1.Instance.ScreenSize.X + spriteTexture.Width;
 
             }
         }

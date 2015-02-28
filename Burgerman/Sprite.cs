@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,6 +16,7 @@ namespace Burgerman
         
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
+            
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
