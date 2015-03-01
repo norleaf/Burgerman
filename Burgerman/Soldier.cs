@@ -14,6 +14,7 @@ namespace Burgerman
         {
            // Scale *= 0.5f;
             Name = "Soldier";
+            Speed = new Vector2(-1,0);
             Animation running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
             running.Frames.Add(new Rectangle(64, 0, 64, 55));
@@ -25,7 +26,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            PositionX-=0.7f;
+            
             if (PositionX < -30)
             {
                 Game1.Instance.MarkForRemoval(this);

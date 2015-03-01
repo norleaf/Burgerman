@@ -12,10 +12,12 @@ namespace Burgerman
         private Vector2 _moveVector;
         private float _speed = 3.9f;
         private Game1 game;
+        public Sprite Shooter { get; private set; }
 
-        public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition) : base(spriteTexture, position)
+        public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition, Sprite shooter) : base(spriteTexture, position)
         {
             game = Game1.Instance;
+            Shooter = shooter;
             float x = balloonPosition.X - position.X;
             float y = balloonPosition.Y - position.Y;
             _moveVector = new Vector2(x,y);

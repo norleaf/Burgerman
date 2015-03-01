@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Remoting.Services;
-using System.Security.Principal;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    public class Helicopter: AnimatedSprite
+    public class Helicopter: AnimatedSprite, ICollidable
     {
         private Random random = new Random();
-        private int _wait = 0;
-        private int _upOrDown = 0;
-        private double _millisecondsAtLastSalvo = 0;
-        private double _millisecondsAtLastShot = 0;
+        private int _wait;
+        private int _upOrDown;
+        private double _millisecondsAtLastSalvo;
+        private double _millisecondsAtLastShot;
         private int _firingDelay = 500;
         private int _salvoLength = 3000;
         private int _salvos = 3;
@@ -28,12 +22,12 @@ namespace Burgerman
         
        
 
-        public Helicopter(Texture2D spriteTexture, Vector2 position, Texture2D bulletTexture) : base(spriteTexture, position)
+        public Helicopter(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
             Name = "Helicopter";
             this.spriteTexture = spriteTexture;
-            this.bulletTexture = bulletTexture;
             game = Game1.Instance;
+            bulletTexture = game.BulletTex;
             Animation flying = new Animation(this, 200);
             flying.Delay = 100;
             flying.Frames.Add(new Rectangle(0, 0, 200, 74));
@@ -106,9 +100,7 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
                 Vector2 target = game.Player.Center;
-             //   Console.WriteLine(target.ToString());
-                Bullet bullet = new Bullet(bulletTexture, new Vector2(PositionX + BoundingBox.Width / 3, PositionY + SpriteTexture.Height / 3 * 2), target);
-              //  Console.WriteLine(bullet.ToString());
+                Bullet bullet = new Bullet(bulletTexture, new Vector2(PositionX + BoundingBox.Width / 3f, PositionY + SpriteTexture.Height / 3 * 2), target, this);
                 game.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
             }
@@ -133,9 +125,27 @@ namespace Burgerman
             }
         }
 
+
+
         public override Sprite CloneAt(float x, float y)
         {
-            return new Helicopter(spriteTexture,new Vector2(x,y), bulletTexture);
+            return new Helicopter(spriteTexture,new Vector2(x,y));
+        }
+
+        public void CollideWith(Sprite other)
+        {
+            if (other is Jet)
+            {
+                game.MarkForRemoval(this);
+            }
+            if (other is Bullet)
+            {
+                Bullet bullet = (Bullet) other;
+                if (!bullet.Shooter.Equals(this))
+                {
+                    game.MarkForRemoval(this);
+                }
+            }
         }
     }
 }

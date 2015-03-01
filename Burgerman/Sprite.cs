@@ -18,7 +18,7 @@ namespace Burgerman
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
             Ran = new Random();
-            Speed = new Vector2(-0.3f,0);
+            Speed = new Vector2(-0.5f,0);
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;

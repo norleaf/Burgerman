@@ -112,7 +112,7 @@ namespace Burgerman
             GroundLevel = ScreenSize.Y*0.8f;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Sprites = new List<Sprite>();
-            
+            DeadSprites = new List<Sprite>();
             BackgroundSprites = new List<Sprite>();
             NewSprites = new List<Sprite>();
 
@@ -141,7 +141,7 @@ namespace Burgerman
             Child = new Child(childTexture, new Vector2(0, 0));
             Soldier = new Soldier(soldierTexture, new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
             Jet = new Jet(jetTexture, new Vector2(0,0));
-            Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 2 / 10f), BulletTex);
+            Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 2 / 10f));
             //Sprite Burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
 
             //ProtoTypes.Add(Player);
@@ -164,12 +164,11 @@ namespace Burgerman
             {
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, ScreenSize.Y * 0.8f)));
             }
-            //Levels: kald en levelgenerator med en liste af prototyper. Lad static metoder returnere en sprites liste
-            
-            
+
             _gameState = GameState.Level1;
+
+            //Levels: kald en levelgenerator med static metoder som returnerer en sprites liste
             Sprites = LevelConstructor.Level1(this);
-          
             CollissionHandler = new CollissionHandler(Sprites);
             
 
@@ -251,11 +250,19 @@ namespace Burgerman
             _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
 
 
-            
+            DrawHUD();
             DrawSprites();
             DrawText();
             _spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void DrawHUD()
+        {
+            for (int i = 0; i < Player.Ammo; i++)
+            {
+                _spriteBatch.Draw(texture: BurgerTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y*0.9f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1,1));
+            }
         }
 
         private void DrawSprites()
@@ -302,10 +309,7 @@ namespace Burgerman
 
         internal void MarkForRemoval(Sprite sprite)
         {
-            if (DeadSprites == null)
-            {
-                DeadSprites = new List<Sprite>();
-            }
+            
             DeadSprites.Add(sprite);
         }
 
@@ -316,7 +320,12 @@ namespace Burgerman
                 foreach (Sprite deadSprite in DeadSprites)
                 {
                     Sprites.Remove(deadSprite);
+                    CollissionHandler.AllElements.Remove(deadSprite);
                     BackgroundSprites.Remove(deadSprite);
+                    if (deadSprite is ICollidable)
+                    {
+                        CollissionHandler.CollisionListenersList.Remove((ICollidable)deadSprite);
+                    }                 
                 }
                 DeadSprites.Clear();
             }

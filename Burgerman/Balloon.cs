@@ -18,6 +18,7 @@ namespace Burgerman
         //private Animation movingLeft;
         private const float SpeedMult = 1.8f;
         private bool _loaded = true;
+        public int Ammo { get; private set; }
         public override Vector2 Origin { get; set; }
         //private bool justPressed = true;
 
@@ -25,6 +26,7 @@ namespace Burgerman
             : base(spriteTexture, position)
         {
             Name = "Hero Ballooneer";
+            Ammo = 5;
             _movingUp = new Animation(this, 100);
             _movingUp.Frames.Add(new Rectangle(100, 0, 100, 171));
             _movingUp.Frames.Add(new Rectangle(200, 0, 100, 171));
@@ -63,7 +65,7 @@ namespace Burgerman
 
             if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
-                if (_loaded == true)
+                if (_loaded && Ammo > 0)
                 {
                     _loaded = false;
                     ShootBurger();
@@ -135,6 +137,7 @@ namespace Burgerman
         {
             Vector2 spawnpoint = Vector2.Add(Position,new Vector2(BoundingBox.Width/2,BoundingBox.Height-20));
             Burger burger = new Burger(Game1.Instance.BurgerTexture,spawnpoint);
+            Ammo--;
             Game1.Instance.SpawnSpriteAtRuntime(burger);
         }
 

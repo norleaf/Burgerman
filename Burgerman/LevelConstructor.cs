@@ -24,7 +24,7 @@ namespace Burgerman
             sprites.Add(HutProto.CloneAt(width / 2));
            // sprites.Add(ChildProto.CloneAt(width /2 +300));
             sprites.Add(HutProto.CloneAt(width * 1.3f));
-            sprites.Add(HutProto.CloneAt(width * 1.9f));
+            sprites.Add(HutProto.CloneAt(width * 1.4f));
             sprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
             sprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
             sprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));

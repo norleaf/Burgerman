@@ -42,7 +42,7 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            if (other is Soldier && _state != State.Leaving  && PositionX < Game1.Instance.ScreenSize.X)
+            if (other is Soldier && _state != State.Leaving )
             {
                 Game1.Instance.MarkForRemoval(this);
             }
