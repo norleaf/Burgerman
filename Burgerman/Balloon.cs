@@ -94,7 +94,7 @@ namespace Burgerman
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                if (PositionY + BoundingBox.Height < Game1.groundLevel)
+                if (PositionY + BoundingBox.Height < Game1.GroundLevel)
                 {
                     PositionY += SpeedMult;
                     setAnimation(_floating);
@@ -125,7 +125,7 @@ namespace Burgerman
                 PositionY -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * SpeedMult;
                 setAnimation(_floating);
             }
-            if (PositionY+BoundingBox.Height < Game1.groundLevel)
+            if (PositionY+BoundingBox.Height < Game1.GroundLevel)
             {
                 PositionY += 0.3f;
             }
@@ -140,16 +140,21 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            if (other is Bullet || other is Jet)
+            if (other is Bullet)
             {
                 if (Vector2.Distance(Center,other.Center) < (BoundingBox.Height + BoundingBox.Width)/4f)
                 {
                     Game1.Instance.MarkForRemoval(this);
                     Game1.Instance.MarkForRemoval(other);
                 }
-                
             }
-            
+            if (other is Jet)
+            {
+                if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
+                {
+                    Game1.Instance.MarkForRemoval(this);
+                }
+            }
         }
 
         public override Sprite CloneAt(float x, float y)

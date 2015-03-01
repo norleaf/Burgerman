@@ -63,7 +63,7 @@ namespace Burgerman
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             // Do we have a texture? If not then there is nothing to draw...
             if (SpriteTexture != null)

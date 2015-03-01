@@ -50,6 +50,7 @@ namespace Burgerman
             {
                 _state = State.Leaving;
                 Game1.Instance.MarkForRemoval(other);
+                Game1.Instance.ChildrenFed = 1;
             }
             if (other is Bullet)
             {
@@ -61,7 +62,7 @@ namespace Burgerman
 
         public override Sprite CloneAt(float x)
         {
-            return new Child(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
+            return new Child(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
 
         //public override Sprite CloneAt(float x, float y)

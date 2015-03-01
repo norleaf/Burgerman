@@ -93,7 +93,7 @@ namespace Burgerman
             // sprite logic goes here...
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, 0f);
         }
@@ -105,7 +105,7 @@ namespace Burgerman
 
         public virtual Sprite CloneAt(float x)
         {
-            return new Sprite(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
+            return new Sprite(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
 
         protected void Move()

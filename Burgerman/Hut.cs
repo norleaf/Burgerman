@@ -29,7 +29,7 @@ namespace Burgerman
 
         public override Sprite CloneAt(float x)
         {
-            return new Hut(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
+            return new Hut(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
     }
 }

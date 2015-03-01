@@ -23,7 +23,7 @@ namespace Burgerman
             base.Update(gameTime);
             Velocity = Vector2.Add(Velocity, Game1.Gravity);
             NextPosition = Vector2.Add(Position, Velocity);
-            if (NextPosition.Y+BoundingBox.Height > Game1.groundLevel)
+            if (NextPosition.Y+BoundingBox.Height > Game1.GroundLevel)
             {
                 Game1.Instance.MarkForRemoval(this);
             }

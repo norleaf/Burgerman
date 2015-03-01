@@ -35,7 +35,7 @@ namespace Burgerman
 
         public override Sprite CloneAt(float x)
         {
-            return new Soldier(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
+            return new Soldier(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
 
         public void CollideWith(Sprite other)

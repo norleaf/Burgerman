@@ -26,7 +26,7 @@ namespace Burgerman
         {
             base.Update(gameTime);
             Position = Vector2.Add(Position, _moveVector*_speed);
-            if (PositionX < -100 || PositionX > game.ScreenSize.X+100 || PositionY < -10 || PositionY > Game1.groundLevel)
+            if (PositionX < -100 || PositionX > game.ScreenSize.X+100 || PositionY < -10 || PositionY > Game1.GroundLevel)
             {
                 game.MarkForRemoval(this);
             }
