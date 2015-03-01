@@ -27,7 +27,7 @@ namespace Burgerman
         {
             base.Update(gameTime);
             
-            if (PositionX < -30)
+            if (Position.X < -30)
             {
                 Game1.Instance.MarkForRemoval(this);
             }

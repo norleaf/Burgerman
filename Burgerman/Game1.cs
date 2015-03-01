@@ -27,6 +27,8 @@ namespace Burgerman
         private SpriteBatch _spriteBatch;
         public static Vector2 Gravity = new Vector2(0,0.1f);
         public Balloon Player { get; private set; }
+        public bool PlayerDead { get; set; }
+        public bool ChildDead { get; set; }
         public Child Child { get; private set; }
         public Soldier Soldier { get; private set; }
         public Hut Hut { get; private set; }
@@ -36,17 +38,20 @@ namespace Burgerman
         private Texture2D _palmtreeTexture;
         public Texture2D BulletTex { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
+        public Texture2D HeadTexture { get; private set; }
         private SpriteFont _font;
         
         private Random _ran;
 
-        private enum GameState { Level1, Level2, Level3 }
-        private GameState _gameState;
+        public enum GameState { Level1, Level2, Level3 }
+        public GameState State { get; private set; }
 
+        private double _restartTime;
         private double _timeSinceLastTree;
         private int _treeDelay = 7000;
 
         private int _childrenFed;
+        private bool _restarting;
         public int ChildrenFed
         {
             get { return _childrenFed; }
@@ -129,6 +134,7 @@ namespace Burgerman
 
             BulletTex = Content.Load<Texture2D>("bullet.png");
             BurgerTexture = Content.Load<Texture2D>("burger.png");
+            HeadTexture = Content.Load<Texture2D>("childhead.png");
             _palmtreeTexture = Content.Load<Texture2D>("palm.png");
             _backgroundTexture = Content.Load<Texture2D>("background.jpg");
             
@@ -136,7 +142,7 @@ namespace Burgerman
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 1f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             Hut = new Hut(hutTexture, new Vector2(ScreenSize.X / 2f, ScreenSize.Y * 0.8f - hutTexture.Height));
-            Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
+            Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width/5f, ballonTexture.Height));
             Child = new Child(childTexture, new Vector2(0, 0));
             Child = new Child(childTexture, new Vector2(0, 0));
             Soldier = new Soldier(soldierTexture, new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
@@ -165,7 +171,7 @@ namespace Burgerman
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, ScreenSize.Y * 0.8f)));
             }
 
-            _gameState = GameState.Level1;
+            State = GameState.Level1;
 
             //Levels: kald en levelgenerator med static metoder som returnerer en sprites liste
             Sprites = LevelConstructor.Level1(this);
@@ -210,16 +216,9 @@ namespace Burgerman
             }
             AddNewSprites();
             RemoveDeadSprites();
+            CheckLevelDone(gameTime);
 
-            switch (_gameState)
-            {
-                    case GameState.Level1:
-                    CheckLevelOneDone();
-                    break;
-                    case GameState.Level2:
-                    CheckLevelTwoDone();
-                    break;
-            }
+            
 
             foreach (Sprite sprite in Sprites)
             {
@@ -261,7 +260,11 @@ namespace Burgerman
         {
             for (int i = 0; i < Player.Ammo; i++)
             {
-                _spriteBatch.Draw(texture: BurgerTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y*0.9f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1,1));
+                _spriteBatch.Draw(texture: BurgerTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.9f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
+            }
+            for (int i = 0; i < ChildrenFed; i++)
+            {
+                _spriteBatch.Draw(texture: HeadTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.95f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
             }
         }
 
@@ -315,8 +318,6 @@ namespace Burgerman
 
         private void RemoveDeadSprites()
         {
-            if (DeadSprites != null)
-            {
                 foreach (Sprite deadSprite in DeadSprites)
                 {
                     Sprites.Remove(deadSprite);
@@ -328,21 +329,72 @@ namespace Burgerman
                     }                 
                 }
                 DeadSprites.Clear();
-            }
         }
 
-        private void CheckLevelOneDone()
+        private void Restart()
         {
-            if (ChildrenFed == 3)
+            //Player = new Balloon(Player.SpriteTexture, new Vector2(0,0));
+            Player.Position = new Vector2(Player.BoundingBox.Width,Player.BoundingBox.Height);
+            Player.Ammo = 5;
+            _childrenFed = 0;
+            NewSprites.Clear();
+            DeadSprites.Clear();
+            Sprites.Clear();
+            switch (State)
             {
-                
+                    case GameState.Level1:
+                    Sprites = LevelConstructor.Level1(this);
+                    break;
+                    case GameState.Level2:
+                    Sprites = LevelConstructor.Level2(this);
+                    break;
+            }
+            CollissionHandler = new CollissionHandler(Sprites);
+            
+        }
+
+        private void CheckLevelDone(GameTime gameTime)
+        {
+            if (ChildDead || PlayerDead)
+            {
+                //Restarting level in 3 secs...
+                _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
+                PlayerDead = false;
+                ChildDead = false;
+                _restarting = true;
+            }
+
+            if (gameTime.TotalGameTime.TotalMilliseconds > _restartTime + 3000 && _restarting)
+            {
+                _restarting = false;
+                Restart();
+            }
+
+            switch (State)
+            {
+                    case GameState.Level1:
+                    if (ChildrenFed == 3)
+                    {
+                        ChildrenFed = 0;
+                        State = GameState.Level2;
+                        Restart();
+                    }
+                    break;
+                    case GameState.Level2:
+                    if (ChildrenFed == 5)
+                    {
+                        ChildrenFed = 0;
+                        State = GameState.Level3;
+                        Restart();
+                    }
+                    break;
+                    case GameState.Level3:
+                    if (ChildrenFed == 7)
+                    {
+                        //goto level 4 or end game :)
+                    }
+                    break;
             }
         }
-
-        private void CheckLevelTwoDone()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

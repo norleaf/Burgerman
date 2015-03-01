@@ -22,7 +22,7 @@ namespace Burgerman
             Move();
             
             
-            if (PositionX < -spriteTexture.Width)
+            if (Position.X < -spriteTexture.Width)
             {
                 Game1.Instance.MarkForRemoval(this);
 

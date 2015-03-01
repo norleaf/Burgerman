@@ -21,10 +21,9 @@ namespace Burgerman
         {
             base.Update(gameTime);
             Move();
-            if (PositionX < -spriteTexture.Width)
+            if (Position.X < -spriteTexture.Width)
             {
-                PositionX += Game1.Instance.ScreenSize.X + spriteTexture.Width;
-
+                MoveHorizontally(Game1.Instance.ScreenSize.X + spriteTexture.Width);
             }
         }
     }

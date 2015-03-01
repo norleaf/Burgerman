@@ -71,9 +71,10 @@ namespace Burgerman
         private void Enter(GameTime gameTime)
         {
             
-            if (PositionX > game.ScreenSize.X*4/5)
+            if (Position.X > game.ScreenSize.X*4/5)
             {
-                PositionX-=_speed;
+                //PositionX-=_speed;
+                MoveHorizontally(-_speed);
             }
             else
             {
@@ -84,8 +85,9 @@ namespace Burgerman
 
         private void Leave(GameTime gameTime)
         {
-            PositionY--;
-            if (PositionY < -200)
+            //PositionY--;
+            MoveVertically(-1);
+            if (Position.Y < -200)
             {
                 game.MarkForRemoval(this);
             }
@@ -100,7 +102,7 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
                 Vector2 target = game.Player.Center;
-                Bullet bullet = new Bullet(bulletTexture, new Vector2(PositionX + BoundingBox.Width / 3f, PositionY + SpriteTexture.Height / 3 * 2), target, this);
+                Bullet bullet = new Bullet(bulletTexture, new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2), target, this);
                 game.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
             }
@@ -110,12 +112,13 @@ namespace Burgerman
                 _upOrDown = random.Next(0, 3) - 1;
                 _wait = 30;
             }
-            if (PositionY < 100)
+            if (Position.Y < 100)
             {
                 _upOrDown = 1;
             }
             _wait--;
-            PositionY += _upOrDown * 0.2f;
+            //    Position.Y += _upOrDown * 0.2f;
+            MoveVertically(_upOrDown * 0.2f);
             
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastSalvo + _salvoLength)
             {

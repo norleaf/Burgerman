@@ -30,8 +30,8 @@ namespace Burgerman
             switch (_state)
             {
                     case State.Leaving:
-                    PositionX -= 1;
-                    if (PositionX < -50)
+                    MoveHorizontally(-1);
+                    if (Position.X < -BoundingBox.Width)
                     {
                         Game1.Instance.MarkForRemoval(this);
                     }
@@ -45,6 +45,7 @@ namespace Burgerman
             if (other is Soldier && _state != State.Leaving )
             {
                 Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.ChildDead = true;
             }
             if (other is Burger)
             {
@@ -56,6 +57,7 @@ namespace Burgerman
             {
                 Game1.Instance.MarkForRemoval(this);
                 Game1.Instance.MarkForRemoval(other);
+                Game1.Instance.ChildDead = true;
             }
             
         }

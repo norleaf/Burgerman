@@ -50,18 +50,16 @@ namespace Burgerman
 
         public Vector2 NextPosition { get; set; }
 
-        public Vector2 Position
-        {
-            get { return new Vector2(PositionX, PositionY); }
-            set
-            {
-                PositionX = value.X;
-                PositionY = value.Y;
-            }
-        }
-        public float PositionY { get; set; }
+        public Vector2 Position { get; set; }
 
-        public float PositionX { get; set; }
+        public void MoveHorizontally(float distance)
+        {
+            Position = Vector2.Add(Position, new Vector2(distance, 0));
+        }
+        public void MoveVertically(float distance)
+        {
+            Position = Vector2.Add(Position, new Vector2(0, distance));
+        }
 
         public virtual Vector2 Origin { get; set; }
 
@@ -82,11 +80,13 @@ namespace Burgerman
                 {
                     spritesize = new Vector2(SourceRectangle.Width, SourceRectangle.Height);
                 }
-                result = new Rectangle((int)PositionX, (int)PositionY, (int)(spritesize.X * Scale), (int)(spritesize.Y * Scale));
+                result = new Rectangle((int)Position.X, (int)Position.Y, (int)(spritesize.X * Scale), (int)(spritesize.Y * Scale));
          //       result.Offset((int)(-Origin.X * Scale), (int)(-Origin.Y * Scale));
                 return result;
             }
         }
+
+        public virtual void Die() { }
 
         public virtual void Update(GameTime gameTime)
         {

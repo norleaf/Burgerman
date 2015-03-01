@@ -23,10 +23,10 @@ namespace Burgerman
             base.Update(gameTime);
             
             
-            if (!spawnedChild && PositionX < Game1.Instance.ScreenSize.X * _spawnpoint)
+            if (!spawnedChild && Position.X < Game1.Instance.ScreenSize.X * _spawnpoint)
             {
                 spawnedChild = true;
-                Sprite child = Game1.Instance.Child.CloneAt(PositionX + BoundingBox.Width / 4f);
+                Sprite child = Game1.Instance.Child.CloneAt(Position.X + BoundingBox.Width / 4f);
                 Game1.Instance.NewSprites.Add(child);
             }
             Move();

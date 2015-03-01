@@ -20,9 +20,9 @@ namespace Burgerman
         {
             base.Update(gameTime);
             Move();
-            if (PositionX < -30)
+            if (Position.X < -30)
             {
-                PositionX += game.ScreenSize.X+30;
+                MoveHorizontally(game.ScreenSize.X + 30);
             }
         }
     }
