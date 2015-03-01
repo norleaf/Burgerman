@@ -24,51 +24,43 @@ namespace Burgerman
     {
         public static float groundLevel;
         private static Game1 instance;
-        GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private Screen screen = Screen.AllScreens.First(e => e.Primary);
         private static int screenWidth ;
         private static int screenHeight;
-        SpriteBatch spriteBatch;
+        private SpriteBatch spriteBatch;
         public static Vector2 Gravity = new Vector2(0,0.1f);
         public Balloon Player { get; private set; }
-        private Child child;
-        private Soldier soldier;
-        private Helicopter helicopter;
+        public Child Child { get; private set; }
+        public Soldier Soldier { get; private set; }
+        public Hut Hut { get; private set; }
+        public Jet Jet { get; private set; }
+        public Helicopter Helicopter { get; private set; }
         private Texture2D backgroundTexture;
-        public Texture2D palmtreeTexture;
-        public Texture2D childTexture;
-        public Texture2D ballonTexture;
-        public Texture2D soldierTexture;
-        public Texture2D helicopterTexture;
-        public Texture2D mountainTexture;
-        public Texture2D hutTexture;
-        public Texture2D groundTexture;
-        public Texture2D bullet;
-        public Texture2D burgerTexture;
-        private Random ran;
+        private Texture2D palmtreeTexture;
+       
+        public Texture2D BulletTex { get; private set; }
+        public Texture2D BurgerTexture { get; private set; }
         
+        
+        private Random ran;
 
         private enum GameState { Level1, Level2, Level3 }
         private GameState gameState;
 
         private double _timeSinceLastTree = 0;
         private int _treeDelay = 7000;
+        private int childrenFed = 0;
 
         public Vector2 ScreenSize
         {
             get { return new Vector2(screenWidth,screenHeight);}
         }
 
-        protected static List<Sprite> DeadSprites { get; set; }
-
-        protected List<Sprite> Sprites1 { get; set; }
-        protected List<Sprite> Sprites2 { get; set; }
-        protected List<Sprite> Sprites3 { get; set; }
-
-        protected List<Sprite> ProtoTypes { get; set; } 
-        protected List<Sprite> Sprites { get; set; }
-        protected List<Sprite> BackgroundSprites { get; set; }
-        protected List<Sprite> NewSprites { get; set; }
+        private List<Sprite> DeadSprites { get; set; }
+        private List<Sprite> Sprites { get; set; }
+        private List<Sprite> BackgroundSprites { get; set; }
+        public List<Sprite> NewSprites { get; private set; }
  
         
         private CollissionHandler CollissionHandler { get; set; }
@@ -88,7 +80,7 @@ namespace Burgerman
         private Game1()
             : base()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -107,9 +99,9 @@ namespace Burgerman
             screenHeight = screen.Bounds.Height;
             Window.IsBorderless = true;
             Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
-            graphics.PreferredBackBufferWidth = screen.Bounds.Width;
-            graphics.PreferredBackBufferHeight = screen.Bounds.Height;
-            graphics.ApplyChanges();
+            _graphics.PreferredBackBufferWidth = screen.Bounds.Width;
+            _graphics.PreferredBackBufferHeight = screen.Bounds.Height;
+            _graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -123,47 +115,46 @@ namespace Burgerman
             groundLevel = screenHeight*8/10;
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Sprites = new List<Sprite>();
-            ProtoTypes = new List<Sprite>();
-            Sprites1 = new List<Sprite>();
-            Sprites2 = new List<Sprite>();
+            
             BackgroundSprites = new List<Sprite>();
             NewSprites = new List<Sprite>();
 
-           
+           //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
+            Texture2D childTexture = Content.Load<Texture2D>("child.png");
+            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon.png");
+            Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
+            Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
+            Texture2D jetTexture = Content.Load<Texture2D>("./attackplane/attackplane.png");
+            Texture2D mountainTexture = Content.Load<Texture2D>("mountain.png");
+            Texture2D hutTexture = Content.Load<Texture2D>("hut.png");
+            Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
 
-            //   dikkiDinosaurTexture2D = Content.Load<Texture2D>("dikkiDinosaur.png");
-            childTexture = Content.Load<Texture2D>("child.png");
-            ballonTexture = Content.Load<Texture2D>("./balloon/balloon.png");
-            soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
-            helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
-            mountainTexture = Content.Load<Texture2D>("mountain.png");
-            hutTexture = Content.Load<Texture2D>("hut.png");
+            BulletTex = Content.Load<Texture2D>("bullet.png");
+            BurgerTexture = Content.Load<Texture2D>("burger.png");
             palmtreeTexture = Content.Load<Texture2D>("palm.png");
-            groundTexture = Content.Load<Texture2D>("ground.png");
-            bullet = Content.Load<Texture2D>("bullet.png");
-            burgerTexture = Content.Load<Texture2D>("burger.png");
             backgroundTexture = Content.Load<Texture2D>("background.jpg");
             
             BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 5, screenHeight * 0.8f - mountainTexture.Height));
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(screenWidth / 1, screenHeight * 0.8f - mountainTexture.Height));
-            PalmTree hut = new PalmTree(hutTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - hutTexture.Height));
+            Hut = new Hut(hutTexture, new Vector2(screenWidth / 2, screenHeight * 0.8f - hutTexture.Height));
             Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width, 0));
-            child = new Child(childTexture, new Vector2(screenWidth/2.0f, screenHeight*0.8f - childTexture.Height));
-            soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
-            helicopter = new Helicopter(helicopterTexture, new Vector2(screenWidth+100, screenHeight * 2/10),bullet);
-            Sprite burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
+            Child = new Child(childTexture, new Vector2(0, 0));
+            Child = new Child(childTexture, new Vector2(0, 0));
+            Soldier = new Soldier(soldierTexture, new Vector2(screenWidth, screenHeight * 0.8f - soldierTexture.Height));
+            Jet = new Jet(jetTexture, new Vector2(0,0));
+            Helicopter = new Helicopter(helicopterTexture, new Vector2(screenWidth + 100, screenHeight * 2 / 10), BulletTex);
+            //Sprite Burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
 
-            ProtoTypes.Add(Player);
-            ProtoTypes.Add(child);
-            ProtoTypes.Add(helicopter);
-            ProtoTypes.Add(soldier);
+            //ProtoTypes.Add(Player);
+            //ProtoTypes.Add(child);
+            //ProtoTypes.Add(helicopter);
+            //ProtoTypes.Add(Soldier);
             ran = new Random();
 
             BackgroundSprites.Add(mount1);
             BackgroundSprites.Add(mount2);
             BackgroundSprites.Add(mount3);
-            BackgroundSprites.Add(hut);
 
             for (int i = 0; i < 15; i++)
             {
@@ -179,7 +170,7 @@ namespace Burgerman
             
             
             gameState = GameState.Level1;
-            Sprites = LevelConstructor.Level1(ProtoTypes);
+            Sprites = LevelConstructor.Level1(this);
           
             CollissionHandler = new CollissionHandler(Sprites);
             
@@ -206,6 +197,7 @@ namespace Burgerman
         /// 
         protected override void Update(GameTime gameTime)
         {
+        //    Console.WriteLine("Main update loop");
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
@@ -228,11 +220,13 @@ namespace Burgerman
                     checkLevelOneDone(gameTime);
                     break;
                     case GameState.Level2:
-                    
+                    checkLevelTwoDone(gameTime);
                     break;
             }
+
             foreach (Sprite sprite in Sprites)
             {
+              
                 sprite.Update(gameTime);
             }
             
@@ -244,6 +238,7 @@ namespace Burgerman
             base.Update(gameTime);
         }
 
+        
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -276,13 +271,8 @@ namespace Burgerman
         {
             if (sprite != null)
             {
-                if (NewSprites == null)
-                {
-                    NewSprites = new List<Sprite>();
-                }
-                
                 NewSprites.Add(sprite);
-                Console.WriteLine(NewSprites.Count);
+         //       Console.WriteLine(NewSprites.Count);
             }
         }
 
@@ -292,12 +282,13 @@ namespace Burgerman
             foreach (Sprite sprite in NewSprites)
             {
                 Sprites.Add(sprite);
-                CollissionHandler.AllElements.Add(sprite);
+                if (sprite is ICollidable)
+                {
+                    CollissionHandler.CollisionListenersList.Add((ICollidable)sprite);
+                }
             }
             NewSprites.Clear();
         }
-
-        
 
         internal void MarkForRemoval(Sprite sprite)
         {
@@ -323,13 +314,16 @@ namespace Burgerman
 
         private void checkLevelOneDone(GameTime gameTime)
         {
-            //if (gameTime.TotalGameTime.TotalMilliseconds > 10000)
-            //{
-            //    gameState = GameState.Level2;
-            //    Sprites = Sprites2;
-            //    Sprites.Add(player);
-            //    int i = 5;
-            //}
+            if (childrenFed == 3)
+            {
+                
+            }
         }
+
+        private void checkLevelTwoDone(GameTime gameTime)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

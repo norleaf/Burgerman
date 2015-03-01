@@ -46,7 +46,9 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Ground.cs" />
     <Compile Include="Helicopter.cs" />
+    <Compile Include="Hut.cs" />
     <Compile Include="ICollidable.cs" />
+    <Compile Include="Jet.cs" />
     <Compile Include="LevelConstructor.cs" />
     <Compile Include="PalmTree.cs" />
     <Compile Include="Program.cs" />
@@ -65,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animated_soldier.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\attackplane\attackplane.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\background.jpg">

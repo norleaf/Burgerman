@@ -10,7 +10,7 @@ namespace Burgerman
     class Bullet : Sprite
     {
         private Vector2 _moveVector;
-        private float _speed = 2;
+        private float _speed = 3.9f;
         private Game1 game;
 
         public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition) : base(spriteTexture, position)
@@ -26,7 +26,7 @@ namespace Burgerman
         {
             base.Update(gameTime);
             Position = Vector2.Add(Position, _moveVector*_speed);
-            if (PositionX < -100 || PositionX > game.ScreenSize.X+100 || PositionY < -10 || PositionY > 2000)
+            if (PositionX < -100 || PositionX > game.ScreenSize.X+100 || PositionY < -10 || PositionY > Game1.groundLevel)
             {
                 game.MarkForRemoval(this);
             }

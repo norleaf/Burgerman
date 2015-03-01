@@ -17,7 +17,7 @@ namespace Burgerman
         public enum State
         {
             Waiting,
-            walking,
+            Walking,
             Jumping,
             Entering,
             Fighting,
@@ -29,7 +29,7 @@ namespace Burgerman
         {
             // set sourcerectangle
             SourceRectangle = new Rectangle(0, 0, spriteTexture.Width, spriteTexture.Height);
-
+            
         }
 
         public void setAnimation(Animation anim)

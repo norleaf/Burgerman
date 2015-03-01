@@ -14,7 +14,7 @@ namespace Burgerman
 
         public Burger(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            Velocity = new Vector2(0.5f,0);
+            Velocity = new Vector2(1.5f,0);
         }
 
         
@@ -22,17 +22,15 @@ namespace Burgerman
         {
             base.Update(gameTime);
             Velocity = Vector2.Add(Velocity, Game1.Gravity);
-            Position = Vector2.Add(Position, Velocity);
-        }
-
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            base.Draw(gameTime, spriteBatch);
-        }
-
-        public override Sprite CloneAt(float x, float y)
-        {
-            return base.CloneAt(x, y);
+            NextPosition = Vector2.Add(Position, Velocity);
+            if (NextPosition.Y+BoundingBox.Height > Game1.groundLevel)
+            {
+                Game1.Instance.MarkForRemoval(this);
+            }
+            else
+            {
+                Position = NextPosition;
+            }
         }
     }
 }

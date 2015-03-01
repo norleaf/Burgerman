@@ -12,24 +12,28 @@ namespace Burgerman
     public class Sprite
     {
         public string Name { get; set; }
-
+        public Vector2 Speed { get; set; }
+        public Random Ran { get; private set; }
         
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
-            
+            Ran = new Random();
+            Speed = new Vector2(-0.3f,0);
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-            _bottom = spriteTexture.Height;
+            //_bottom = spriteTexture.Height;
         }
 
-        private float _bottom;
+       
 
-        public virtual float Bottom
-        {
-            get { return _bottom + Position.Y; }
-            set { _bottom = value; }
-        }
+        //private float _bottom;
+
+        //public virtual float Bottom
+        //{
+        //    get { return _bottom + Position.Y; }
+        //    set { _bottom = value; }
+        //}
 
 
         public virtual Vector2 Center
@@ -44,24 +48,7 @@ namespace Burgerman
 
         public virtual float Rotation { get; set; }
 
-
-        //private Vector2 _position;
-
-        //public Vector2 Position {
-        //    get { return Position; }
-        //    set
-        //    {
-        //        _position.X = value.X + Origin.X;
-        //        _position.Y = value.X + Origin.Y;
-        //    }
-        //}
-
-        //private Vector2 posistion;
-
-        //public void setPos(Vector2 pos)
-        //{
-            
-        //}
+        public Vector2 NextPosition { get; set; }
 
         public Vector2 Position
         {
@@ -116,19 +103,15 @@ namespace Burgerman
             return new Sprite(SpriteTexture,new Vector2(x,y));
         }
 
-        public void Die()
+        public virtual Sprite CloneAt(float x)
         {
-           
+            return new Sprite(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
         }
 
-        protected void Scroll()
+        protected void Move()
         {
-            PositionX -= 0.35f;
+            Position = Vector2.Add(Position,Speed);
         }
 
-        protected void SlowScroll()
-        {
-            PositionX -= 0.15f;
-        }
     }
 }

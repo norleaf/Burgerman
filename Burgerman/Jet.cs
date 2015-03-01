@@ -7,23 +7,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    public class Ground : Sprite
+    public class Jet: AnimatedSprite
     {
-        private Game1 game;
-
-        public Ground(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
+        public Jet(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            game = Game1.Instance;
+            Speed = new Vector2(-8,0);
+        }
+
+        public override Sprite CloneAt(float x, float y)
+        {
+            return new Jet(SpriteTexture, new Vector2(x,y));
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Move();
-            if (PositionX < -30)
-            {
-                PositionX += game.ScreenSize.X+30;
-            }
         }
     }
 }

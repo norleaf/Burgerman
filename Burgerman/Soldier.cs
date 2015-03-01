@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class Soldier: AnimatedSprite, ICollidable
+    public class Soldier: AnimatedSprite, ICollidable
     {
         public Soldier(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -28,21 +28,22 @@ namespace Burgerman
             PositionX-=0.7f;
             if (PositionX < -30)
             {
-                PositionX += Game1.Instance.ScreenSize.X+30;
+                Game1.Instance.MarkForRemoval(this);
             }
-            Scroll();
+            Move();
         }
 
-        public override Sprite CloneAt(float x, float y)
+        public override Sprite CloneAt(float x)
         {
-            return new Soldier(SpriteTexture, new Vector2(x, Game1.groundLevel - SpriteTexture.Height));
+            return new Soldier(SpriteTexture, new Vector2(x, Game1.groundLevel - BoundingBox.Height));
         }
 
         public void CollideWith(Sprite other)
         {
-            if (other is Bullet)
+            if (other is Bullet || other is Burger)
             {
                 Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.MarkForRemoval(other);
             }
         }
     }

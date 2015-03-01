@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class Helicopter: AnimatedSprite
+    public class Helicopter: AnimatedSprite
     {
         private Random random = new Random();
         private int _wait = 0;
@@ -21,7 +21,7 @@ namespace Burgerman
         private int _salvoLength = 3000;
         private int _salvos = 3;
         private int _waitTime = 2000;
-        private int _speed = 15;
+        private int _speed = 5;
         private Game1 game;
         private Texture2D bulletTexture;
         private Texture2D spriteTexture;
@@ -76,6 +76,7 @@ namespace Burgerman
 
         private void Enter(GameTime gameTime)
         {
+            
             if (PositionX > game.ScreenSize.X*4/5)
             {
                 PositionX-=_speed;
