@@ -12,13 +12,13 @@ namespace Burgerman
     public class Sprite
     {
         public string Name { get; set; }
-        public Vector2 Speed { get; set; }
+        public Vector2 SlideSpeed { get; set; }
         public Random Ran { get; private set; }
         
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
             Ran = new Random();
-            Speed = new Vector2(-0.5f,0);
+            SlideSpeed = new Vector2(-0.5f,0);
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
@@ -108,9 +108,9 @@ namespace Burgerman
             return new Sprite(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
 
-        protected void Move()
+        protected void SlideLeft()
         {
-            Position = Vector2.Add(Position,Speed);
+            Position = Vector2.Add(Position,SlideSpeed);
         }
 
     }

@@ -11,7 +11,7 @@ namespace Burgerman
     {
         public Jet(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            Speed = new Vector2(-8,0);
+            SlideSpeed = new Vector2(-8,0);
         }
 
         public override Sprite CloneAt(float x, float y)
@@ -22,7 +22,11 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Move();
+
+            if (Position.X < -BoundingBox.Width)
+            {
+                Game1.Instance.MarkForRemoval(this);
+            }
         }
     }
 }

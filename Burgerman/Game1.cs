@@ -37,6 +37,7 @@ namespace Burgerman
         private Texture2D _backgroundTexture;
         private Texture2D _palmtreeTexture;
         public Texture2D BulletTex { get; private set; }
+        public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
         private SpriteFont _font;
@@ -132,6 +133,8 @@ namespace Burgerman
             Texture2D hutTexture = Content.Load<Texture2D>("hut.png");
             Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
 
+            ChildDeathTexture = Content.Load<Texture2D>("diechild.png");
+
             BulletTex = Content.Load<Texture2D>("bullet.png");
             BurgerTexture = Content.Load<Texture2D>("burger.png");
             HeadTexture = Content.Load<Texture2D>("childhead.png");
@@ -143,7 +146,6 @@ namespace Burgerman
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 1f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             Hut = new Hut(hutTexture, new Vector2(ScreenSize.X / 2f, ScreenSize.Y * 0.8f - hutTexture.Height));
             Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width/5f, ballonTexture.Height));
-            Child = new Child(childTexture, new Vector2(0, 0));
             Child = new Child(childTexture, new Vector2(0, 0));
             Soldier = new Soldier(soldierTexture, new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
             Jet = new Jet(jetTexture, new Vector2(0,0));

@@ -60,7 +60,7 @@ namespace Burgerman
                 animation.Update(gameTime);
             }
 
-
+            SlideLeft();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

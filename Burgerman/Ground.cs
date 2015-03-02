@@ -19,7 +19,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Move();
+            SlideLeft();
             if (Position.X < -30)
             {
                 MoveHorizontally(game.ScreenSize.X + 30);

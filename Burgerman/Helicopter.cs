@@ -26,6 +26,7 @@ namespace Burgerman
         {
             Name = "Helicopter";
             this.spriteTexture = spriteTexture;
+            SlideSpeed = new Vector2(0,0);
             game = Game1.Instance;
             bulletTexture = game.BulletTex;
             Animation flying = new Animation(this, 200);

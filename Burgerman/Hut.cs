@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +6,7 @@ namespace Burgerman
 {
     public class Hut : Sprite
     {
-        private bool spawnedChild = false;
+        private bool _spawnedChild = false;
         private float _spawnpoint;
 
         public Hut(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
@@ -23,13 +20,13 @@ namespace Burgerman
             base.Update(gameTime);
             
             
-            if (!spawnedChild && Position.X < Game1.Instance.ScreenSize.X * _spawnpoint)
+            if (!_spawnedChild && Position.X < Game1.Instance.ScreenSize.X * _spawnpoint)
             {
-                spawnedChild = true;
+                _spawnedChild = true;
                 Sprite child = Game1.Instance.Child.CloneAt(Position.X + BoundingBox.Width / 4f);
                 Game1.Instance.NewSprites.Add(child);
             }
-            Move();
+            SlideLeft();
         }
 
         public override Sprite CloneAt(float x)

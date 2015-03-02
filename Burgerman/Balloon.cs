@@ -34,7 +34,7 @@ namespace Burgerman
         {
             game = Game1.Instance;
             Name = "Hero Ballooneer";
-            
+            SlideSpeed = new Vector2(0,0);
             Ammo = 5;
             _movingUp = new Animation(this, 100);
             _movingUp.Frames.Add(new Rectangle(100, 0, 100, 171));
