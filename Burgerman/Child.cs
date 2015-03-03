@@ -54,6 +54,7 @@ namespace Burgerman
             if (other is Soldier && _state != State.Leaving )
             {
                 Die();
+                Game1.Instance.CreateTextMessage("Child killed by soldier! Restarting mission...", 2000);
             }
             if (other is Burger && !_fed)
             {
@@ -65,6 +66,7 @@ namespace Burgerman
             if (other is Bullet)
             {
                 Die();
+                Game1.Instance.CreateTextMessage("Child shot! Restarting mission...", 2000);
                 Game1.Instance.MarkForRemoval(other);
             }
             

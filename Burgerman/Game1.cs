@@ -43,7 +43,10 @@ namespace Burgerman
         public Texture2D HeadTexture { get; private set; }
         Sprite _bgSprite;
         private SpriteFont _font;
-        
+        public string ScreenText { get; set; }
+        public double TextDuration { get; set; }
+        private bool _newText;
+
         private Random _ran;
 
         public enum GameState { Level1, Level2, Level3 }
@@ -55,6 +58,7 @@ namespace Burgerman
 
         private int _childrenFed;
         private bool _restarting;
+        
         public int ChildrenFed
         {
             get { return _childrenFed; }
@@ -88,6 +92,7 @@ namespace Burgerman
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
         }
 
         /// <summary>
@@ -141,8 +146,8 @@ namespace Burgerman
             BulletTex = Content.Load<Texture2D>("bullet.png");
             BurgerTexture = Content.Load<Texture2D>("burger.png");
             HeadTexture = Content.Load<Texture2D>("childhead.png");
-            _palmtreeTexture = Content.Load<Texture2D>("palm.png");
-            _backgroundTexture = Content.Load<Texture2D>("background.jpg");
+            _palmtreeTexture = Content.Load<Texture2D>("palm");
+            _backgroundTexture = Content.Load<Texture2D>("background");
             
             
             _bgSprite = new Sprite(_backgroundTexture,new Vector2(0,0));
@@ -156,12 +161,7 @@ namespace Burgerman
             Soldier = new Soldier(spriteTexture: soldierTexture, position: new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
             Jet = new Jet(jetTexture, new Vector2(0,0));
             Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 0.2f));
-            //Sprite Burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
 
-            //ProtoTypes.Add(Player);
-            //ProtoTypes.Add(child);
-            //ProtoTypes.Add(helicopter);
-            //ProtoTypes.Add(Soldier);
             _ran = new Random();
 
             BackgroundSprites.Add(mount1);
@@ -184,10 +184,10 @@ namespace Burgerman
             //Levels: kald en levelgenerator med static metoder som returnerer en sprites liste
             Sprites = LevelConstructor.Level1(this);
             CollissionHandler = new CollissionHandler(Sprites);
-            
 
-            
-            // TODO: use this.Content to load your game content here
+            _font = Content.Load<SpriteFont>("SuperContent/superfont");
+
+            Restart();
         }
 
         /// <summary>
@@ -238,6 +238,12 @@ namespace Burgerman
             {
                 sprite.Update(gameTime);
             }
+
+            if (_newText)
+            {
+                TextDuration += gameTime.TotalGameTime.TotalMilliseconds;
+                _newText = false;
+            }
             
             base.Update(gameTime);
         }
@@ -265,7 +271,12 @@ namespace Burgerman
 
             DrawHUD();
             DrawSprites();
-            DrawText();
+            //Only draw text until the time set
+            if (gameTime.TotalGameTime.TotalMilliseconds < TextDuration)
+            {
+                DrawText(_spriteBatch);
+            }
+            
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -294,11 +305,10 @@ namespace Burgerman
             }
         }
 
-        private void DrawText()
+        private void DrawText(SpriteBatch spriteBatch)
         {
-            
-            //spriteBatch.DrawString(_font, "Cannon angle: " + currentAngle.ToString(), new Vector2(20, 20), player.Color);
-            //spriteBatch.DrawString(_font, "Cannon power: " + player.Power.ToString(), new Vector2(20, 45), player.Color);
+            if(ScreenText != null)
+            spriteBatch.DrawString(_font, ScreenText, new Vector2(ScreenSize.X*0.25f, ScreenSize.Y*0.3f), Color.White);
         }
 
         public void SpawnSpriteAtRuntime(Sprite sprite)
@@ -357,17 +367,27 @@ namespace Burgerman
             switch (State)
             {
                     case GameState.Level1:
+                    CreateTextMessage("Feed 3 hungry children... Don't get them killed!", 3000);
                     Sprites = LevelConstructor.Level1(this);
                     break;
                     case GameState.Level2:
+                    CreateTextMessage("Cows can be burgers...", 3000);
                     Sprites = LevelConstructor.Level2(this);
                     break;
                     case GameState.Level3:
+                    CreateTextMessage("Just chill...", 3000);
                     Sprites = LevelConstructor.Level3(this);
                     break;
             }
             CollissionHandler = new CollissionHandler(Sprites);
             
+        }
+
+        public void CreateTextMessage(string text, double duration)
+        {
+            ScreenText = text;
+            TextDuration = duration;
+            _newText = true;
         }
 
         public void CheckLevelDone(GameTime gameTime)
@@ -376,9 +396,11 @@ namespace Burgerman
             {
                 //Restarting level in 3 secs...
                 _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
+                
                 PlayerDead = false;
                 ChildDead = false;
                 _restarting = true;
+                
             }
 
             if (gameTime.TotalGameTime.TotalMilliseconds > _restartTime + 3000 && _restarting)
@@ -395,6 +417,7 @@ namespace Burgerman
                         ChildrenFed = 0;
                         State = GameState.Level2;
                         Restart();
+                        
                     }
                     break;
                     case GameState.Level2:
@@ -413,5 +436,7 @@ namespace Burgerman
                     break;
             }
         }
+
+        
     }
 }

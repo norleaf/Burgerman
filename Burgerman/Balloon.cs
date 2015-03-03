@@ -147,6 +147,7 @@ namespace Burgerman
                 if (Vector2.Distance(Center,other.Center) < (BoundingBox.Height + BoundingBox.Width)/4f)
                 {
                     Die();
+                    Game1.Instance.CreateTextMessage("You got shot! Restarting mission...", 2000);
                     game.MarkForRemoval(other);
                 }
             }
@@ -155,6 +156,7 @@ namespace Burgerman
                 if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
                 {
                     Die();
+                    Game1.Instance.CreateTextMessage("Hit by air plane! Restarting mission...", 2000);
                 }
             }
         }

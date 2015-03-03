@@ -141,6 +141,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BurgermanContent\BurgermanContent\BurgermanContent.csproj">
+      <Project>{cbeb32ee-2c56-462a-8c28-3d072d588dda}</Project>
+      <Name>BurgermanContent</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
