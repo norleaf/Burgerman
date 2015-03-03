@@ -17,11 +17,11 @@ namespace Burgerman
         private readonly Animation _descent;
         //private Animation movingLeft;
         private const float SpeedMult = 1.8f;
-        private Vector2 _moveVector;
-        private Vector2 _left = new Vector2(-1,0);
-        private Vector2 _right = new Vector2(1,0);
-        private Vector2 _up = new Vector2(0,-1);
-        private Vector2 _down = new Vector2(0, 1);
+        public Vector2 MoveVector { get; private set; }
+        private Vector2 _left = new Vector2(-1f,0);
+        private Vector2 _right = new Vector2(1f,0);
+        private Vector2 _up = new Vector2(0,-1f);
+        private Vector2 _down = new Vector2(0, 1f);
         private Vector2 _drop = new Vector2(0, 0.3f);
         private bool _loaded = true;
         public int Ammo { get; set; }
@@ -71,7 +71,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _moveVector = new Vector2(0,0);
+            MoveVector = new Vector2(0,0);
             if (Keyboard.GetState().IsKeyDown(Keys.Z) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
             {
                 if (_loaded && Ammo > 0)
@@ -90,44 +90,44 @@ namespace Burgerman
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                _moveVector = Vector2.Add(_moveVector, _left);
+                MoveVector = Vector2.Add(MoveVector, _left);
                 setAnimation(_descent);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                _moveVector = Vector2.Add(_moveVector, _right) ;
+                MoveVector = Vector2.Add(MoveVector, _right) ;
                 setAnimation(_descent);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                _moveVector = Vector2.Add(_moveVector, _up);
+                MoveVector = Vector2.Add(MoveVector, _up);
                 setAnimation(_movingUp);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 if (Position.Y + BoundingBox.Height < Game1.GroundLevel)
                 {
-                    _moveVector = Vector2.Add(_moveVector, _down) ;
+                    MoveVector = Vector2.Add(MoveVector, _down) ;
                     setAnimation(_descent);
                 }
             }
 
 
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.2f)
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
             {
-                _moveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1);
+                MoveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1f);
                 setAnimation(_descent);
             }
         
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.2f)
             {
-                _moveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1);
+                MoveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1f);
                 setAnimation(_movingUp);
             }
          
-            if (Position.Y+BoundingBox.Height + _moveVector.Y < Game1.GroundLevel)
+            if (Position.Y+BoundingBox.Height + MoveVector.Y < Game1.GroundLevel)
             {
-                Position = Vector2.Add(Position, _moveVector * SpeedMult);
+                Position = Vector2.Add(Position, MoveVector * SpeedMult);
                 Position = Vector2.Add(Position, _drop);
             }
         }
@@ -146,21 +146,20 @@ namespace Burgerman
             {
                 if (Vector2.Distance(Center,other.Center) < (BoundingBox.Height + BoundingBox.Width)/4f)
                 {
-                    game.MarkForRemoval(this);
+                    Die();
                     game.MarkForRemoval(other);
-                    game.PlayerDead = true;
                 }
             }
             if (other is Jet)
             {
                 if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
                 {
-                    game.MarkForRemoval(this);
-                    game.PlayerDead = true;
+                    Die();
                 }
             }
         }
 
+        
         public override Sprite CloneAt(float x, float y)
         {
             return new Balloon(SpriteTexture, new Vector2(x, y));
@@ -168,7 +167,11 @@ namespace Burgerman
 
         public override void Die()
         {
-            
+            game.MarkForRemoval(this);
+            game.PlayerDead = true;
+            //create a burning balloon sprite to replace our balloon
+            AnimatedSprite corpse = new BalloonCorpse(Game1.Instance.BalloonDeathTexture, Position);
+            game.SpawnSpriteAtRuntime(corpse);
         }
     }
 }

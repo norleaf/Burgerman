@@ -70,7 +70,7 @@ namespace Burgerman
             
         }
 
-        public void Die()
+        public override void Die()
         {
             Game1.Instance.MarkForRemoval(this);
             Game1.Instance.ChildDead = true;

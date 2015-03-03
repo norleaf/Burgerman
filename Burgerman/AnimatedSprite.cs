@@ -38,20 +38,10 @@ namespace Burgerman
             
         }
 
-        //public void LeftStickMove(Vector2 moveVector)
-        //{
-        //    Position += moveVector;
-
-        //    if (_state != State.walking)
-        //    {
-        //        //instansiate animation and set frames
-        //        animation = new Animation(this);
-        //        animation.Frames.Add(new Rectangle(0, 96, 72, 96));
-        //        animation.Frames.Add(new Rectangle(72, 96, 72, 96));
-        //        animation.Frames.Add(new Rectangle(144, 96, 72, 96));
-        //        _state = State.walking;
-        //    }
-        //}
+        public virtual void AnimationComplete()
+        {
+            
+        }
 
         public override void Update(GameTime gameTime)
         {

@@ -9,7 +9,7 @@ namespace Burgerman
     public class Animation : IUpdateable
     {
         private double _milisecondsSinceLastFrameUpdate = 0;
-        private Sprite _sprite;
+        private AnimatedSprite _sprite;
         private int _currentFrame = 0;
         private List<Rectangle> _frames = new List<Rectangle>();
         private bool _loop;
@@ -33,7 +33,7 @@ namespace Burgerman
             set { _frames = value; }
         }
 
-        public Animation(Sprite sprite, int delay)
+        public Animation(AnimatedSprite sprite, int delay)
         {
             _sprite = sprite;
             _delay = delay;
@@ -53,6 +53,7 @@ namespace Burgerman
         {
             if (_currentFrame == _frames.Count - 1 && _loop) _currentFrame = 0;
             else if (_currentFrame < _frames.Count - 1) _currentFrame++;
+            else _sprite.AnimationComplete();
             return Frames[_currentFrame];
         }
 

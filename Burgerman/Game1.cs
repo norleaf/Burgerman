@@ -38,8 +38,10 @@ namespace Burgerman
         private Texture2D _palmtreeTexture;
         public Texture2D BulletTex { get; private set; }
         public Texture2D ChildDeathTexture { get; private set; }
+        public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
+        Sprite _bgSprite;
         private SpriteFont _font;
         
         private Random _ran;
@@ -134,6 +136,7 @@ namespace Burgerman
             Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
 
             ChildDeathTexture = Content.Load<Texture2D>("diechild.png");
+            BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning.png");
 
             BulletTex = Content.Load<Texture2D>("bullet.png");
             BurgerTexture = Content.Load<Texture2D>("burger.png");
@@ -141,15 +144,18 @@ namespace Burgerman
             _palmtreeTexture = Content.Load<Texture2D>("palm.png");
             _backgroundTexture = Content.Load<Texture2D>("background.jpg");
             
+            
+            _bgSprite = new Sprite(_backgroundTexture,new Vector2(0,0));
+
             BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 5f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 1f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             Hut = new Hut(hutTexture, new Vector2(ScreenSize.X / 2f, ScreenSize.Y * 0.8f - hutTexture.Height));
             Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width/5f, ballonTexture.Height));
             Child = new Child(childTexture, new Vector2(0, 0));
-            Soldier = new Soldier(soldierTexture, new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
+            Soldier = new Soldier(spriteTexture: soldierTexture, position: new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
             Jet = new Jet(jetTexture, new Vector2(0,0));
-            Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 2 / 10f));
+            Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 0.2f));
             //Sprite Burger = new Sprite(burgerTexture, new Vector2(screenWidth/2,screenHeight/2));
 
             //ProtoTypes.Add(Player);
@@ -248,8 +254,14 @@ namespace Burgerman
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
+           // _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
 
+
+            for (int i = 0; i < ScreenSize.X; i++)
+            {
+                _bgSprite.Position = new Vector2(1*i,0);
+                _bgSprite.Draw(_spriteBatch);
+            }
 
             DrawHUD();
             DrawSprites();
@@ -350,12 +362,15 @@ namespace Burgerman
                     case GameState.Level2:
                     Sprites = LevelConstructor.Level2(this);
                     break;
+                    case GameState.Level3:
+                    Sprites = LevelConstructor.Level3(this);
+                    break;
             }
             CollissionHandler = new CollissionHandler(Sprites);
             
         }
 
-        private void CheckLevelDone(GameTime gameTime)
+        public void CheckLevelDone(GameTime gameTime)
         {
             if (ChildDead || PlayerDead)
             {

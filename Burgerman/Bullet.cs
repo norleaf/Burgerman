@@ -7,15 +7,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class Bullet : Sprite
+    class Bullet : AnimatedSprite
     {
         private Vector2 _moveVector;
-        private float _speed = 3.9f;
+        private float _speed = 3.5f;
         private Game1 game;
         public Sprite Shooter { get; private set; }
 
         public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition, Sprite shooter) : base(spriteTexture, position)
         {
+            SlideSpeed = new Vector2(0,0);
             game = Game1.Instance;
             Shooter = shooter;
             float x = balloonPosition.X - position.X;
@@ -26,8 +27,8 @@ namespace Burgerman
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            Position = Vector2.Add(Position, _moveVector*_speed);
+            //base.Update(gameTime);
+            Position = Vector2.Add(Position, _moveVector *_speed);
             if (Position.X < -100 || Position.X > game.ScreenSize.X+100 || Position.Y < -10 || Position.Y > Game1.GroundLevel)
             {
                 game.MarkForRemoval(this);

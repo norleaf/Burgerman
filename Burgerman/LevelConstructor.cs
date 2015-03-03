@@ -77,6 +77,46 @@ namespace Burgerman
             return sprites;
 
         }
+
+        public static List<Sprite> Level3(Game1 game)
+        {
+            float width = game.ScreenSize.X;
+            float height = game.ScreenSize.Y;
+            List<Sprite> sprites = new List<Sprite>();
+
+            var ChildProto = game.Child;
+            var SoldierProto = game.Soldier;
+            var HelicopterProto = game.Helicopter;
+            var HutProto = game.Hut;
+            var JetProto = game.Jet;
+
+
+
+
+            //Add the player last, so it will be on top
+            sprites.Add(game.Player);
+            return sprites;
+        }
+
+        public static List<Sprite> Level4(Game1 game)
+        {
+            float width = game.ScreenSize.X;
+            float height = game.ScreenSize.Y;
+            List<Sprite> sprites = new List<Sprite>();
+
+            var ChildProto = game.Child;
+            var SoldierProto = game.Soldier;
+            var HelicopterProto = game.Helicopter;
+            var HutProto = game.Hut;
+            var JetProto = game.Jet;
+
+
+
+
+            //Add the player last, so it will be on top
+            sprites.Add(game.Player);
+            return sprites;
+        }
     }
 
     

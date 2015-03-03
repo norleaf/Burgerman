@@ -22,19 +22,7 @@ namespace Burgerman
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-            //_bottom = spriteTexture.Height;
         }
-
-       
-
-        //private float _bottom;
-
-        //public virtual float Bottom
-        //{
-        //    get { return _bottom + Position.Y; }
-        //    set { _bottom = value; }
-        //}
-
 
         public virtual Vector2 Center
         {
