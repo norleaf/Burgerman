@@ -19,11 +19,12 @@ namespace Burgerman
             var HelicopterProto = game.Helicopter;
             var HutProto = game.Hut;
             var JetProto = game.Jet;
+            var CowProto = game.Cow;
             
-            
-            sprites.Add(HutProto.CloneAt(width / 2));
+            sprites.Add(HutProto.CloneAt(width * 0.5f));
            // sprites.Add(ChildProto.CloneAt(width /2 +300));
-            sprites.Add(HutProto.CloneAt(width * 1.3f));
+          //  sprites.Add(CowProto.CloneAt(width * 0.9f));
+            sprites.Add(HutProto.CloneAt(width * 0.9f));
             sprites.Add(HutProto.CloneAt(width * 1.4f));
             sprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
             sprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
@@ -53,14 +54,16 @@ namespace Burgerman
             var HelicopterProto = game.Helicopter;
             var HutProto = game.Hut;
             var JetProto = game.Jet;
-
+            var CowProto = game.Cow;
 
             sprites.Add(HutProto.CloneAt(width * 0.5f));
             sprites.Add(HutProto.CloneAt(width * 0.6f));
             sprites.Add(HutProto.CloneAt(width * 0.65f));
        //     sprites.Add(ChildProto.CloneAt(width /4));
+            sprites.Add(HutProto.CloneAt(width * 1.0f));
             sprites.Add(HutProto.CloneAt(width * 1.3f));
             sprites.Add(HutProto.CloneAt(width * 1.4f));
+            sprites.Add(CowProto.CloneAt(width * 0.9f));
             sprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
             sprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
             sprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));
@@ -89,9 +92,16 @@ namespace Burgerman
             var HelicopterProto = game.Helicopter;
             var HutProto = game.Hut;
             var JetProto = game.Jet;
+            var CowProto = game.Cow;
 
-
-
+            sprites.Add(CowProto.CloneAt(width * 0.2f));
+            sprites.Add(CowProto.CloneAt(width * 0.3f)); 
+            sprites.Add(CowProto.CloneAt(width * 0.4f));
+            sprites.Add(CowProto.CloneAt(width * 0.6f));
+            sprites.Add(CowProto.CloneAt(width * 0.8f));
+            sprites.Add(CowProto.CloneAt(width * 1.1f));
+            sprites.Add(CowProto.CloneAt(width * 1.2f));
+            sprites.Add(CowProto.CloneAt(width * 1.5f));
 
             //Add the player last, so it will be on top
             sprites.Add(game.Player);

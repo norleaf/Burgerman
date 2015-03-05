@@ -34,6 +34,7 @@ namespace Burgerman
         public Hut Hut { get; private set; }
         public Jet Jet { get; private set; }
         public Helicopter Helicopter { get; private set; }
+        public Cow Cow { get; private set; }
         private Texture2D _backgroundTexture;
         private Texture2D _palmtreeTexture;
         public Texture2D BulletTex { get; private set; }
@@ -58,6 +59,7 @@ namespace Burgerman
 
         private int _childrenFed;
         private bool _restarting;
+        private bool _justpressed;
         
         public int ChildrenFed
         {
@@ -139,6 +141,7 @@ namespace Burgerman
             Texture2D mountainTexture = Content.Load<Texture2D>("mountain.png");
             Texture2D hutTexture = Content.Load<Texture2D>("hut.png");
             Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
+            Texture2D cowTexture = Content.Load<Texture2D>("cow");
 
             ChildDeathTexture = Content.Load<Texture2D>("diechild.png");
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning.png");
@@ -156,11 +159,12 @@ namespace Burgerman
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 1f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             Hut = new Hut(hutTexture, new Vector2(ScreenSize.X / 2f, ScreenSize.Y * 0.8f - hutTexture.Height));
-            Player = new Balloon(ballonTexture, new Vector2(ballonTexture.Width/5f, ballonTexture.Height));
+            Player = new Balloon(ballonTexture, new Vector2(0, 0));
             Child = new Child(childTexture, new Vector2(0, 0));
             Soldier = new Soldier(spriteTexture: soldierTexture, position: new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
             Jet = new Jet(jetTexture, new Vector2(0,0));
             Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 0.2f));
+            Cow = new Cow(cowTexture,new Vector2(0,0));
 
             _ran = new Random();
 
@@ -212,6 +216,24 @@ namespace Burgerman
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
+            if (Keyboard.GetState().IsKeyDown(Keys.End) && _justpressed)
+            {
+                if (State == GameState.Level2){ 
+                    State = GameState.Level3;
+                    Restart();
+                }
+                if (State == GameState.Level1)
+                {
+                    State = GameState.Level2;
+                    Restart();
+                }
+                _justpressed = false;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.End))
+            {
+                _justpressed = true;
+            }
+
             // TODO: Add your update logic here
             CollissionHandler.Update(gameTime);
             if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay)
@@ -308,7 +330,7 @@ namespace Burgerman
         private void DrawText(SpriteBatch spriteBatch)
         {
             if(ScreenText != null)
-            spriteBatch.DrawString(_font, ScreenText, new Vector2(ScreenSize.X*0.25f, ScreenSize.Y*0.3f), Color.White);
+            spriteBatch.DrawString(_font, ScreenText, new Vector2(ScreenSize.X*0.25f, ScreenSize.Y*0.2f), Color.White);
         }
 
         public void SpawnSpriteAtRuntime(Sprite sprite)
@@ -357,7 +379,6 @@ namespace Burgerman
 
         private void Restart()
         {
-            //Player = new Balloon(Player.SpriteTexture, new Vector2(0,0));
             Player.Position = new Vector2(Player.BoundingBox.Width,Player.BoundingBox.Height);
             Player.Ammo = 5;
             _childrenFed = 0;
@@ -367,15 +388,15 @@ namespace Burgerman
             switch (State)
             {
                     case GameState.Level1:
-                    CreateTextMessage("Feed 3 hungry children... Don't get them killed!", 3000);
+                    CreateTextMessage("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000);
                     Sprites = LevelConstructor.Level1(this);
                     break;
                     case GameState.Level2:
-                    CreateTextMessage("Cows can be burgers...", 3000);
+                    CreateTextMessage("LEVEL 2:\nCows can be burgers...", 3000);
                     Sprites = LevelConstructor.Level2(this);
                     break;
                     case GameState.Level3:
-                    CreateTextMessage("Just chill...", 3000);
+                    CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
                     Sprites = LevelConstructor.Level3(this);
                     break;
             }
@@ -412,7 +433,7 @@ namespace Burgerman
             switch (State)
             {
                     case GameState.Level1:
-                    if (ChildrenFed == 3)
+                    if (ChildrenFed >= 2)
                     {
                         ChildrenFed = 0;
                         State = GameState.Level2;
@@ -421,7 +442,7 @@ namespace Burgerman
                     }
                     break;
                     case GameState.Level2:
-                    if (ChildrenFed == 5)
+                    if (ChildrenFed >= 6)
                     {
                         ChildrenFed = 0;
                         State = GameState.Level3;
@@ -429,7 +450,7 @@ namespace Burgerman
                     }
                     break;
                     case GameState.Level3:
-                    if (ChildrenFed == 7)
+                    if (ChildrenFed >= 7)
                     {
                         //goto level 4 or end game :)
                     }

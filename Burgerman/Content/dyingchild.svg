@@ -53,7 +53,10 @@
      id="layer1">
     <g
        id="g4798"
-       transform="matrix(0.8969053,0.44440613,-0.44440613,0.8969053,300.24011,-81.091901)">
+       transform="matrix(0.8969053,0.44440613,-0.44440613,0.8969053,300.24011,-81.091901)"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741">
       <path
          inkscape:export-ydpi="28.489496"
          inkscape:export-xdpi="28.489496"
@@ -243,7 +246,10 @@
     </g>
     <g
        id="g4821"
-       transform="matrix(1.0046488,0,0,1.0046488,19.163214,27.339188)">
+       transform="matrix(1.0046488,0,0,1.0046488,19.163214,27.339188)"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741">
       <path
          sodipodi:nodetypes="ssaaaaaass"
          inkscape:connector-curvature="0"
@@ -370,7 +376,10 @@
     </g>
     <g
        id="g4798-1"
-       transform="matrix(0.55115641,0.83556121,-0.83556121,0.55115641,780.97532,-46.429529)">
+       transform="matrix(0.55115641,0.83556121,-0.83556121,0.55115641,780.97532,-46.429529)"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741">
       <path
          inkscape:export-ydpi="28.489496"
          inkscape:export-xdpi="28.489496"
@@ -563,82 +572,124 @@
        d="m 481.51737,470.76685 c -3.26995,0.20876 -6.01041,7.77818 -6.01041,7.77818 0,0 11.00629,2.50553 12.37437,-1.41422 0.98858,-2.83244 -3.37006,-6.55509 -6.36396,-6.36396 z"
        id="path5039"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="scss" />
+       sodipodi:nodetypes="scss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 462.77904,519.91077 c -3.94356,1.86071 -7.55028,9.533 -4.24264,12.37437 4.43839,3.81272 15.91566,-2.29161 15.55635,-8.13173 -0.24733,-4.02008 -7.67114,-5.96134 -11.31371,-4.24264 z"
        id="path5041"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ssss" />
+       sodipodi:nodetypes="ssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 477.62828,542.18464 c -3.65874,0.12796 -7.62741,5.90787 -6.01041,9.19239 2.03606,4.13575 11.58143,5.10769 13.78859,1.06066 2.05397,-3.76616 -3.49095,-10.403 -7.77818,-10.25305 z"
        id="path5043"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ssss" />
+       sodipodi:nodetypes="ssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:0.97472829000000005px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 407.32142,524.15342 c -5.57783,-6.65876 -16.78468,3.16743 -25.19321,2.47487 -6.33534,-0.5218 -13.2698,-8.78651 -18.47501,-4.94975 -3.68692,2.71763 -4.39782,10.66208 -1.34364,14.14214 3.72358,4.2428 14.38236,-5.69968 16.45956,-0.35355 2.0388,5.24729 -7.08229,8.85091 -11.75683,11.66726 -4.85876,2.92735 -13.49144,-0.25091 -16.12364,4.94974 -1.21538,2.40133 0.55093,5.8258 2.35136,7.77818 3.05836,3.31648 8.10721,5.41649 12.42865,4.59619 6.02439,-1.14356 9.36045,-8.3071 14.10819,-12.37437 4.32638,-3.7063 8.23179,-13.82591 13.10047,-10.96015 3.24856,1.91214 -2.61129,7.98392 -1.34364,11.66726 0.89027,2.58678 3.1322,5.20372 5.71046,5.65686 3.75661,0.66023 8.58804,-1.43135 10.41319,-4.94975 1.46457,-2.8233 0.0604,-6.6888 -1.34363,-9.54594 -1.63728,-3.33164 -7.96519,-4.03572 -7.72592,-7.77818 0.20451,-3.19866 5.71991,-2.97583 7.39,-5.65685 1.13204,-1.81729 2.70904,-4.73396 1.34364,-6.36396 z"
        id="path5045"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ssssssssssssssssss" />
+       sodipodi:nodetypes="ssssssssssssssssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:0.89664036px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 358.85042,577.53998 c -3.23892,0.68124 -8.97464,2.73424 -8.24308,6.71751 0.80874,4.40351 7.54342,3.76328 10.80128,1.76777 1.86614,-1.14305 3.93771,-4.33491 3.12669,-6.71751 -0.76157,-2.23729 -3.75895,-2.17285 -5.68489,-1.76777 z"
        id="path5049"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sssss" />
+       sodipodi:nodetypes="sssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 484.3458,518.85012 c 3.38476,-0.52869 7.65309,3.294 7.77817,6.71751 0.10345,2.83145 -3.1783,6.09364 -6.01041,6.01041 -2.83701,-0.0834 -5.40445,-3.53698 -5.65685,-6.36396 -0.22108,-2.47622 1.4328,-5.9803 3.88909,-6.36396 z"
        id="path5051"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sssss" />
+       sodipodi:nodetypes="sssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:0.87863791px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 482.7381,498.69757 c 3.97454,-2.71983 11.97462,4.59365 10.91779,10.25305 -0.84404,4.51992 -7.88703,5.09854 -10.64484,2.12132 -2.44718,-2.64187 -3.08969,-10.44683 -0.27295,-12.37437 z"
        id="path5053"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ssss" />
+       sodipodi:nodetypes="ssss"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 630.03214,563.39784 c 0,0 11.7001,8.50221 10.25305,14.14214 -1.16604,4.54469 -8.92545,8.75907 -12.72792,6.01041 -5.48499,-3.9649 2.47487,-20.15255 2.47487,-20.15255 z"
        id="path5055"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc" />
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 614.12224,583.19683 c 0,0 -7.74695,8.38638 -5.3033,12.02082 2.30244,3.42441 10.4008,3.27036 12.37437,-0.35356 2.17498,-3.99375 -7.07107,-11.66726 -7.07107,-11.66726 z"
        id="path5057"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc" />
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 637.10321,586.37881 c 0,0 -6.83294,7.46907 -4.59619,10.60661 2.67593,3.75359 12.14853,3.2475 13.78858,-1.06066 1.57163,-4.12842 -9.19239,-9.54595 -9.19239,-9.54595 z"
        id="path5059"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc" />
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 563.91766,525.92118 c -3.87286,-2.22251 -6.21714,6.58378 -10.08148,8.82107 -3.17683,1.83925 -7.60199,1.21896 -10.41551,3.57675 -2.07258,1.73686 -4.22171,4.80677 -3.93609,7.09348 0.28563,2.2867 4.12517,2.26787 3.91657,4.16125 -0.29859,2.71015 -6.24135,1.91787 -6.76837,4.59299 -0.43429,2.20447 3.78833,3.37165 3.7252,5.61759 -0.0795,2.82666 -6.41726,4.25556 -5.07815,6.79551 1.17868,2.23564 5.59217,0.0523 7.91073,1.39117 2.00602,1.1584 2.19441,5.79175 4.46364,5.32635 3.80755,-0.78089 -0.0222,-9.26106 3.36709,-11.16366 2.29359,-1.28752 5.31233,3.22151 7.63596,1.98904 2.76701,-1.46765 3.13909,-8.8566 3.13909,-8.8566 0,0 4.9779,6.80923 8.48528,6.36396 2.99443,-0.38015 5.45428,-4.05941 5.65685,-7.07107 0.2767,-4.11381 -5.40043,-6.59766 -6.36396,-10.6066 -0.47494,-1.97608 1.53572,-4.38503 0.41839,-6.08268 -1.52345,-2.31471 -6.46267,-0.35335 -7.84301,-2.75616 -1.55429,-2.70561 4.47408,-7.63932 1.76777,-9.19239 z"
        id="path5061"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="saazaaasaaaacssaaas" />
+       sodipodi:nodetypes="saazaaasaaaacssaaas"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 526.08745,561.98363 c 0,0 -4.68913,2.89928 -4.94975,5.3033 -0.39864,3.67718 2.11392,10.60809 5.65685,9.54594 4.74664,-1.42302 -0.7071,-14.84924 -0.7071,-14.84924 z"
        id="path5063"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc" />
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <path
        style="fill:#ff0000;stroke:#ff8080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 529.62298,586.37881 c 0,0 -11.39241,6.98115 -9.19239,11.31371 2.08371,4.1035 11.36219,3.20355 13.78858,-0.7071 2.03149,-3.27418 -4.59619,-10.60661 -4.59619,-10.60661 z"
        id="path5065"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc" />
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741" />
     <g
        id="g5073"
-       transform="translate(-1.3882281,0)">
+       transform="translate(-1.3882281,0)"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\diechild.png"
+       inkscape:export-xdpi="28.197741"
+       inkscape:export-ydpi="28.197741">
       <path
          inkscape:export-ydpi="28.489496"
          inkscape:export-xdpi="28.489496"

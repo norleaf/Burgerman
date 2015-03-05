@@ -144,6 +144,7 @@ namespace Burgerman
         {
             if (other is Bullet)
             {
+                //This is to make the balloon hit area be a bit smaller than its bounding box rect. It basically becomes a circle that is the average of the boundingbox sides in diameter. Oval shape might be better but math harder...
                 if (Vector2.Distance(Center,other.Center) < (BoundingBox.Height + BoundingBox.Width)/4f)
                 {
                     Die();
@@ -153,11 +154,18 @@ namespace Burgerman
             }
             if (other is Jet)
             {
+                //This is to make the balloon hit area be a bit smaller than its bounding box rect. It basically becomes a circle that is the average of the boundingbox sides in diameter. So does the jet.
                 if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
                 {
                     Die();
                     Game1.Instance.CreateTextMessage("Hit by air plane! Restarting mission...", 2000);
                 }
+            }
+            if (other is Cow)
+            {
+                //The balloon collects the cow and gains 3 burgers
+                Game1.Instance.MarkForRemoval(other);
+                Ammo += 3;
             }
         }
 
