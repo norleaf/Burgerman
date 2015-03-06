@@ -104,6 +104,7 @@ namespace Burgerman
             {
                 Vector2 target = game.Player.Center;
                 Bullet bullet = new Bullet(bulletTexture, new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2), target, this);
+                game.ShotSound.Play();
                 game.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
             }
