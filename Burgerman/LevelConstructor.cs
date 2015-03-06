@@ -14,6 +14,8 @@ namespace Burgerman
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
 
+            float LevelLength = width * 1.6f;
+
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
             var HelicopterProto = game.Helicopter;
@@ -48,6 +50,8 @@ namespace Burgerman
             float width = game.ScreenSize.X;
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
+
+            float LevelLength = width * 1.6f;
 
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
@@ -86,6 +90,8 @@ namespace Burgerman
             float width = game.ScreenSize.X;
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
+
+            float LevelLength = width*2f;
 
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
