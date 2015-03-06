@@ -43,42 +43,40 @@ namespace Burgerman
         public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
-        Sprite background;
+        public Texture2D HeadOKTexture { get; private set; }
+        public Texture2D HeadDEADTexture { get; private set; }
+        private Sprite _background; 
         private IntroBalloon _introBalloon;
         private SpriteFont _font;
-        public string ScreenText { get; set; }
-        public double TextDuration { get; set; }
-        private bool _newText;
+        
 
-        private Random _ran;
+        
 
         public enum GameState { Intro, Pause, Level1, Level2, Level3 }
         public GameState State { get; private set; }
         private GameState _currentLevel;
-        private double _restartTime;
-        private double _timeSinceLastTree;
-        private int _treeDelay = 7000;
-
-        private int _childrenFed;
         private bool _restarting;
         private bool _justpressed;
         
-        public int ChildrenFed
-        {
-            get { return _childrenFed; }
-            set { _childrenFed += value; }
-        }
+        public int ChildrenFed { get; set; }
+        public int ChildrenFedGoal { get; set; }
+        public int ChildrenDied { get; set; }
+        public int ChildrenTotal { get; set; }
 
-        public Vector2 ScreenSize { get; private set; }
-        
-
+       
         private List<Sprite> DeadSprites { get; set; }
         private List<Sprite> Sprites { get; set; }
         private List<Sprite> BackgroundSprites { get; set; }
         public List<Sprite> NewSprites { get; private set; }
- 
-        
         private CollissionHandler CollissionHandler { get; set; }
+        public Vector2 ScreenSize { get; private set; }
+        private Random _ran;
+        public string ScreenText { get; set; }
+        public double TextDuration { get; set; }
+        private bool _newText;
+        private double _restartTime;
+        private double _timeSinceLastTree;
+        private int _treeDelay = 7000;
 
         public static Game1 Instance
         {
@@ -134,6 +132,7 @@ namespace Burgerman
             NewSprites = new List<Sprite>();
 
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
+           
 
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
@@ -157,11 +156,13 @@ namespace Burgerman
             BulletTex = Content.Load<Texture2D>("bullet");
             BurgerTexture = Content.Load<Texture2D>("burger");
             HeadTexture = Content.Load<Texture2D>("childhead");
+            HeadOKTexture = Content.Load<Texture2D>("childheadOK");
+            HeadDEADTexture = Content.Load<Texture2D>("childheadDEAD");
             _palmtreeTexture = Content.Load<Texture2D>("palm");
             _backgroundTexture = Content.Load<Texture2D>("background");
             
             
-            background = new Sprite(_backgroundTexture,new Vector2(0,0));
+            _background = new Sprite(_backgroundTexture,new Vector2(0,0));
 
             BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 5f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
@@ -329,8 +330,8 @@ namespace Burgerman
             {
                 for (int i = 0; i < ScreenSize.X; i++)
                 {
-                    background.Position = new Vector2(1*i, 0);
-                    background.Draw(_spriteBatch);
+                    _background.Position = new Vector2(1*i, 0);
+                    _background.Draw(_spriteBatch);
                 }
                 foreach (Sprite sprite in BackgroundSprites)
                 {
@@ -355,9 +356,21 @@ namespace Burgerman
             {
                 _spriteBatch.Draw(texture: BurgerTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.9f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
             }
+            int heads = 0;
             for (int i = 0; i < ChildrenFed; i++)
             {
-                _spriteBatch.Draw(texture: HeadTexture, position: new Vector2(10 + i * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.95f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
+                _spriteBatch.Draw(texture: HeadOKTexture, position: new Vector2(10 + heads * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.95f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
+                heads++;
+            }
+            for (int i = 0; i < ChildrenDied; i++)
+            {
+                _spriteBatch.Draw(texture: HeadDEADTexture, position: new Vector2(10 + heads * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.95f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
+                heads++;
+            }
+            for (int i = 0; i < ChildrenTotal-ChildrenDied-ChildrenFed; i++)
+            {
+                _spriteBatch.Draw(texture: HeadTexture, position: new Vector2(10 + heads * BurgerTexture.Width * 1.1f, ScreenSize.Y * 0.95f), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 1));
+                heads++;
             }
         }
 
@@ -376,6 +389,8 @@ namespace Burgerman
             spriteBatch.DrawString(_font, ScreenText, new Vector2(ScreenSize.X*0.25f, ScreenSize.Y*0.2f), Color.White);
         }
 
+
+        //This method is called during the update loop an places new sprites in a temp list to be added before the next update loop
         public void SpawnSpriteAtRuntime(Sprite sprite)
         {
             if (sprite != null)
@@ -385,6 +400,7 @@ namespace Burgerman
             }
         }
 
+        //This method takes the sprites from the temporary list and adds them to the main sprites list prior to running the update loop
         private void AddNewSprites()
         {
          
@@ -399,6 +415,8 @@ namespace Burgerman
             NewSprites.Clear();
         }
 
+
+        //This method is called in the update sprites loop and prepares a given sprite for removal before the next update loop. 
         internal void MarkForRemoval(Sprite sprite)
         {
             
@@ -420,11 +438,13 @@ namespace Burgerman
                 DeadSprites.Clear();
         }
 
+        // This method is called whenever a condition requires the current level to be reset. For instance player death or too many children died.
         private void Restart()
         {
             Player.Position = new Vector2(Player.BoundingBox.Width,Player.BoundingBox.Height);
             Player.Ammo = 5;
-            _childrenFed = 0;
+            ChildrenFed = 0;
+            ChildrenDied = 0;
             NewSprites.Clear();
             DeadSprites.Clear();
             Sprites.Clear();
@@ -433,10 +453,14 @@ namespace Burgerman
                     case GameState.Level1:
                     CreateTextMessage("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000);
                     Sprites = LevelConstructor.Level1(this);
+                    ChildrenTotal = 3;
+                    ChildrenFedGoal = 2;
                     break;
                     case GameState.Level2:
                     CreateTextMessage("LEVEL 2:\nCows can be burgers...", 3000);
                     Sprites = LevelConstructor.Level2(this);
+                    ChildrenTotal = 6;
+                    ChildrenFedGoal = 5;
                     break;
                     case GameState.Level3:
                     CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
@@ -447,6 +471,7 @@ namespace Burgerman
             
         }
 
+        // This method is called whenever a message should appear to the player.
         public void CreateTextMessage(string text, double duration)
         {
             ScreenText = text;
@@ -456,15 +481,18 @@ namespace Burgerman
 
         public void CheckLevelDone(GameTime gameTime)
         {
-            if (ChildDead || PlayerDead)
+            if (ChildrenTotal - ChildrenDied < ChildrenFedGoal - ChildrenFed)
+            {
+                CreateTextMessage("Not enough children left to complete level goal.",2000);
+                _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
+                _restarting = true;
+            }
+            if (PlayerDead )
             {
                 //Restarting level in 3 secs...
                 _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
-                
                 PlayerDead = false;
-                ChildDead = false;
                 _restarting = true;
-                
             }
 
             if (gameTime.TotalGameTime.TotalMilliseconds > _restartTime + 3000 && _restarting)
@@ -478,16 +506,13 @@ namespace Burgerman
                     case GameState.Level1:
                     if (ChildrenFed >= 2)
                     {
-                        ChildrenFed = 0;
                         State = GameState.Level2;
                         Restart();
-                        
                     }
                     break;
                     case GameState.Level2:
-                    if (ChildrenFed >= 6)
+                    if (ChildrenFed >= 5)
                     {
-                        ChildrenFed = 0;
                         State = GameState.Level3;
                         Restart();
                     }

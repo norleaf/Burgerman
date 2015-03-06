@@ -10,14 +10,15 @@ namespace Burgerman
         Animation _waiting;
         Animation _walking;
         private bool _fed;
+        private Game1 game;
         
         public Child(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
            // Scale = 0.5f;
             Name = "Child";
-            
-            
+
+            game = Game1.Instance;
             _waiting = new Animation(this, 200);
             _waiting.Frames.Add(new Rectangle(0, 0, 30, 47));
 
@@ -35,7 +36,6 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Console.WriteLine("child updating!");
             switch (_state)
             {
                     case State.Leaving:
@@ -43,7 +43,7 @@ namespace Burgerman
                     MoveHorizontally(-1);
                     if (Position.X < -BoundingBox.Width)
                     {
-                        Game1.Instance.MarkForRemoval(this);
+                        game.MarkForRemoval(this);
                     }
                     break;
             }
@@ -54,29 +54,34 @@ namespace Burgerman
             if (other is Soldier && _state != State.Leaving )
             {
                 Die();
-                Game1.Instance.CreateTextMessage("Child killed by soldier! Restarting mission...", 2000);
+                game.CreateTextMessage("Child killed!", 2000);
             }
             if (other is Burger && !_fed)
             {
                 _fed = true;
                 _state = State.Leaving;
-                Game1.Instance.MarkForRemoval(other);
-                Game1.Instance.ChildrenFed = 1;
+                game.MarkForRemoval(other);
+                game.ChildrenFed++;
             }
             if (other is Bullet)
             {
                 Die();
-                Game1.Instance.CreateTextMessage("Child shot! Restarting mission...", 2000);
-                Game1.Instance.MarkForRemoval(other);
+                game.CreateTextMessage("Child shot!", 2000);
+                game.MarkForRemoval(other);
             }
             
         }
 
         public override void Die()
         {
-            Game1.Instance.MarkForRemoval(this);
-            Game1.Instance.ChildDead = true;
-            AnimatedSprite corpse = new AnimatedSprite(Game1.Instance.ChildDeathTexture, Position);
+            game.ChildrenDied++;
+            if (_fed)
+            {
+                game.ChildrenFed--;
+            }
+            game.MarkForRemoval(this);
+            game.ChildDead = true;
+            AnimatedSprite corpse = new AnimatedSprite(game.ChildDeathTexture, Position);
             
             Animation fall = new Animation(corpse,200);
             fall.Loop = false;
@@ -85,7 +90,7 @@ namespace Burgerman
             fall.Frames.Add(new Rectangle(94, 0, 47, 47));
             fall.Frames.Add(new Rectangle(141, 0, 47, 47));
             corpse.setAnimation(fall);
-            Game1.Instance.SpawnSpriteAtRuntime(corpse);
+            game.SpawnSpriteAtRuntime(corpse);
         }
 
         public override Sprite CloneAt(float x)
