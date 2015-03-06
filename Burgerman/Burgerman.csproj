@@ -176,6 +176,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Burgerman_TemporaryKey.pfx" />
+    <None Include="Content\superfont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
