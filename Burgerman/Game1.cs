@@ -189,7 +189,7 @@ namespace Burgerman
             Sprites = LevelConstructor.Level1(this);
             CollissionHandler = new CollissionHandler(Sprites);
 
-            _font = Content.Load<SpriteFont>("SuperContent/superfont");
+           // _font = Content.Load<SpriteFont>("SuperContent/superfont");
 
             Restart();
         }
@@ -296,7 +296,7 @@ namespace Burgerman
             //Only draw text until the time set
             if (gameTime.TotalGameTime.TotalMilliseconds < TextDuration)
             {
-                DrawText(_spriteBatch);
+        //        DrawText(_spriteBatch);
             }
             
             _spriteBatch.End();

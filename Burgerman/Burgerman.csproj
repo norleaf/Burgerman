@@ -175,12 +175,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BurgermanContent\BurgermanContent\BurgermanContent.csproj">
-      <Project>{cbeb32ee-2c56-462a-8c28-3d072d588dda}</Project>
-      <Name>BurgermanContent</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Burgerman_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
