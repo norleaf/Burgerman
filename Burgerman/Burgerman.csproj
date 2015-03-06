@@ -183,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Burgerman_TemporaryKey.pfx" />
+    <None Include="Content\sounds\shot.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\superfont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
@@ -23,7 +24,7 @@ namespace Burgerman
         private static Game1 _instance;
         private readonly GraphicsDeviceManager _graphics;
         private Screen screen = Screen.AllScreens.First(e => e.Primary);
-        
+        public SoundEffect ShotSound { get; set; }
         private SpriteBatch _spriteBatch;
         public static Vector2 Gravity = new Vector2(0,0.1f);
         public Balloon Player { get; private set; }
@@ -131,6 +132,8 @@ namespace Burgerman
             DeadSprites = new List<Sprite>();
             BackgroundSprites = new List<Sprite>();
             NewSprites = new List<Sprite>();
+
+            ShotSound = Content.Load<SoundEffect>("./sounds/shot");
 
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
