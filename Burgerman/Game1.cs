@@ -42,7 +42,8 @@ namespace Burgerman
         public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
-        Sprite _bgSprite;
+        Sprite background;
+        private IntroBalloon _introBalloon;
         private SpriteFont _font;
         public string ScreenText { get; set; }
         public double TextDuration { get; set; }
@@ -50,9 +51,9 @@ namespace Burgerman
 
         private Random _ran;
 
-        public enum GameState { Level1, Level2, Level3 }
+        public enum GameState { Intro, Pause, Level1, Level2, Level3 }
         public GameState State { get; private set; }
-
+        private GameState _currentLevel;
         private double _restartTime;
         private double _timeSinceLastTree;
         private int _treeDelay = 7000;
@@ -132,28 +133,32 @@ namespace Burgerman
             NewSprites = new List<Sprite>();
 
             //_font = Content.Load<SpriteFont>()
+            Texture2D titleTexture = Content.Load<Texture2D>("title");
+            Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));
+            Texture2D introBalloonTexture2D = Content.Load<Texture2D>("introBalloon");
+            _introBalloon = new IntroBalloon(introBalloonTexture2D, new Vector2(50,ScreenSize.Y));
 
-            Texture2D childTexture = Content.Load<Texture2D>("child.png");
-            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon.png");
-            Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier.png");
+            Texture2D childTexture = Content.Load<Texture2D>("child");
+            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");
+            Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier");
             Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
-            Texture2D jetTexture = Content.Load<Texture2D>("./attackplane/attackplane.png");
-            Texture2D mountainTexture = Content.Load<Texture2D>("mountain.png");
-            Texture2D hutTexture = Content.Load<Texture2D>("hut.png");
-            Texture2D groundTexture = Content.Load<Texture2D>("ground.png");
+            Texture2D jetTexture = Content.Load<Texture2D>("./attackplane/attackplane");
+            Texture2D mountainTexture = Content.Load<Texture2D>("mountain");
+            Texture2D hutTexture = Content.Load<Texture2D>("hut");
+            Texture2D groundTexture = Content.Load<Texture2D>("ground");
             Texture2D cowTexture = Content.Load<Texture2D>("cow");
 
-            ChildDeathTexture = Content.Load<Texture2D>("diechild.png");
-            BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning.png");
+            ChildDeathTexture = Content.Load<Texture2D>("diechild");
+            BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
 
-            BulletTex = Content.Load<Texture2D>("bullet.png");
-            BurgerTexture = Content.Load<Texture2D>("burger.png");
-            HeadTexture = Content.Load<Texture2D>("childhead.png");
+            BulletTex = Content.Load<Texture2D>("bullet");
+            BurgerTexture = Content.Load<Texture2D>("burger");
+            HeadTexture = Content.Load<Texture2D>("childhead");
             _palmtreeTexture = Content.Load<Texture2D>("palm");
             _backgroundTexture = Content.Load<Texture2D>("background");
             
             
-            _bgSprite = new Sprite(_backgroundTexture,new Vector2(0,0));
+            background = new Sprite(_backgroundTexture,new Vector2(0,0));
 
             BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 5f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
             BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
@@ -183,15 +188,18 @@ namespace Burgerman
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, ScreenSize.Y * 0.8f)));
             }
 
-            State = GameState.Level1;
+            State = GameState.Intro;
+            Sprites.Add(_introBalloon);
+            Sprites.Add(intro);
 
+            
             //Levels: kald en levelgenerator med static metoder som returnerer en sprites liste
-            Sprites = LevelConstructor.Level1(this);
+           // Sprites = LevelConstructor.Level1(this);
             CollissionHandler = new CollissionHandler(Sprites);
 
             _font = Content.Load<SpriteFont>("superfont");
 
-            Restart();
+            //Restart();
         }
 
         /// <summary>
@@ -215,6 +223,36 @@ namespace Burgerman
         //    Console.WriteLine("Main update loop");
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (State == GameState.Intro) 
+            {
+                _introBalloon.Update(gameTime);
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
+                    Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    State = GameState.Level1;
+                    Restart();
+                    _justpressed = false;
+                }
+            }
+            
+            if (State != GameState.Intro && _justpressed &&
+                (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
+                 Keyboard.GetState().IsKeyDown(Keys.Space)))
+            {
+
+                if (State != GameState.Pause)
+                {
+                    CreateTextMessage("Paused", 1000);
+                    _currentLevel = State;
+                    State = GameState.Pause;
+                }
+                else
+                {
+                    State = _currentLevel;
+                }
+                _justpressed = false;
+            }
             
             if (Keyboard.GetState().IsKeyDown(Keys.End) && _justpressed)
             {
@@ -229,12 +267,14 @@ namespace Burgerman
                 }
                 _justpressed = false;
             }
-            if (Keyboard.GetState().IsKeyUp(Keys.End))
+            if (Keyboard.GetState().IsKeyUp(Keys.End) && Keyboard.GetState().IsKeyUp(Keys.Space))
             {
                 _justpressed = true;
             }
 
             // TODO: Add your update logic here
+            
+            if (State != GameState.Pause) { 
             CollissionHandler.Update(gameTime);
             if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay)
             {
@@ -248,8 +288,6 @@ namespace Burgerman
             RemoveDeadSprites();
             CheckLevelDone(gameTime);
 
-            
-
             foreach (Sprite sprite in Sprites)
             {
               
@@ -260,13 +298,13 @@ namespace Burgerman
             {
                 sprite.Update(gameTime);
             }
-
+            
+            }
             if (_newText)
             {
                 TextDuration += gameTime.TotalGameTime.TotalMilliseconds;
                 _newText = false;
             }
-            
             base.Update(gameTime);
         }
 
@@ -284,14 +322,19 @@ namespace Burgerman
             _spriteBatch.Begin();
            // _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
 
-
-            for (int i = 0; i < ScreenSize.X; i++)
+            if (State != GameState.Intro)
             {
-                _bgSprite.Position = new Vector2(1*i,0);
-                _bgSprite.Draw(_spriteBatch);
+                for (int i = 0; i < ScreenSize.X; i++)
+                {
+                    background.Position = new Vector2(1*i, 0);
+                    background.Draw(_spriteBatch);
+                }
+                foreach (Sprite sprite in BackgroundSprites)
+                {
+                    sprite.Draw(_spriteBatch);
+                }
+                DrawHUD();
             }
-
-            DrawHUD();
             DrawSprites();
             //Only draw text until the time set
             if (gameTime.TotalGameTime.TotalMilliseconds < TextDuration)
@@ -317,10 +360,7 @@ namespace Burgerman
 
         private void DrawSprites()
         {
-            foreach (Sprite sprite in BackgroundSprites)
-            {
-                sprite.Draw( _spriteBatch);
-            }
+            
             foreach (Sprite sprite in Sprites)
             {
                 sprite.Draw( _spriteBatch);

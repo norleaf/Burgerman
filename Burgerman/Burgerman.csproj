@@ -79,6 +79,7 @@
     <Compile Include="Helicopter.cs" />
     <Compile Include="Hut.cs" />
     <Compile Include="ICollidable.cs" />
+    <Compile Include="IntroBalloon.cs" />
     <Compile Include="Jet.cs" />
     <Compile Include="LevelConstructor.cs" />
     <Compile Include="PalmTree.cs" />
@@ -151,6 +152,9 @@
     <Content Include="Content\hut.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\introBalloon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -162,6 +166,9 @@
     </Content>
     <Content Include="Content\soldier.svg" />
     <Content Include="Content\soldier2.svg" />
+    <Content Include="Content\title.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
