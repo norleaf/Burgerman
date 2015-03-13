@@ -132,6 +132,7 @@ namespace Burgerman
             NewSprites = new List<Sprite>();
 
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
+            
            
 
             //_font = Content.Load<SpriteFont>()

@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="childhead.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="384.45334"
-     inkscape:cy="689.39838"
+     inkscape:zoom="5.6"
+     inkscape:cx="393.25573"
+     inkscape:cy="664.1184"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -125,19 +125,23 @@
          style="fill:#ffdd55" />
     </g>
     <g
-       id="g3819">
+       id="g3819"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\childheadOK.png"
+       inkscape:export-xdpi="41.442963"
+       inkscape:export-ydpi="41.442963"
+       transform="translate(72.730984,27.526657)">
       <path
          sodipodi:nodetypes="ccc"
          inkscape:connector-curvature="0"
          id="path3017"
          d="m 366.78572,330.57647 c -26.5094,-3.87608 -42.99272,39.55073 -8.39287,49.64285 28.76145,7.44847 47.75798,-40.71907 8.39287,-49.64285 z"
-         style="fill:#ffdd55;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+         style="fill:#ffdd55;fill-opacity:1;stroke:none" />
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path3787"
          d="m 346.60714,357.18361 c 3.66238,0.28492 7.50093,0.27622 8.39286,5.17857"
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
@@ -161,7 +165,7 @@
          inkscape:connector-curvature="0"
          id="path3793-1"
          d="m 381.24449,337.63422 c 8.89221,-16.40652 27.10139,6.71264 6.71553,9.3058 z"
-         style="fill:#000000;stroke:#000000;stroke-width:1.06242383000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+         style="fill:#000000;stroke:#000000;stroke-width:1.06242383px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="ccccccccccc"
          inkscape:connector-curvature="0"
@@ -181,5 +185,26 @@
          d="m 353.52996,332.55158 -11.35647,9.07651 -9.67349,7.51981 -1.96429,-3.57143 10.53572,-4.10715 -8.21429,0.35715 0.17857,-3.03572 8.30807,1.40691 11.75507,-9.10715 z"
          style="fill:#ff0000;stroke:none" />
     </g>
+    <path
+       style="fill:none;stroke:#00ff00;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 413.02612,383.51493 c 8.38033,3.86266 15.5687,10.2795 21.59201,19.1929 6.72349,-21.73217 16.51005,-39.55041 29.29443,-53.53809 l 0.12627,-0.37881"
+       id="path3041"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\Hans\Documents\Visual Studio 2013\Projects\Burgerman\Burgerman\Content\childheadOK.png"
+       inkscape:export-xdpi="41.442963"
+       inkscape:export-ydpi="41.442963" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 333.35034,326.31504 c 21.07967,13.96037 41.73735,30.63349 60.48289,59.599 l -0.12627,0"
+       id="path3811"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 400.08354,324.92608 c -22.48316,12.95022 -51.9543,43.00786 -59.22019,61.49303"
+       id="path3811-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
