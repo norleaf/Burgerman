@@ -45,6 +45,7 @@ namespace Burgerman
         public Texture2D HeadTexture { get; private set; }
         public Texture2D HeadOKTexture { get; private set; }
         public Texture2D HeadDEADTexture { get; private set; }
+        public Texture2D CloudTexture;
         private Sprite _background; 
         private IntroBalloon _introBalloon;
         private SpriteFont _font;
@@ -154,6 +155,8 @@ namespace Burgerman
             Texture2D hutTexture = Content.Load<Texture2D>("hut");
             Texture2D groundTexture = Content.Load<Texture2D>("ground");
             Texture2D cowTexture = Content.Load<Texture2D>("cow");
+            
+            CloudTexture = Content.Load<Texture2D>("./cloud/cloud");
 
             ChildDeathTexture = Content.Load<Texture2D>("diechild");
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
@@ -182,16 +185,33 @@ namespace Burgerman
 
             _ran = new Random();
 
+            //Generate mountains at beginning of level
             BackgroundSprites.Add(mount1);
             BackgroundSprites.Add(mount2);
             BackgroundSprites.Add(mount3);
 
+
+            //Generate clouds at beginning of level
+            for (int i = 0; i < 8; i++)
+            {
+                float scale = ((float)_ran.Next(3, 7) / 10);
+                int offsetX = _ran.Next((int)ScreenSize.X + 100);
+                int offsetY = _ran.Next((int)ScreenSize.Y / 3);
+                Cloud cloud = new Cloud(CloudTexture, new Vector2(offsetX, offsetY));
+                cloud.Scale = scale;
+                cloud.SlideSpeed = new Vector2(-0.375f, 0);
+                BackgroundSprites.Add(cloud);
+            }
+
+            //Generate trees at beginning of level
             for (int i = 0; i < 15; i++)
             {
                 float scale = ((float)_ran.Next(7, 11) / 10);
                 int offset = _ran.Next((int)ScreenSize.X + 100);
                 BackgroundSprites.Add(PalmTree.MakeNewTree(_palmtreeTexture, scale, offset));
             }
+            
+            
             for (int i = 0; i < ScreenSize.X/30+3; i++)
             {
                 BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, ScreenSize.Y * 0.8f)));
@@ -225,8 +245,6 @@ namespace Burgerman
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        /// 
-        /// 
         protected override void Update(GameTime gameTime)
         {
         //    Console.WriteLine("Main update loop");
