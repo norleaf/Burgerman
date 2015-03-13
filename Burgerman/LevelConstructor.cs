@@ -7,14 +7,14 @@ namespace Burgerman
 {
     class LevelConstructor
     {
-
+        public static float LevelLength;
         public static List<Sprite> Level1(Game1 game)
         {
             float width = game.ScreenSize.X;
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
 
-            float LevelLength = width * 1.6f;
+            LevelLength = width * 1.6f;
 
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
@@ -55,7 +55,7 @@ namespace Burgerman
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
 
-            float LevelLength = width * 1.6f;
+            LevelLength = width * 1.6f;
 
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
@@ -100,7 +100,7 @@ namespace Burgerman
             float height = game.ScreenSize.Y;
             List<Sprite> sprites = new List<Sprite>();
 
-            float LevelLength = width*2f;
+            LevelLength = width*2f;
 
             var ChildProto = game.Child;
             var SoldierProto = game.Soldier;
