@@ -467,6 +467,7 @@ namespace Burgerman
                     Sprites = LevelConstructor.Level1(this);
                     ChildrenTotal = 3;
                     ChildrenFedGoal = 2;
+                    Player.Ammo = 20;
                     break;
                     case GameState.Level2:
                     CreateTextMessage("LEVEL 2:\nCows can be burgers...", 3000);
@@ -477,8 +478,8 @@ namespace Burgerman
                     case GameState.Level3:
                     CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
                     Sprites = LevelConstructor.Level3(this);
-                    ChildrenTotal = 1;
-                    ChildrenFedGoal = 1;
+                    ChildrenTotal = 0;
+                    ChildrenFedGoal = 0;
                     break;
             }
             CollissionHandler = new CollissionHandler(Sprites);
@@ -495,9 +496,9 @@ namespace Burgerman
 
         public void CheckLevelDone(GameTime gameTime)
         {
-            if (ChildrenTotal - ChildrenDied < ChildrenFedGoal - ChildrenFed)
+            if (ChildrenTotal - ChildrenDied < ChildrenFedGoal - ChildrenFed && !_restarting)
             {
-                CreateTextMessage("Not enough children left to complete level goal.",2000);
+                CreateTextMessage("Not enough children left to complete level goal.", 2000);
                 _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
                 _restarting = true;
             }
