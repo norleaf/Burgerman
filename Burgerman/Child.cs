@@ -56,6 +56,7 @@ namespace Burgerman
                 Die();
                 game.CreateTextMessage("Child killed!", 2000);
             }
+
             if (other is Burger && !_fed)
             {
                 _fed = true;
@@ -63,11 +64,18 @@ namespace Burgerman
                 game.MarkForRemoval(other);
                 game.ChildrenFed++;
             }
+
             if (other is Bullet)
             {
                 Die();
                 game.CreateTextMessage("Child shot!", 2000);
                 game.MarkForRemoval(other);
+            }
+
+            if (Position.X < -BoundingBox.Width)
+            {
+                game.ChildrenDied++;
+                game.MarkForRemoval(this);
             }
             
         }
