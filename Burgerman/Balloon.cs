@@ -17,6 +17,7 @@ namespace Burgerman
         private readonly Animation _descent;
         //private Animation movingLeft;
         private const float SpeedMult = 1.8f;
+        public float DistanceTravelled { get; set; }
         public Vector2 MoveVector { get; private set; }
         private Vector2 _left = new Vector2(-1f,0);
         private Vector2 _right = new Vector2(1f,0);
@@ -72,6 +73,7 @@ namespace Burgerman
         {
             base.Update(gameTime);
             MoveVector = new Vector2(0,0);
+            DistanceTravelled += Sprite.defaultSlideSpeed;
             if (Keyboard.GetState().IsKeyDown(Keys.Z) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
             {
                 if (_loaded && Ammo > 0)

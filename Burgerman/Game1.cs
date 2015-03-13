@@ -48,8 +48,8 @@ namespace Burgerman
         private Sprite _background; 
         private IntroBalloon _introBalloon;
         private SpriteFont _font;
-        
 
+        ParticleEngine particleEngine;
         
 
         public enum GameState { Intro, Pause, Level1, Level2, Level3 }
@@ -132,8 +132,12 @@ namespace Burgerman
             NewSprites = new List<Sprite>();
 
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
-            
-           
+
+            List<Texture2D> textures = new List<Texture2D>();
+            textures.Add(Content.Load<Texture2D>("star"));
+            textures.Add(Content.Load<Texture2D>("star"));
+            textures.Add(Content.Load<Texture2D>("star"));
+            particleEngine = new ParticleEngine(textures, new Vector2(400, 240));
 
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
@@ -144,7 +148,7 @@ namespace Burgerman
             Texture2D childTexture = Content.Load<Texture2D>("child");
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");
             Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier");
-            Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter.png");
+            Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter");
             Texture2D jetTexture = Content.Load<Texture2D>("./attackplane/attackplane");
             Texture2D mountainTexture = Content.Load<Texture2D>("mountain");
             Texture2D hutTexture = Content.Load<Texture2D>("hut");
@@ -231,6 +235,12 @@ namespace Burgerman
 
             if (State == GameState.Intro) 
             {
+                if (particleEngine.TTL <= 0)
+                {
+                    particleEngine.EmitterLocation = new Vector2((float)_ran.NextDouble() * screen.Bounds.Width, (float)_ran.NextDouble() * screen.Bounds.Height);
+                    particleEngine.TTL = 60;
+                }
+                particleEngine.Update();
                 _introBalloon.Update(gameTime);
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
                     Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -326,7 +336,8 @@ namespace Burgerman
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
            // _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
-
+            
+            if (State == GameState.Intro) particleEngine.Draw(_spriteBatch);
             if (State != GameState.Intro)
             {
                 for (int i = 0; i < ScreenSize.X; i++)
@@ -466,6 +477,8 @@ namespace Burgerman
                     case GameState.Level3:
                     CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
                     Sprites = LevelConstructor.Level3(this);
+                    ChildrenTotal = 1;
+                    ChildrenFedGoal = 1;
                     break;
             }
             CollissionHandler = new CollissionHandler(Sprites);

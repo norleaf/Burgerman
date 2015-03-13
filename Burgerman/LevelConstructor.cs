@@ -44,7 +44,11 @@ namespace Burgerman
             return sprites;
 
         }
-
+        //  222
+        //     2
+        //    2
+        //   2
+        //  2222
         public static List<Sprite> Level2(Game1 game)
         {
             float width = game.ScreenSize.X;
@@ -85,6 +89,11 @@ namespace Burgerman
 
         }
 
+        //  333
+        //     3
+        //  333
+        //     3
+        //  333
         public static List<Sprite> Level3(Game1 game)
         {
             float width = game.ScreenSize.X;
@@ -108,7 +117,19 @@ namespace Burgerman
             sprites.Add(CowProto.CloneAt(width * 1.1f));
             sprites.Add(CowProto.CloneAt(width * 1.2f));
             sprites.Add(CowProto.CloneAt(width * 1.5f));
-
+            sprites.Add(SoldierProto.CloneAt(width * 1.5f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.55f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.575f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.6f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.65f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.7f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.75f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.775f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.825f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.85f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.875f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.905f));
+            sprites.Add(SoldierProto.CloneAt(width * 1.925f));
             //Add the player last, so it will be on top
             sprites.Add(game.Player);
             return sprites;
