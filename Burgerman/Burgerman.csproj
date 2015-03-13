@@ -72,7 +72,6 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Burger.cs" />
     <Compile Include="Child.cs" />
-    <Compile Include="Cloud.cs" />
     <Compile Include="CollissionHandler.cs" />
     <Compile Include="Cow.cs" />
     <Compile Include="Game1.cs" />
@@ -143,10 +142,6 @@
     <Content Include="Content\childheadOK.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\cloud\cloud.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\cloud\cloud.svg" />
     <Content Include="Content\cow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
