@@ -29,7 +29,7 @@ namespace Burgerman
             
             if (Position.X < -30)
             {
-                Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.Level.MarkDead(this);
             }
         }
 
@@ -42,8 +42,8 @@ namespace Burgerman
         {
             if (other is Bullet || other is Burger)
             {
-                Game1.Instance.MarkForRemoval(this);
-                Game1.Instance.MarkForRemoval(other);
+                Game1.Instance.Level.MarkDead(this);
+                Game1.Instance.Level.MarkDead(other);
             }
         }
     }

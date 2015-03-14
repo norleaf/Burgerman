@@ -7,20 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class Cloud : Sprite
+    public class Cloud : BackgroundSprite
     {
         public Cloud(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
         }
 
-        public override void Update(GameTime gameTime)
+        public override Sprite CloneAt(float x, float y)
         {
-            base.Update(gameTime);
-            SlideLeft();
-            if (Position.X < -SpriteTexture.Width)
-            {
-                MoveHorizontally(Game1.Instance.ScreenSize.X + SpriteTexture.Width);
-            }
+            return new Cloud(SpriteTexture, new Vector2(x,y));
         }
     }
 }

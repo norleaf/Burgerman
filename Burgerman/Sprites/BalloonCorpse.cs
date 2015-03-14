@@ -46,6 +46,10 @@ namespace Burgerman
                 Velocity = Vector2.Add(Velocity, Game1.Gravity);
                 Position = Vector2.Add(Position, Velocity);
             }
+            if (Position.Y + BoundingBox.Height > Game1.GroundLevel)
+            {
+                Position = new Vector2(Position.X,Game1.GroundLevel-BoundingBox.Height);
+            }
             
         }
 

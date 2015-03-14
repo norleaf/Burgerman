@@ -25,7 +25,7 @@ namespace Burgerman
 
             if (Position.X < -BoundingBox.Width)
             {
-                Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.Level.MarkDead(this);
             }
         }
     }

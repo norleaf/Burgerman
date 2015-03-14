@@ -7,23 +7,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    public class Ground : Sprite
+    public class Ground : BackgroundSprite
     {
         private Game1 game;
 
         public Ground(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            game = Game1.Instance;
+            SlideSpeed = new Vector2(-Sprite.defaultSlideSpeed,0);
         }
 
-        public override void Update(GameTime gameTime)
+        public override Sprite CloneAt(float x)
         {
-            base.Update(gameTime);
-            SlideLeft();
-            if (Position.X < -30)
-            {
-                MoveHorizontally(game.ScreenSize.X + 30);
-            }
+            return new Ground(SpriteTexture, new Vector2(x, Game1.GroundLevel));
         }
     }
 }

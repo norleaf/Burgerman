@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Burgerman.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,14 +31,8 @@ namespace Burgerman
         public Balloon Player { get; private set; }
         public bool PlayerDead { get; set; }
         public bool ChildDead { get; set; }
-        public Child Child { get; private set; }
-        public Soldier Soldier { get; private set; }
-        public Hut Hut { get; private set; }
-        public Jet Jet { get; private set; }
-        public Helicopter Helicopter { get; private set; }
-        public Cow Cow { get; private set; }
+
         private Texture2D _backgroundTexture;
-        private Texture2D _palmtreeTexture;
         public Texture2D BulletTex { get; private set; }
         public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D BalloonDeathTexture { get; private set; }
@@ -45,13 +40,16 @@ namespace Burgerman
         public Texture2D HeadTexture { get; private set; }
         public Texture2D HeadOKTexture { get; private set; }
         public Texture2D HeadDEADTexture { get; private set; }
-        public Texture2D CloudTexture;
         private Sprite _background; 
         private IntroBalloon _introBalloon;
         private SpriteFont _font;
 
         ParticleEngine particleEngine;
         
+        
+        //THE CURRENT LEVEL WHICH WILL BE HOLDING ALL SPRITES BOTH BACKGROUND AND INTERACTIVE SPRITES
+        public Level Level { get; set; }
+        public LevelConstructor LevelConstructor { get; set; }
 
         public enum GameState { Intro, Pause, Level1, Level2, Level3 }
         public GameState State { get; private set; }
@@ -65,19 +63,18 @@ namespace Burgerman
         public int ChildrenTotal { get; set; }
 
        
-        private List<Sprite> DeadSprites { get; set; }
-        private List<Sprite> Sprites { get; set; }
-        private List<Sprite> BackgroundSprites { get; set; }
-        public List<Sprite> NewSprites { get; private set; }
-        private CollissionHandler CollissionHandler { get; set; }
+        //private List<Sprite> DeadSprites { get; set; }
+        //private List<Sprite> Sprites { get; set; }
+        //private List<Sprite> BackgroundSprites { get; set; }
+        //public List<Sprite> NewSprites { get; private set; }
+        public CollissionHandler CollisionHandler { get; set; }
         public Vector2 ScreenSize { get; private set; }
         private Random _ran;
         public string ScreenText { get; set; }
         public double TextDuration { get; set; }
         private bool _newText;
         private double _restartTime;
-        private double _timeSinceLastTree;
-        private int _treeDelay = 7000;
+        
 
         public static Game1 Instance
         {
@@ -127,10 +124,13 @@ namespace Burgerman
             // Create a new SpriteBatch, which can be used to draw textures.
             GroundLevel = ScreenSize.Y*0.8f;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Sprites = new List<Sprite>();
-            DeadSprites = new List<Sprite>();
-            BackgroundSprites = new List<Sprite>();
-            NewSprites = new List<Sprite>();
+            Level = new Level();
+            
+
+            //Sprites = new List<Sprite>();
+            //DeadSprites = new List<Sprite>();
+            //BackgroundSprites = new List<Sprite>();
+            //NewSprites = new List<Sprite>();
 
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
 
@@ -143,88 +143,67 @@ namespace Burgerman
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
             Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));
+            
+            
+            //This is the balloon used on the intro screen
             Texture2D introBalloonTexture2D = Content.Load<Texture2D>("introBalloon");
             _introBalloon = new IntroBalloon(introBalloonTexture2D, new Vector2(50,ScreenSize.Y));
 
-            Texture2D childTexture = Content.Load<Texture2D>("child");
-            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");
-            Texture2D soldierTexture = Content.Load<Texture2D>("animated_soldier");
-            Texture2D helicopterTexture = Content.Load<Texture2D>("Helicopter");
-            Texture2D jetTexture = Content.Load<Texture2D>("./attackplane/attackplane");
-            Texture2D mountainTexture = Content.Load<Texture2D>("mountain");
-            Texture2D hutTexture = Content.Load<Texture2D>("hut");
-            Texture2D groundTexture = Content.Load<Texture2D>("ground");
-            Texture2D cowTexture = Content.Load<Texture2D>("cow");
             
-            CloudTexture = Content.Load<Texture2D>("./cloud/cloud");
+            // This is the player balloon object. It will be the only one created so lets keep track of it so we don't loose it.
+            Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");
+            Player = new Balloon(ballonTexture, new Vector2(0, 0));
+           
+
+
+            // THESE ARE THE NEW PROTOTYPES THAT WILL BE USED IN LEVELCONSTRUCTOR!//////////////////////////////////////
+            Vector2 vectorZero = new Vector2(0,0);
+            Child ChildProto = new Child(Content.Load<Texture2D>("child"), vectorZero);
+            Soldier SoldierProto = new Soldier(Content.Load<Texture2D>("animated_soldier"), vectorZero);
+            Hut HutProto = new Hut(Content.Load<Texture2D>("hut"), vectorZero);
+            Jet JetProto = new Jet(Content.Load<Texture2D>("./attackplane/attackplane"), vectorZero);
+            Helicopter HelicopterProto = new Helicopter(Content.Load<Texture2D>("Helicopter"), vectorZero);
+            Cow CowProto = new Cow(Content.Load<Texture2D>("cow"), vectorZero);
+            Cloud CloudProto = new Cloud(Content.Load<Texture2D>("./cloud/cloud"), vectorZero);
+            Mountain MountainProto = new Mountain(Content.Load<Texture2D>("mountain"), vectorZero);
+            PalmTree PalmTreeProto = new PalmTree(Content.Load<Texture2D>("palm"), vectorZero);
+            Ground GroundProto = new Ground(Content.Load<Texture2D>("ground"),vectorZero);
+            
+
+            
+
+            //CloudTexture = Content.Load<Texture2D>("./cloud/cloud");
 
             ChildDeathTexture = Content.Load<Texture2D>("diechild");
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
 
+            //These classes are spawned during the game and are needed by the classes that spawn 
             BulletTex = Content.Load<Texture2D>("bullet");
+            Bullet BulletProto = new Bullet(Content.Load<Texture2D>("bullet"),vectorZero,vectorZero,null);
             BurgerTexture = Content.Load<Texture2D>("burger");
             HeadTexture = Content.Load<Texture2D>("childhead");
             HeadOKTexture = Content.Load<Texture2D>("childheadOK");
             HeadDEADTexture = Content.Load<Texture2D>("childheadDEAD");
-            _palmtreeTexture = Content.Load<Texture2D>("palm");
+
+            //Here we initialise our level contructor. It will hold all of our object prototypes.
+            LevelConstructor = new LevelConstructor(ChildProto, SoldierProto, HutProto, JetProto, HelicopterProto, CowProto, CloudProto, MountainProto, PalmTreeProto, GroundProto, BulletProto);
+            
+            //This is a 1 pixel wide color gradient image that we draw a lot to fill the screen. Wonder if a big picture would be better?
             _backgroundTexture = Content.Load<Texture2D>("background");
-            
-            
             _background = new Sprite(_backgroundTexture,new Vector2(0,0));
 
-            BackgroundSprite mount1 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 5f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
-            BackgroundSprite mount2 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 2f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
-            BackgroundSprite mount3 = new BackgroundSprite(mountainTexture, new Vector2(x: ScreenSize.X / 1f, y: ScreenSize.Y * 0.8f - mountainTexture.Height));
-            Hut = new Hut(hutTexture, new Vector2(ScreenSize.X / 2f, ScreenSize.Y * 0.8f - hutTexture.Height));
-            Player = new Balloon(ballonTexture, new Vector2(0, 0));
-            Child = new Child(childTexture, new Vector2(0, 0));
-            Soldier = new Soldier(spriteTexture: soldierTexture, position: new Vector2(ScreenSize.X, ScreenSize.Y * 0.8f - soldierTexture.Height));
-            Jet = new Jet(jetTexture, new Vector2(0,0));
-            Helicopter = new Helicopter(helicopterTexture, new Vector2(ScreenSize.X + 100, ScreenSize.Y * 0.2f));
-            Cow = new Cow(cowTexture,new Vector2(0,0));
-
             _ran = new Random();
-
-            //Generate mountains at beginning of level
-            BackgroundSprites.Add(mount1);
-            BackgroundSprites.Add(mount2);
-            BackgroundSprites.Add(mount3);
-
-
-            //Generate clouds at beginning of level
-            for (int i = 0; i < 8; i++)
-            {
-                float scale = ((float)_ran.Next(3, 7) / 10);
-                int offsetX = _ran.Next((int)ScreenSize.X + 100);
-                int offsetY = _ran.Next((int)ScreenSize.Y / 3);
-                Cloud cloud = new Cloud(CloudTexture, new Vector2(offsetX, offsetY));
-                cloud.Scale = scale;
-                cloud.SlideSpeed = new Vector2(-0.375f, 0);
-                BackgroundSprites.Add(cloud);
-            }
-
-            //Generate trees at beginning of level
-            for (int i = 0; i < 15; i++)
-            {
-                float scale = ((float)_ran.Next(7, 11) / 10);
-                int offset = _ran.Next((int)ScreenSize.X + 100);
-                BackgroundSprites.Add(PalmTree.MakeNewTree(_palmtreeTexture, scale, offset));
-            }
             
-            
-            for (int i = 0; i < ScreenSize.X/30+3; i++)
-            {
-                BackgroundSprites.Add(new Ground(groundTexture, new Vector2(30 * i, ScreenSize.Y * 0.8f)));
-            }
-
+            //The game starts with us showing the Intro screen. Therefore we set the gamestate to Intro. Who would have thought...
             State = GameState.Intro;
-            Sprites.Add(_introBalloon);
-            Sprites.Add(intro);
-
             
-            //Levels: kald en levelgenerator med static metoder som returnerer en sprites liste
-           // Sprites = LevelConstructor.Level1(this);
-            CollissionHandler = new CollissionHandler(Sprites);
+            // We use the levelconstructor to set the level to the intro screen.
+            Level = LevelConstructor.IntroScreen(particleEngine);
+            
+            Level.LevelSprites.Add(_introBalloon);
+
+            // The CollisionHandler is created with the level list of sprites that we want to check collisions for
+            CollisionHandler = new CollissionHandler(Level.LevelSprites);
 
             _font = Content.Load<SpriteFont>("superfont");
 
@@ -308,29 +287,15 @@ namespace Burgerman
             // TODO: Add your update logic here
             
             if (State != GameState.Pause) { 
-            CollissionHandler.Update(gameTime);
-            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay)
-            {
-                float scale = ((float)_ran.Next(7, 11) / 10);
-                int offset = (int)ScreenSize.X + _ran.Next(200);
-                BackgroundSprites.Add(PalmTree.MakeNewTree(_palmtreeTexture, scale, offset));
-                _timeSinceLastTree = gameTime.TotalGameTime.TotalMilliseconds;
-                _treeDelay = 3500 + _ran.Next(3500);
-            }
-            AddNewSprites();
-            RemoveDeadSprites();
-            CheckLevelDone(gameTime);
+                // HERE WE UPDATE ALL SPRITES IN THE CURRENT LEVEL
+                Level.Update(gameTime);
+                CollisionHandler.Update(gameTime);
+                
+                //AddNewSprites();
+                //RemoveDeadSprites();
+                CheckLevelDone(gameTime);
 
-            foreach (Sprite sprite in Sprites)
-            {
-              
-                sprite.Update(gameTime);
-            }
             
-            foreach (Sprite sprite in BackgroundSprites)
-            {
-                sprite.Update(gameTime);
-            }
             
             }
             if (_newText)
@@ -356,6 +321,7 @@ namespace Burgerman
            // _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
             
             if (State == GameState.Intro) particleEngine.Draw(_spriteBatch);
+            
             if (State != GameState.Intro)
             {
                 for (int i = 0; i < ScreenSize.X; i++)
@@ -363,13 +329,12 @@ namespace Burgerman
                     _background.Position = new Vector2(1*i, 0);
                     _background.Draw(_spriteBatch);
                 }
-                foreach (Sprite sprite in BackgroundSprites)
-                {
-                    sprite.Draw(_spriteBatch);
-                }
+                
                 DrawHUD();
             }
-            DrawSprites();
+            //HERE WE DRAW ALL SPRITES CONTAINED IN THE LISTS IN OUR CURRENT LEVEL
+            Level.Draw(_spriteBatch);
+            //DrawSprites();
             //Only draw text until the time set
             if (gameTime.TotalGameTime.TotalMilliseconds < TextDuration)
             {
@@ -404,15 +369,6 @@ namespace Burgerman
             }
         }
 
-        private void DrawSprites()
-        {
-            
-            foreach (Sprite sprite in Sprites)
-            {
-                sprite.Draw( _spriteBatch);
-            }
-        }
-
         private void DrawText(SpriteBatch spriteBatch)
         {
             if(ScreenText != null)
@@ -421,52 +377,52 @@ namespace Burgerman
 
 
         //This method is called during the update loop an places new sprites in a temp list to be added before the next update loop
-        public void SpawnSpriteAtRuntime(Sprite sprite)
-        {
-            if (sprite != null)
-            {
-                NewSprites.Add(sprite);
-         //       Console.WriteLine(NewSprites.Count);
-            }
-        }
+        //public void SpawnSpriteAtRuntime(Sprite sprite)
+        //{
+        //    if (sprite != null)
+        //    {
+        //        NewSprites.Add(sprite);
+        // //       Console.WriteLine(NewSprites.Count);
+        //    }
+        //}
 
         //This method takes the sprites from the temporary list and adds them to the main sprites list prior to running the update loop
-        private void AddNewSprites()
-        {
+        //private void AddNewSprites()
+        //{
          
-            foreach (Sprite sprite in NewSprites)
-            {
-                Sprites.Add(sprite);
-                if (sprite is ICollidable)
-                {
-                    CollissionHandler.CollisionListenersList.Add((ICollidable)sprite);
-                }
-            }
-            NewSprites.Clear();
-        }
+        //    foreach (Sprite sprite in NewSprites)
+        //    {
+        //        Sprites.Add(sprite);
+        //        if (sprite is ICollidable)
+        //        {
+        //            CollisionHandler.CollisionListenersList.Add((ICollidable)sprite);
+        //        }
+        //    }
+        //    NewSprites.Clear();
+        //}
 
 
         //This method is called in the update sprites loop and prepares a given sprite for removal before the next update loop. 
-        internal void MarkForRemoval(Sprite sprite)
-        {
+        //internal void MarkForRemoval(Sprite sprite)
+        //{
             
-            DeadSprites.Add(sprite);
-        }
+        //    DeadSprites.Add(sprite);
+        //}
 
-        private void RemoveDeadSprites()
-        {
-                foreach (Sprite deadSprite in DeadSprites)
-                {
-                    Sprites.Remove(deadSprite);
-                    CollissionHandler.AllElements.Remove(deadSprite);
-                    BackgroundSprites.Remove(deadSprite);
-                    if (deadSprite is ICollidable)
-                    {
-                        CollissionHandler.CollisionListenersList.Remove((ICollidable)deadSprite);
-                    }                 
-                }
-                DeadSprites.Clear();
-        }
+        //private void RemoveDeadSprites()
+        //{
+        //        foreach (Sprite deadSprite in DeadSprites)
+        //        {
+        //            Sprites.Remove(deadSprite);
+        //            CollisionHandler.AllElements.Remove(deadSprite);
+        //            BackgroundSprites.Remove(deadSprite);
+        //            if (deadSprite is ICollidable)
+        //            {
+        //                CollisionHandler.CollisionListenersList.Remove((ICollidable)deadSprite);
+        //            }                 
+        //        }
+        //        DeadSprites.Clear();
+        //}
 
         // This method is called whenever a condition requires the current level to be reset. For instance player death or too many children died.
         private void Restart()
@@ -475,32 +431,35 @@ namespace Burgerman
             Player.Ammo = 5;
             ChildrenFed = 0;
             ChildrenDied = 0;
-            NewSprites.Clear();
-            DeadSprites.Clear();
-            Sprites.Clear();
+            //NewSprites.Clear();
+            //DeadSprites.Clear();
+            //Sprites.Clear();
             switch (State)
             {
                     case GameState.Level1:
                     CreateTextMessage("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000);
-                    Sprites = LevelConstructor.Level1(this);
+                    //Sprites = LevelConstructor.Level1(this);
+                    Level = LevelConstructor.Level1();
                     ChildrenTotal = 3;
                     ChildrenFedGoal = 2;
                     Player.Ammo = 20;
                     break;
                     case GameState.Level2:
                     CreateTextMessage("LEVEL 2:\nCows can be burgers...", 3000);
-                    Sprites = LevelConstructor.Level2(this);
+                    //Sprites = LevelConstructor.Level2(this);
+                    Level = LevelConstructor.Level2();
                     ChildrenTotal = 6;
                     ChildrenFedGoal = 5;
                     break;
                     case GameState.Level3:
                     CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
-                    Sprites = LevelConstructor.Level3(this);
+                    //Sprites = LevelConstructor.Level3(this);
+                    Level = LevelConstructor.Level3();
                     ChildrenTotal = 0;
                     ChildrenFedGoal = 0;
                     break;
             }
-            CollissionHandler = new CollissionHandler(Sprites);
+            CollisionHandler = new CollissionHandler(Level.LevelSprites);
             
         }
 

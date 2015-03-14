@@ -64,26 +64,28 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Sprites\AnimatedSprite.cs" />
     <Compile Include="Animation.cs" />
-    <Compile Include="BackgroundSprite.cs" />
-    <Compile Include="Balloon.cs" />
-    <Compile Include="BalloonCorpse.cs" />
-    <Compile Include="Bullet.cs" />
-    <Compile Include="Burger.cs" />
-    <Compile Include="Child.cs" />
-    <Compile Include="Cloud.cs" />
+    <Compile Include="Sprites\BackgroundSprite.cs" />
+    <Compile Include="Sprites\Balloon.cs" />
+    <Compile Include="Sprites\BalloonCorpse.cs" />
+    <Compile Include="Sprites\Bullet.cs" />
+    <Compile Include="Sprites\Burger.cs" />
+    <Compile Include="Sprites\Child.cs" />
+    <Compile Include="Sprites\Cloud.cs" />
     <Compile Include="CollissionHandler.cs" />
-    <Compile Include="Cow.cs" />
+    <Compile Include="Sprites\Cow.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Ground.cs" />
-    <Compile Include="Helicopter.cs" />
-    <Compile Include="Hut.cs" />
+    <Compile Include="Sprites\Ground.cs" />
+    <Compile Include="Sprites\Helicopter.cs" />
+    <Compile Include="Sprites\Hut.cs" />
     <Compile Include="ICollidable.cs" />
-    <Compile Include="IntroBalloon.cs" />
-    <Compile Include="Jet.cs" />
+    <Compile Include="Sprites\IntroBalloon.cs" />
+    <Compile Include="Sprites\Jet.cs" />
     <Compile Include="LevelConstructor.cs" />
-    <Compile Include="PalmTree.cs" />
+    <Compile Include="Sprites\Mountain.cs" />
+    <Compile Include="Sprites\PalmTree.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEngine2D.cs" />
     <Compile Include="Program.cs" />
@@ -93,8 +95,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Soldier.cs" />
-    <Compile Include="Sprite.cs" />
+    <Compile Include="Sprites\Soldier.cs" />
+    <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Text.cs" />
   </ItemGroup>
   <ItemGroup>

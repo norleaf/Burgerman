@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class Bullet : AnimatedSprite
+    public class Bullet : AnimatedSprite
     {
         private Vector2 _moveVector;
         private float _speed = 3.5f;
@@ -31,8 +31,13 @@ namespace Burgerman
             Position = Vector2.Add(Position, _moveVector *_speed);
             if (Position.X < -100 || Position.X > game.ScreenSize.X+100 || Position.Y < -10 || Position.Y > Game1.GroundLevel)
             {
-                game.MarkForRemoval(this);
+                game.Level.MarkDead(this);
             }
+        }
+
+        public Sprite CloneBullet(float x, float y, Sprite shooter)
+        {
+            return new Bullet(SpriteTexture, new Vector2(x, y), game.Player.Position, shooter);
         }
     }
 }

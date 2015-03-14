@@ -8,11 +8,13 @@ namespace Burgerman
     {
         private bool _spawnedChild = false;
         private float _spawnpoint;
+        private Game1 game;
 
         public Hut(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
             Random ran = new Random();
             _spawnpoint = (float)ran.NextDouble()/3f + 0.4f;
+            game = Game1.Instance;
         }
 
         public override void Update(GameTime gameTime)
@@ -23,8 +25,8 @@ namespace Burgerman
             if (!_spawnedChild && Position.X < Game1.Instance.ScreenSize.X * _spawnpoint)
             {
                 _spawnedChild = true;
-                Sprite child = Game1.Instance.Child.CloneAt(Position.X + BoundingBox.Width / 4f);
-                Game1.Instance.NewSprites.Add(child);
+                Sprite child = game.LevelConstructor.ChildProto.CloneAt(Position.X + BoundingBox.Width / 4f);
+                game.Level.SpawnSpriteAtRuntime(child);
             }
             SlideLeft();
         }

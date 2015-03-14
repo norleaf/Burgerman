@@ -25,7 +25,7 @@ namespace Burgerman
             NextPosition = Vector2.Add(Position, Velocity);
             if (NextPosition.Y+BoundingBox.Height > Game1.GroundLevel)
             {
-                Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.Level.MarkDead(this);
             }
             else
             {

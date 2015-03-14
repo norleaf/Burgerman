@@ -149,7 +149,7 @@ namespace Burgerman
             Vector2 spawnpoint = Vector2.Add(Position,new Vector2(BoundingBox.Width/2,BoundingBox.Height-20));
             Burger burger = new Burger(game.BurgerTexture,spawnpoint);
             Ammo--;
-            game.SpawnSpriteAtRuntime(burger);
+            game.Level.SpawnSpriteAtRuntime(burger);
         }
 
         public void CollideWith(Sprite other)
@@ -161,7 +161,7 @@ namespace Burgerman
                 {
                     Die();
                     Game1.Instance.CreateTextMessage("You got shot! Restarting mission...", 2000);
-                    game.MarkForRemoval(other);
+                    game.Level.MarkDead(other);
                 }
             }
             if (other is Jet)
@@ -176,7 +176,7 @@ namespace Burgerman
             if (other is Cow)
             {
                 //The balloon collects the cow and gains 3 burgers
-                Game1.Instance.MarkForRemoval(other);
+                game.Level.MarkDead(other);
                 Ammo += 3;
             }
         }
@@ -189,11 +189,11 @@ namespace Burgerman
 
         public override void Die()
         {
-            game.MarkForRemoval(this);
+            game.Level.MarkDead(this);
             game.PlayerDead = true;
             //create a burning balloon sprite to replace our balloon
             AnimatedSprite corpse = new BalloonCorpse(Game1.Instance.BalloonDeathTexture, Position);
-            game.SpawnSpriteAtRuntime(corpse);
+            game.Level.SpawnSpriteAtRuntime(corpse);
         }
     }
 }

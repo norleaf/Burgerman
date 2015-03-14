@@ -43,7 +43,7 @@ namespace Burgerman
                     MoveHorizontally(-1);
                     if (Position.X < -BoundingBox.Width)
                     {
-                        game.MarkForRemoval(this);
+                        game.Level.MarkDead(this);
                     }
                     break;
             }
@@ -61,7 +61,7 @@ namespace Burgerman
             {
                 _fed = true;
                 _state = State.Leaving;
-                game.MarkForRemoval(other);
+                game.Level.MarkDead(other);
                 game.ChildrenFed++;
             }
 
@@ -69,13 +69,13 @@ namespace Burgerman
             {
                 Die();
                 game.CreateTextMessage("Child shot!", 2000);
-                game.MarkForRemoval(other);
+                game.Level.MarkDead(other);
             }
 
             if (Position.X < -BoundingBox.Width)
             {
                 game.ChildrenDied++;
-                game.MarkForRemoval(this);
+                game.Level.MarkDead(this);
             }
             
         }
@@ -87,7 +87,7 @@ namespace Burgerman
             {
                 game.ChildrenFed--;
             }
-            game.MarkForRemoval(this);
+            game.Level.MarkDead(this);
             game.ChildDead = true;
             AnimatedSprite corpse = new AnimatedSprite(game.ChildDeathTexture, Position);
             
@@ -98,7 +98,7 @@ namespace Burgerman
             fall.Frames.Add(new Rectangle(94, 0, 47, 47));
             fall.Frames.Add(new Rectangle(141, 0, 47, 47));
             corpse.setAnimation(fall);
-            game.SpawnSpriteAtRuntime(corpse);
+            game.Level.SpawnSpriteAtRuntime(corpse);
         }
 
         public override Sprite CloneAt(float x)

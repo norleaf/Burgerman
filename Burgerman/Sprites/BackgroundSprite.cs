@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class BackgroundSprite : Sprite
+    public class BackgroundSprite : Sprite
     {
         private Texture2D spriteTexture;
 

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class PalmTree : Sprite
+    public class PalmTree : Sprite
     {
         private Texture2D spriteTexture;
 
@@ -24,17 +24,17 @@ namespace Burgerman
             
             if (Position.X < -spriteTexture.Width)
             {
-                Game1.Instance.MarkForRemoval(this);
+                Game1.Instance.Level.MarkDead(this);
 
             }
         }
 
-        public static PalmTree MakeNewTree(Texture2D spriteTexture, float scale, int offset)
+        public PalmTree MakeNewTree(float scale, int offset)
         {
             Random ran = new Random();
             Game1 game = Game1.Instance;
             
-            PalmTree tree = new PalmTree(spriteTexture, new Vector2(offset, game.ScreenSize.Y * 0.8f - spriteTexture.Height * scale));
+            PalmTree tree = new PalmTree(SpriteTexture, new Vector2(x: offset, y: Game1.GroundLevel - SpriteTexture.Height * scale));
             tree.Scale = scale;
             return tree;
         }

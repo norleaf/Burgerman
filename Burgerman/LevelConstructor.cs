@@ -1,47 +1,143 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using Burgerman.Sprites;
+using Microsoft.Xna.Framework;
 
 namespace Burgerman
 {
-    class LevelConstructor
+    public class LevelConstructor
     {
-        public static float LevelLength;
-        public static List<Sprite> Level1(Game1 game)
+        Level level;
+        private Game1 game;
+        private float width;
+        private float height;
+        private Random ran;
+
+        public Child ChildProto { get; private set; }
+        public Soldier SoldierProto { get; private set; }
+        public Hut HutProto { get; private set; }
+        public Jet JetProto { get; private set; }
+        public Helicopter HelicopterProto { get; private set; }
+        public Cow CowProto { get; private set; }
+        public Cloud CloudProto { get; set; }
+        public Mountain MountainProto { get; set; }
+        public PalmTree PalmProto { get; set; }
+        public Ground GroundProto { get; set; }
+        public Bullet BulletProto { get; set; }
+
+        public LevelConstructor(Child childProto, Soldier soldierProto, Hut hutProto, Jet jetProto, Helicopter helicopterProto,Cow cowProto, Cloud cloudProto, Mountain mountainProto,
+            PalmTree palm, Ground ground, Bullet bullet)
         {
-            float width = game.ScreenSize.X;
-            float height = game.ScreenSize.Y;
-            List<Sprite> sprites = new List<Sprite>();
+            game = Game1.Instance;
+            level = new Level();
+            ran = new Random();
+            width = game.ScreenSize.X;
+            height = game.ScreenSize.Y;
 
-            LevelLength = width * 1.6f;
+            ChildProto = childProto;
+            SoldierProto = soldierProto;
+            HutProto = hutProto;
+            JetProto = jetProto;
+            HelicopterProto = helicopterProto;
+            CowProto = cowProto;
+            CloudProto = cloudProto;
+            MountainProto = mountainProto;
+            PalmProto = palm;
+            GroundProto = ground;
+            BulletProto = bullet;
+        }
 
-            var ChildProto = game.Child;
-            var SoldierProto = game.Soldier;
-            var HelicopterProto = game.Helicopter;
-            var HutProto = game.Hut;
-            var JetProto = game.Jet;
-            var CowProto = game.Cow;
+
+        public void GenerateClouds()
+        {
+            //Generate clouds at beginning of level
+            for (int i = 0; i < 8; i++)
+            {
+                float scale = ((float)ran.Next(3, 7) / 10);
+                int offsetX = ran.Next((int)width + 100);
+                int offsetY = ran.Next((int)height / 3);
+                Sprite cloud = CloudProto.CloneAt(offsetX, offsetY);
+                cloud.Scale = scale;
+                cloud.SlideSpeed = new Vector2(-0.375f, 0);
+                level.BackgroundSprites.Add(cloud);
+            }
+        }
+
+        public void GenerateMountains()
+        {
             
-            sprites.Add(HutProto.CloneAt(width * 0.5f));
-           // sprites.Add(ChildProto.CloneAt(width /2 +300));
-          //  sprites.Add(CowProto.CloneAt(width * 0.9f));
-            sprites.Add(HutProto.CloneAt(width * 0.9f));
-            sprites.Add(HutProto.CloneAt(width * 1.4f));
-            sprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 10.8f, height * 1 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 11.3f, height * 3 / 10));
-            sprites.Add(SoldierProto.CloneAt(width + 50));
-            sprites.Add(SoldierProto.CloneAt(width * 1.5f + 50));
-            sprites.Add(SoldierProto.CloneAt(width * 2.5f + 50));
-            sprites.Add(JetProto.CloneAt(width * 2, height * 5 / 10));
-            sprites.Add(JetProto.CloneAt(width * 5, height * 1 / 10));
-            sprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
+        }
+
+        public void GenerateGround()
+        {
+            for (int i = 0; i < width / 30 + 3; i++)
+            {
+                Ground ground = (Ground) GroundProto.CloneAt(30*i);
+                level.BackgroundSprites.Add(ground);
+            }
+        }
+
+        public void GenerateTrees()
+        {
+            //Generate trees at beginning of level
+            for (int i = 0; i < 15; i++)
+            {
+                float scale = ((float)ran.Next(7, 11) / 10);
+                int offset = ran.Next((int)width + 100);
+                level.BackgroundSprites.Add(PalmProto.MakeNewTree(scale, offset));
+            }
+        }
+
+        public void CleanData()
+        {
+            level.BackgroundSprites.Clear();
+            level.NewSprites.Clear();
+            level.LevelSprites.Clear();
+            level.DeadSprites.Clear();
+        }
+
+        
+        public void NewLevelStart()
+        {
+            CleanData();
+            GenerateGround();
+            GenerateMountains();
+            GenerateTrees();
+            GenerateClouds();
+        }
+
+        public Level IntroScreen(ParticleEngine engine)
+        {
+            GenerateClouds();
+            level.ParticleEngines.Add(engine);
+            return level;
+        }
+
+        public Level Level1()
+        {
+            NewLevelStart();
+            level.LevelLength = width * 1.6f;
+
+            level.LevelSprites.Add(HutProto.CloneAt(width * 0.5f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 0.9f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 1.4f));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 10.8f, height * 1 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 11.3f, height * 3 / 10));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width + 50));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.5f + 50));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.5f + 50));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 2, height * 5 / 10));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 5, height * 1 / 10));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
             //Add the player last, so it will be on top
-            sprites.Add(game.Player);
-            return sprites;
+            level.LevelSprites.Add(game.Player);
+            return level;
 
         }
         //  222
@@ -49,43 +145,32 @@ namespace Burgerman
         //    2
         //   2
         //  2222
-        public static List<Sprite> Level2(Game1 game)
+        public Level Level2()
         {
-            float width = game.ScreenSize.X;
-            float height = game.ScreenSize.Y;
-            List<Sprite> sprites = new List<Sprite>();
+            NewLevelStart();
+            level.LevelLength = width * 1.6f;
 
-            LevelLength = width * 1.6f;
-
-            var ChildProto = game.Child;
-            var SoldierProto = game.Soldier;
-            var HelicopterProto = game.Helicopter;
-            var HutProto = game.Hut;
-            var JetProto = game.Jet;
-            var CowProto = game.Cow;
-
-            sprites.Add(HutProto.CloneAt(width * 0.5f));
-            sprites.Add(HutProto.CloneAt(width * 0.6f));
-            sprites.Add(HutProto.CloneAt(width * 0.65f));
-       //     sprites.Add(ChildProto.CloneAt(width /4));
-            sprites.Add(HutProto.CloneAt(width * 1.0f));
-            sprites.Add(HutProto.CloneAt(width * 1.3f));
-            sprites.Add(HutProto.CloneAt(width * 1.4f));
-            sprites.Add(CowProto.CloneAt(width * 0.9f));
-            sprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 10.8f, height * 1 / 10));
-            sprites.Add(HelicopterProto.CloneAt(width * 11.3f, height * 3 / 10));
-            sprites.Add(SoldierProto.CloneAt(width + 50));
-            sprites.Add(SoldierProto.CloneAt(width * 1.5f + 50));
-            sprites.Add(SoldierProto.CloneAt(width * 2.5f + 50));
-            sprites.Add(JetProto.CloneAt(width * 2, height * 5 / 10));
-            sprites.Add(JetProto.CloneAt(width * 5, height * 1 / 10));
-            sprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 0.5f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 0.6f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 0.65f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 1.0f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 1.3f));
+            level.LevelSprites.Add(HutProto.CloneAt(width * 1.4f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.9f));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 10.8f, height * 1 / 10));
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 11.3f, height * 3 / 10));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width + 50));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.5f + 50));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.5f + 50));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 2, height * 5 / 10));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 5, height * 1 / 10));
+            level.LevelSprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
             //Add the player last, so it will be on top
-            sprites.Add(game.Player);
-            return sprites;
+            level.LevelSprites.Add(game.Player);
+            return level;
 
         }
 
@@ -94,65 +179,46 @@ namespace Burgerman
         //  333
         //     3
         //  333
-        public static List<Sprite> Level3(Game1 game)
+        public Level Level3()
         {
-            float width = game.ScreenSize.X;
-            float height = game.ScreenSize.Y;
-            List<Sprite> sprites = new List<Sprite>();
-
-            LevelLength = width*2f;
-
-            var ChildProto = game.Child;
-            var SoldierProto = game.Soldier;
-            var HelicopterProto = game.Helicopter;
-            var HutProto = game.Hut;
-            var JetProto = game.Jet;
-            var CowProto = game.Cow;
-
-            sprites.Add(CowProto.CloneAt(width * 0.2f));
-            sprites.Add(CowProto.CloneAt(width * 0.3f)); 
-            sprites.Add(CowProto.CloneAt(width * 0.4f));
-            sprites.Add(CowProto.CloneAt(width * 0.6f));
-            sprites.Add(CowProto.CloneAt(width * 0.8f));
-            sprites.Add(CowProto.CloneAt(width * 1.1f));
-            sprites.Add(CowProto.CloneAt(width * 1.2f));
-            sprites.Add(CowProto.CloneAt(width * 1.5f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.5f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.55f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.575f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.6f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.65f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.7f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.75f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.775f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.825f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.85f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.875f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.905f));
-            sprites.Add(SoldierProto.CloneAt(width * 1.925f));
+            NewLevelStart();
+            level.LevelLength = width*2f;
+            
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.2f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.3f)); 
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.4f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.6f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 0.8f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 1.1f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 1.2f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 1.5f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.5f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.55f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.575f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.6f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.65f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.7f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.75f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.775f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.825f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.85f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.875f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.905f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.925f));
             //Add the player last, so it will be on top
-            sprites.Add(game.Player);
-            return sprites;
+            level.LevelSprites.Add(game.Player);
+            return level;
         }
 
-        public static List<Sprite> Level4(Game1 game)
+        public Level Level4()
         {
-            float width = game.ScreenSize.X;
-            float height = game.ScreenSize.Y;
-            List<Sprite> sprites = new List<Sprite>();
-
-            var ChildProto = game.Child;
-            var SoldierProto = game.Soldier;
-            var HelicopterProto = game.Helicopter;
-            var HutProto = game.Hut;
-            var JetProto = game.Jet;
-
-
+            NewLevelStart();
+            level.LevelLength = width * 2f;
 
 
             //Add the player last, so it will be on top
-            sprites.Add(game.Player);
-            return sprites;
+            level.LevelSprites.Add(game.Player);
+            return level;
         }
     }
 

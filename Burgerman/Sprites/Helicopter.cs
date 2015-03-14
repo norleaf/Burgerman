@@ -90,7 +90,7 @@ namespace Burgerman
             MoveVertically(-1);
             if (Position.Y < -200)
             {
-                game.MarkForRemoval(this);
+                game.Level.MarkDead(this);
             }
         }
 
@@ -103,9 +103,10 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
                 Vector2 target = game.Player.Center;
-                Bullet bullet = new Bullet(bulletTexture, new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2), target, this);
+                Bullet bullet = (Bullet) game.LevelConstructor.BulletProto.CloneBullet(Position.X + BoundingBox.Width/3f, Position.Y + SpriteTexture.Height/3*2, this);
+                    //new Bullet(bulletTexture, new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2), target, this);
                 game.ShotSound.Play();
-                game.SpawnSpriteAtRuntime(bullet);
+                game.Level.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -141,14 +142,14 @@ namespace Burgerman
         {
             if (other is Jet)
             {
-                game.MarkForRemoval(this);
+                game.Level.MarkDead(this);
             }
             if (other is Bullet)
             {
                 Bullet bullet = (Bullet) other;
                 if (!bullet.Shooter.Equals(this))
                 {
-                    game.MarkForRemoval(this);
+                    game.Level.MarkDead(this);
                 }
             }
         }
