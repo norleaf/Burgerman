@@ -11,10 +11,11 @@ namespace Burgerman
         private int _upOrDown;
         private double _millisecondsAtLastSalvo;
         private double _millisecondsAtLastShot;
-        private int _firingDelay = 500;
-        private int _salvoLength = 3000;
+        private int _firingDelay = 50;
+        private int _salvoLength = 1000;
         private int _salvos = 3;
-        private int _waitTime = 2000;
+        private int _waitTime = 3000;
+        
         private int _speed = 5;
         private Game1 game;
         private Texture2D bulletTexture;
@@ -28,7 +29,6 @@ namespace Burgerman
             this.spriteTexture = spriteTexture;
             SlideSpeed = new Vector2(0,0);
             game = Game1.Instance;
-            bulletTexture = game.BulletTex;
             Animation flying = new Animation(this, 200);
             flying.Delay = 100;
             flying.Frames.Add(new Rectangle(0, 0, 200, 74));
@@ -102,9 +102,7 @@ namespace Burgerman
             }
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
-                Vector2 target = game.Player.Center;
                 Bullet bullet = (Bullet) game.LevelConstructor.BulletProto.CloneBullet(Position.X + BoundingBox.Width/3f, Position.Y + SpriteTexture.Height/3*2, this);
-                    //new Bullet(bulletTexture, new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2), target, this);
                 game.ShotSound.Play();
                 game.Level.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;

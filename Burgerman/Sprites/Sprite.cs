@@ -12,14 +12,15 @@ namespace Burgerman
     public class Sprite
     {
         public string Name { get; set; }
-        public static float defaultSlideSpeed = 0.5f;
+        //public static float defaultSlideSpeed = 0.5f;
         public Vector2 SlideSpeed { get; set; }
+        public static Vector2 DefaultSlideSpeed = new Vector2(-0.5f,0);
         public Random Ran { get; private set; }
         
         public Sprite(Texture2D spriteTexture, Vector2 position)
         {
             Ran = new Random();
-            SlideSpeed = new Vector2(-defaultSlideSpeed,0);
+            SlideSpeed = DefaultSlideSpeed;
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;

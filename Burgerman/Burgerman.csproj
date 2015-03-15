@@ -64,6 +64,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BloodFountain.cs" />
+    <Compile Include="FireworksEmitter.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
     <Compile Include="Animation.cs" />
@@ -124,6 +126,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\balloon\balloonburning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\blood.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bullet.png">

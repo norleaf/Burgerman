@@ -9,11 +9,16 @@ namespace Burgerman
 {
     public class Soldier: AnimatedSprite, ICollidable
     {
+        private double _millisecondsAtLastShot;
+        private int _firingDelay = 3000;
+        private Game1 game;
+
         public Soldier(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
            // Scale *= 0.5f;
             Name = "Soldier";
+            game = Game1.Instance;
             SlideSpeed = new Vector2(-1,0);
             Animation running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
@@ -21,6 +26,7 @@ namespace Burgerman
             running.Frames.Add(new Rectangle(128, 0, 64, 55));
             running.Frames.Add(new Rectangle(192, 0, 64, 55));
             setAnimation(running);
+            _state = State.Walking;
         }
 
         public override void Update(GameTime gameTime)
@@ -31,6 +37,22 @@ namespace Burgerman
             {
                 Game1.Instance.Level.MarkDead(this);
             }
+            if (_state == State.Walking)
+            {
+                Shoot(gameTime);
+            }
+            
+        }
+
+        private void Shoot(GameTime gameTime)
+        {
+            if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay && Position.X < game.ScreenSize.X)
+            {
+                Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2, this);
+                game.ShotSound.Play();
+                game.Level.SpawnSpriteAtRuntime(bullet);
+                _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
+            }
         }
 
         public override Sprite CloneAt(float x)
@@ -40,9 +62,20 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            if (other is Bullet || other is Burger)
+            if (other is Bullet )
             {
-                Game1.Instance.Level.MarkDead(this);
+                Bullet bullet = (Bullet) other;
+                bool soldiershot = bullet.Shooter is Soldier;
+                if (!soldiershot)
+                {
+                    Game1.Instance.Level.MarkDead(this);
+                    Game1.Instance.Level.MarkDead(other);
+                }
+            }
+            if (other is Burger)
+            {
+                _state = State.Waiting;
+                SlideSpeed = Sprite.DefaultSlideSpeed;
                 Game1.Instance.Level.MarkDead(other);
             }
         }

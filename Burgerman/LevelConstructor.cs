@@ -68,7 +68,13 @@ namespace Burgerman
 
         public void GenerateMountains()
         {
-            
+            int amount = ran.Next(3) + 1;
+            for (int i = 0; i < amount; i++)
+            {
+                Sprite mountain = MountainProto.CloneAt(ran.Next((int) width));
+                mountain.SlideSpeed = new Vector2(-0.25f,0);
+                level.BackgroundSprites.Add(mountain);
+            }
         }
 
         public void GenerateGround()
@@ -107,12 +113,13 @@ namespace Burgerman
             GenerateMountains();
             GenerateTrees();
             GenerateClouds();
+            level.ParticleEngines.Clear();
         }
 
-        public Level IntroScreen(ParticleEngine engine)
+        public Level IntroScreen()
         {
             GenerateClouds();
-            level.ParticleEngines.Add(engine);
+            level._palms = false;
             return level;
         }
 
@@ -137,6 +144,7 @@ namespace Burgerman
             level.LevelSprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
             //Add the player last, so it will be on top
             level.LevelSprites.Add(game.Player);
+            level._palms = true;
             return level;
 
         }
@@ -157,6 +165,7 @@ namespace Burgerman
             level.LevelSprites.Add(HutProto.CloneAt(width * 1.3f));
             level.LevelSprites.Add(HutProto.CloneAt(width * 1.4f));
             level.LevelSprites.Add(CowProto.CloneAt(width * 0.9f));
+            level.LevelSprites.Add(CowProto.CloneAt(width * 1.45f));
             level.LevelSprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
             level.LevelSprites.Add(HelicopterProto.CloneAt(width * 3.9f, height * 3 / 10));
             level.LevelSprites.Add(HelicopterProto.CloneAt(width * 7.3f, height * 2 / 10));

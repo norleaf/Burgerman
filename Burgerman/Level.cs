@@ -17,6 +17,7 @@ namespace Burgerman
         public float LevelLength { get; set; }
         private double _timeSinceLastTree;
         private int _treeDelay = 7000;
+        public bool _palms;
         private Random _ran;
         private Game1 game;
 
@@ -86,7 +87,7 @@ namespace Burgerman
             }
 
             //Is it time to spawn a new tree?
-            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay)
+            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay && _palms)
             {
                 float scale = ((float)_ran.Next(7, 11) / 10);
                 int offset = (int)game.ScreenSize.X + _ran.Next(200);
@@ -101,6 +102,13 @@ namespace Burgerman
                 sprite.Update(gameTime);
             }
 
+            //Update all particle emitters
+            foreach (ParticleEngine engine in ParticleEngines)
+            {
+                
+                engine.Update();
+            }
+
 
         }
 
@@ -113,6 +121,10 @@ namespace Burgerman
             foreach (Sprite sprite in LevelSprites)
             {
                 sprite.Draw(spriteBatch);
+            }
+            foreach (ParticleEngine engine in ParticleEngines)
+            {
+                engine.Draw(spriteBatch);
             }
         }
 

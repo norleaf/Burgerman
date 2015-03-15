@@ -13,7 +13,7 @@ namespace Burgerman
 
         public Ground(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)
         {
-            SlideSpeed = new Vector2(-Sprite.defaultSlideSpeed,0);
+            SlideSpeed = Sprite.DefaultSlideSpeed;
         }
 
         public override Sprite CloneAt(float x)

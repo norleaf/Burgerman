@@ -9,12 +9,12 @@ namespace Burgerman
 {
     public class ParticleEngine
     {
-        private Random random;
+        protected Random random;
         public Vector2 EmitterLocation { get; set; }
-        private List<Particle> particles;
-        private List<Texture2D> textures;
+        protected List<Particle> particles;
+        protected List<Texture2D> textures;
         public int TTL;
-        private Color color;
+        protected Color color;
 
         public ParticleEngine(List<Texture2D> textures, Vector2 location)
         {
@@ -24,7 +24,7 @@ namespace Burgerman
             random = new Random();
         }
 
-        public void Update()
+        public virtual void Update()
         {
             TTL--;
             int total = 100;
@@ -35,9 +35,9 @@ namespace Burgerman
                     particles.Add(GenerateNewParticle());
                 }
                 color = new Color(
-                    (float)(random.NextDouble()),
-                    (float)(random.NextDouble()),
-                    (float)(random.NextDouble()));
+                    (float)(random.NextDouble() + 0.5f),
+                    (float)(random.NextDouble() + 0.5f),
+                    (float)(random.NextDouble() + 0.5f));
             }
             
             for (int particle = 0; particle < particles.Count; particle++)
@@ -51,34 +51,30 @@ namespace Burgerman
             }
         }
 
-        private Particle GenerateNewParticle()
+        public virtual Particle GenerateNewParticle()
         {
             Texture2D texture = textures[random.Next(textures.Count)];
             Vector2 position = EmitterLocation;
             Vector2 velocity = new Vector2(
-                                    1.5f * (float)(random.NextDouble() * 2 - 1),
-                                    1.5f * (float)(random.NextDouble() * 2 - 1));
+                                    (float)(random.NextDouble() * 2 - 1),
+                                    (float)(random.NextDouble() * 2 - 1));
+            velocity.Normalize();
+            velocity *= (float)random.NextDouble() * 3.5f + 0.3f;
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
-            //Color color = Color.White;
-            //Color color = new Color(
-            //            0.8f,
-            //            0.8f,
-            //            0.8f    );
+           
             float size = (float)random.NextDouble();
             int ttl = 60 + random.Next(140);
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin();
             for (int index = 0; index < particles.Count; index++)
             {
                 particles[index].Draw(spriteBatch);
             }
-           // spriteBatch.End();
         }
     }
 }

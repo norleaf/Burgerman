@@ -16,7 +16,7 @@ namespace Burgerman
         private readonly Animation _movingUp;
         private readonly Animation _descent;
         //private Animation movingLeft;
-        private const float SpeedMult = 1.8f;
+        private const float SpeedMult = 3.8f;
         public float DistanceTravelled { get; set; }
         public Vector2 MoveVector { get; private set; }
         private Vector2 _left = new Vector2(-1f,0);
@@ -36,7 +36,7 @@ namespace Burgerman
             game = Game1.Instance;
             Name = "Hero Ballooneer";
             SlideSpeed = new Vector2(0,0);
-            Ammo = 5;
+            Ammo = 0;
             _movingUp = new Animation(this, 100);
             _movingUp.Frames.Add(new Rectangle(100, 0, 100, 171));
             _movingUp.Frames.Add(new Rectangle(200, 0, 100, 171));
@@ -73,7 +73,7 @@ namespace Burgerman
         {
             base.Update(gameTime);
             MoveVector = new Vector2(0,0);
-            DistanceTravelled += Sprite.defaultSlideSpeed;
+            DistanceTravelled += -Sprite.DefaultSlideSpeed.X;
             if (Keyboard.GetState().IsKeyDown(Keys.Z) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
             {
                 if (_loaded && Ammo > 0)
@@ -159,9 +159,17 @@ namespace Burgerman
                 //This is to make the balloon hit area be a bit smaller than its bounding box rect. It basically becomes a circle that is the average of the boundingbox sides in diameter. Oval shape might be better but math harder...
                 if (Vector2.Distance(Center,other.Center) < (BoundingBox.Height + BoundingBox.Width)/4f)
                 {
-                    Die();
-                    Game1.Instance.CreateTextMessage("You got shot! Restarting mission...", 2000);
-                    game.Level.MarkDead(other);
+                    if (Ammo >= 3)
+                    {
+                        Ammo -= 3;
+                        game.Level.MarkDead(other);
+                    }
+                    else
+                    {
+                        Die();
+                        game.Text = new Text("You got shot! Restarting mission...", 2000 + game.Time);
+                        game.Level.MarkDead(other);
+                    }
                 }
             }
             if (other is Jet)
@@ -170,7 +178,7 @@ namespace Burgerman
                 if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
                 {
                     Die();
-                    Game1.Instance.CreateTextMessage("Hit by air plane! Restarting mission...", 2000);
+                    game.Text = new Text("Hit by air plane! Restarting mission...", 2000 + game.Time);
                 }
             }
             if (other is Cow)

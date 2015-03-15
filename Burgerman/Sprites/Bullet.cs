@@ -10,24 +10,25 @@ namespace Burgerman
     public class Bullet : AnimatedSprite
     {
         private Vector2 _moveVector;
-        private float _speed = 3.5f;
+        private float _speed = 10.5f;
+        private int _spray = 150;
         private Game1 game;
         public Sprite Shooter { get; private set; }
 
-        public Bullet(Texture2D spriteTexture, Vector2 position, Vector2 balloonPosition, Sprite shooter) : base(spriteTexture, position)
+        public Bullet(Texture2D spriteTexture, Vector2 position, Sprite shooter) : base(spriteTexture, position)
         {
+            Random ran = new Random();
             SlideSpeed = new Vector2(0,0);
             game = Game1.Instance;
             Shooter = shooter;
-            float x = balloonPosition.X - position.X;
-            float y = balloonPosition.Y - position.Y;
+            float x = game.Player.Center.X - position.X + (float)(ran.NextDouble() - 1) * _spray;
+            float y = game.Player.Center.Y + -position.Y + (float)(ran.NextDouble() - 1) * _spray;
             _moveVector = new Vector2(x,y);
             _moveVector = Vector2.Normalize(_moveVector);
         }
 
         public override void Update(GameTime gameTime)
         {
-            //base.Update(gameTime);
             Position = Vector2.Add(Position, _moveVector *_speed);
             if (Position.X < -100 || Position.X > game.ScreenSize.X+100 || Position.Y < -10 || Position.Y > Game1.GroundLevel)
             {
@@ -37,7 +38,7 @@ namespace Burgerman
 
         public Sprite CloneBullet(float x, float y, Sprite shooter)
         {
-            return new Bullet(SpriteTexture, new Vector2(x, y), game.Player.Position, shooter);
+            return new Bullet(SpriteTexture, new Vector2(x, y), shooter);
         }
     }
 }

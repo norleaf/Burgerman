@@ -54,7 +54,7 @@ namespace Burgerman
             if (other is Soldier && _state != State.Leaving )
             {
                 Die();
-                game.CreateTextMessage("Child killed!", 2000);
+                game.Text = new Text("Child killed!", 2000 + game.Time);
             }
 
             if (other is Burger && !_fed)
@@ -68,7 +68,7 @@ namespace Burgerman
             if (other is Bullet)
             {
                 Die();
-                game.CreateTextMessage("Child shot!", 2000);
+                game.Text = new Text("Child shot!", 2000 + game.Time);
                 game.Level.MarkDead(other);
             }
 

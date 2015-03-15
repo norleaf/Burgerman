@@ -33,7 +33,6 @@ namespace Burgerman
         public bool ChildDead { get; set; }
 
         private Texture2D _backgroundTexture;
-        public Texture2D BulletTex { get; private set; }
         public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
@@ -42,7 +41,8 @@ namespace Burgerman
         public Texture2D HeadDEADTexture { get; private set; }
         private Sprite _background; 
         private IntroBalloon _introBalloon;
-        private SpriteFont _font;
+        public SpriteFont Font { get; set; }
+        public Text Text { get; set; }
 
         ParticleEngine particleEngine;
         
@@ -56,6 +56,7 @@ namespace Burgerman
         private GameState _currentLevel;
         private bool _restarting;
         private bool _justpressed;
+        public double Time { get; private set; }
         
         public int ChildrenFed { get; set; }
         public int ChildrenFedGoal { get; set; }
@@ -63,10 +64,6 @@ namespace Burgerman
         public int ChildrenTotal { get; set; }
 
        
-        //private List<Sprite> DeadSprites { get; set; }
-        //private List<Sprite> Sprites { get; set; }
-        //private List<Sprite> BackgroundSprites { get; set; }
-        //public List<Sprite> NewSprites { get; private set; }
         public CollissionHandler CollisionHandler { get; set; }
         public Vector2 ScreenSize { get; private set; }
         private Random _ran;
@@ -125,13 +122,7 @@ namespace Burgerman
             GroundLevel = ScreenSize.Y*0.8f;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level();
-            
-
-            //Sprites = new List<Sprite>();
-            //DeadSprites = new List<Sprite>();
-            //BackgroundSprites = new List<Sprite>();
-            //NewSprites = new List<Sprite>();
-
+           
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
 
             List<Texture2D> textures = new List<Texture2D>();
@@ -139,6 +130,7 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             textures.Add(Content.Load<Texture2D>("star"));
             particleEngine = new ParticleEngine(textures, new Vector2(400, 240));
+            ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
@@ -169,17 +161,11 @@ namespace Burgerman
             PalmTree PalmTreeProto = new PalmTree(Content.Load<Texture2D>("palm"), vectorZero);
             Ground GroundProto = new Ground(Content.Load<Texture2D>("ground"),vectorZero);
             
-
-            
-
-            //CloudTexture = Content.Load<Texture2D>("./cloud/cloud");
-
             ChildDeathTexture = Content.Load<Texture2D>("diechild");
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
 
             //These classes are spawned during the game and are needed by the classes that spawn 
-            BulletTex = Content.Load<Texture2D>("bullet");
-            Bullet BulletProto = new Bullet(Content.Load<Texture2D>("bullet"),vectorZero,vectorZero,null);
+            Bullet BulletProto = new Bullet(Content.Load<Texture2D>("bullet"), vectorZero,null);
             BurgerTexture = Content.Load<Texture2D>("burger");
             HeadTexture = Content.Load<Texture2D>("childhead");
             HeadOKTexture = Content.Load<Texture2D>("childheadOK");
@@ -190,7 +176,7 @@ namespace Burgerman
             
             //This is a 1 pixel wide color gradient image that we draw a lot to fill the screen. Wonder if a big picture would be better?
             _backgroundTexture = Content.Load<Texture2D>("background");
-            _background = new Sprite(_backgroundTexture,new Vector2(0,0));
+            _background = new Sprite(_backgroundTexture,vectorZero);
 
             _ran = new Random();
             
@@ -198,16 +184,17 @@ namespace Burgerman
             State = GameState.Intro;
             
             // We use the levelconstructor to set the level to the intro screen.
-            Level = LevelConstructor.IntroScreen(particleEngine);
-            
+            Level = LevelConstructor.IntroScreen();
+            Level.ParticleEngines.Add(fireworks);
             Level.LevelSprites.Add(_introBalloon);
+            Level.LevelSprites.Add(intro);
 
             // The CollisionHandler is created with the level list of sprites that we want to check collisions for
             CollisionHandler = new CollissionHandler(Level.LevelSprites);
 
-            _font = Content.Load<SpriteFont>("superfont");
+            Font = Content.Load<SpriteFont>("superfont");
+            Text = new Text("",0);
 
-            //Restart();
         }
 
         /// <summary>
@@ -226,7 +213,8 @@ namespace Burgerman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-        //    Console.WriteLine("Main update loop");
+            Time = gameTime.TotalGameTime.TotalMilliseconds;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -248,17 +236,19 @@ namespace Burgerman
                 }
             }
             
+            //If the player pressed space and it is not the intro screen...
             if (State != GameState.Intro && _justpressed &&
                 (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
                  Keyboard.GetState().IsKeyDown(Keys.Space)))
             {
-
+                // ... if we are not already paused, then pause
                 if (State != GameState.Pause)
                 {
-                    CreateTextMessage("Paused", 1000);
+                    Text = new Text("Paused", 1000 + Time);
                     _currentLevel = State;
                     State = GameState.Pause;
                 }
+                    //... else resume the game.
                 else
                 {
                     State = _currentLevel;
@@ -266,6 +256,7 @@ namespace Burgerman
                 _justpressed = false;
             }
             
+            // A method to skip levels for testing purposes.
             if (Keyboard.GetState().IsKeyDown(Keys.End) && _justpressed)
             {
                 if (State == GameState.Level2){ 
@@ -289,20 +280,16 @@ namespace Burgerman
             if (State != GameState.Pause) { 
                 // HERE WE UPDATE ALL SPRITES IN THE CURRENT LEVEL
                 Level.Update(gameTime);
+
+                // Check to see if ANYTHING collided
                 CollisionHandler.Update(gameTime);
                 
-                //AddNewSprites();
-                //RemoveDeadSprites();
+                //Check if we completed the level or failed it.
                 CheckLevelDone(gameTime);
+            }
 
-            
-            
-            }
-            if (_newText)
-            {
-                TextDuration += gameTime.TotalGameTime.TotalMilliseconds;
-                _newText = false;
-            }
+            Text.Update(gameTime);
+          
             base.Update(gameTime);
         }
 
@@ -318,29 +305,27 @@ namespace Burgerman
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-           // _spriteBatch.Draw(_backgroundTexture, position: new Vector2(0,0), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0,0), rotation: 0f, scale: new Vector2(1920,1));
             
-            if (State == GameState.Intro) particleEngine.Draw(_spriteBatch);
+           // if (State == GameState.Intro) particleEngine.Draw(_spriteBatch);
+            
+            //Draw the colorgradient background. Might want to change this to a big image??
+            for (int i = 0; i < ScreenSize.X; i++)
+            {
+                _background.Position = new Vector2(1 * i, 0);
+                _background.Draw(_spriteBatch);
+            }
             
             if (State != GameState.Intro)
             {
-                for (int i = 0; i < ScreenSize.X; i++)
-                {
-                    _background.Position = new Vector2(1*i, 0);
-                    _background.Draw(_spriteBatch);
-                }
                 
-                DrawHUD();
+                    
+                
             }
             //HERE WE DRAW ALL SPRITES CONTAINED IN THE LISTS IN OUR CURRENT LEVEL
             Level.Draw(_spriteBatch);
-            //DrawSprites();
-            //Only draw text until the time set
-            if (gameTime.TotalGameTime.TotalMilliseconds < TextDuration)
-            {
-                DrawText(_spriteBatch);
-            }
-            
+
+            DrawHUD();
+            Text.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -369,113 +354,52 @@ namespace Burgerman
             }
         }
 
-        private void DrawText(SpriteBatch spriteBatch)
-        {
-            if(ScreenText != null)
-            spriteBatch.DrawString(_font, ScreenText, new Vector2(ScreenSize.X*0.25f, ScreenSize.Y*0.2f), Color.White);
-        }
-
-
-        //This method is called during the update loop an places new sprites in a temp list to be added before the next update loop
-        //public void SpawnSpriteAtRuntime(Sprite sprite)
-        //{
-        //    if (sprite != null)
-        //    {
-        //        NewSprites.Add(sprite);
-        // //       Console.WriteLine(NewSprites.Count);
-        //    }
-        //}
-
-        //This method takes the sprites from the temporary list and adds them to the main sprites list prior to running the update loop
-        //private void AddNewSprites()
-        //{
-         
-        //    foreach (Sprite sprite in NewSprites)
-        //    {
-        //        Sprites.Add(sprite);
-        //        if (sprite is ICollidable)
-        //        {
-        //            CollisionHandler.CollisionListenersList.Add((ICollidable)sprite);
-        //        }
-        //    }
-        //    NewSprites.Clear();
-        //}
-
-
-        //This method is called in the update sprites loop and prepares a given sprite for removal before the next update loop. 
-        //internal void MarkForRemoval(Sprite sprite)
-        //{
-            
-        //    DeadSprites.Add(sprite);
-        //}
-
-        //private void RemoveDeadSprites()
-        //{
-        //        foreach (Sprite deadSprite in DeadSprites)
-        //        {
-        //            Sprites.Remove(deadSprite);
-        //            CollisionHandler.AllElements.Remove(deadSprite);
-        //            BackgroundSprites.Remove(deadSprite);
-        //            if (deadSprite is ICollidable)
-        //            {
-        //                CollisionHandler.CollisionListenersList.Remove((ICollidable)deadSprite);
-        //            }                 
-        //        }
-        //        DeadSprites.Clear();
-        //}
+       
 
         // This method is called whenever a condition requires the current level to be reset. For instance player death or too many children died.
         private void Restart()
         {
+            
             Player.Position = new Vector2(Player.BoundingBox.Width,Player.BoundingBox.Height);
-            Player.Ammo = 5;
+            
             ChildrenFed = 0;
             ChildrenDied = 0;
-            //NewSprites.Clear();
-            //DeadSprites.Clear();
-            //Sprites.Clear();
+            Player.Ammo = 0;           
             switch (State)
             {
                     case GameState.Level1:
-                    CreateTextMessage("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000);
-                    //Sprites = LevelConstructor.Level1(this);
+                    Text = new Text("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000 + Time);
                     Level = LevelConstructor.Level1();
                     ChildrenTotal = 3;
                     ChildrenFedGoal = 2;
                     Player.Ammo = 20;
                     break;
                     case GameState.Level2:
-                    CreateTextMessage("LEVEL 2:\nCows can be burgers...", 3000);
-                    //Sprites = LevelConstructor.Level2(this);
+                    Text = new Text("LEVEL 2:\nCows can be burgers...", 3000 + Time);
                     Level = LevelConstructor.Level2();
                     ChildrenTotal = 6;
                     ChildrenFedGoal = 5;
+                    Player.Ammo = 5;
                     break;
                     case GameState.Level3:
-                    CreateTextMessage("LEVEL 3:\nJust chill...", 3000);
-                    //Sprites = LevelConstructor.Level3(this);
+                    Text = new Text("LEVEL 3:\nJust chill...", 3000 + Time);
                     Level = LevelConstructor.Level3();
                     ChildrenTotal = 0;
                     ChildrenFedGoal = 0;
+                    Player.Ammo = 0;
                     break;
             }
             CollisionHandler = new CollissionHandler(Level.LevelSprites);
             
         }
 
-        // This method is called whenever a message should appear to the player.
-        public void CreateTextMessage(string text, double duration)
-        {
-            ScreenText = text;
-            TextDuration = duration;
-            _newText = true;
-        }
+        
 
         public void CheckLevelDone(GameTime gameTime)
         {
             if (ChildrenTotal - ChildrenDied < ChildrenFedGoal - ChildrenFed && !_restarting)
             {
-                CreateTextMessage("Not enough children left to complete level goal.", 2000);
+                Text = new Text("Not enough children left to complete level goal.", 2000 + Time);
                 _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
                 _restarting = true;
             }
