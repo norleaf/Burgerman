@@ -11,7 +11,7 @@ namespace Burgerman
     {
         private Vector2 _moveVector;
         private float _speed = 10.5f;
-        private int _spray = 150;
+        private int _spray = 50;
         private Game1 game;
         public Sprite Shooter { get; private set; }
 

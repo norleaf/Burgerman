@@ -10,7 +10,7 @@ namespace Burgerman
     public class Soldier: AnimatedSprite, ICollidable
     {
         private double _millisecondsAtLastShot;
-        private int _firingDelay = 3000;
+        private int _firingDelay = 4000;
         private Game1 game;
 
         public Soldier(Texture2D spriteTexture, Vector2 position)

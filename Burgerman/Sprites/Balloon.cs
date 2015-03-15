@@ -118,28 +118,33 @@ namespace Burgerman
                 }
             }
 
-            if (Position.X + MoveVector.X + BoundingBox.Width < game.ScreenSize.X + BoundingBox.Width * 0.4f && Position.X + MoveVector.X > 0 - BoundingBox.Width * 0.4f)
-            {
-                Position = Vector2.Add(Position, new Vector2(MoveVector.X, 0) * SpeedMult);
-            }
-
-            if (Position.Y + BoundingBox.Height + MoveVector.Y < Game1.GroundLevel && Position.Y + MoveVector.Y > -0.8f * BoundingBox.Height)
-            {
-                Position = Vector2.Add(Position, new Vector2(0, MoveVector.Y)* SpeedMult);
-                Position = Vector2.Add(Position, _drop);
-            }
-
+            //Get Gamepad input
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < -0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0.2f || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.2f)
             {
                 MoveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1f);
                 setAnimation(_descent);
             }
-        
+
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.2f)
             {
                 MoveVector = new Vector2(x: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, y: GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * -1f);
                 setAnimation(_movingUp);
             }
+
+
+            //Stop the player from leaving the screen
+            if ((int)(Position.X + MoveVector.X * SpeedMult + BoundingBox.Width) < (int)(game.ScreenSize.X + BoundingBox.Width * 0.4f) && (int)(Position.X + MoveVector.X * SpeedMult) > (int)(0 - BoundingBox.Width * 0.4f))
+            {
+                Position = Vector2.Add(Position, new Vector2(MoveVector.X, 0) * SpeedMult);
+            }
+
+            if ((int)(Position.Y + BoundingBox.Height + MoveVector.Y * SpeedMult) < (int)(Game1.GroundLevel) && (int)(Position.Y + MoveVector.Y * SpeedMult) > (int)(-0.8f * BoundingBox.Height))
+            {
+                Position = Vector2.Add(Position, new Vector2(0, MoveVector.Y)* SpeedMult);
+                Position = Vector2.Add(Position, _drop);
+            }
+
+            
 
             
         }

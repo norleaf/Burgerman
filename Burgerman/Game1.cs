@@ -44,14 +44,11 @@ namespace Burgerman
         public SpriteFont Font { get; set; }
         public Text Text { get; set; }
 
-        ParticleEngine particleEngine;
-        
-        
         //THE CURRENT LEVEL WHICH WILL BE HOLDING ALL SPRITES BOTH BACKGROUND AND INTERACTIVE SPRITES
         public Level Level { get; set; }
         public LevelConstructor LevelConstructor { get; set; }
 
-        public enum GameState { Intro, Pause, Level1, Level2, Level3 }
+        public enum GameState { Intro, Pause, Level0A, Level0B, Level1, Level2, Level3,Level4 }
         public GameState State { get; private set; }
         private GameState _currentLevel;
         private bool _restarting;
@@ -66,7 +63,6 @@ namespace Burgerman
        
         public CollissionHandler CollisionHandler { get; set; }
         public Vector2 ScreenSize { get; private set; }
-        private Random _ran;
         public string ScreenText { get; set; }
         public double TextDuration { get; set; }
         private bool _newText;
@@ -129,7 +125,6 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             textures.Add(Content.Load<Texture2D>("star"));
             textures.Add(Content.Load<Texture2D>("star"));
-            particleEngine = new ParticleEngine(textures, new Vector2(400, 240));
             ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
             //_font = Content.Load<SpriteFont>()
@@ -178,8 +173,6 @@ namespace Burgerman
             _backgroundTexture = Content.Load<Texture2D>("background");
             _background = new Sprite(_backgroundTexture,vectorZero);
 
-            _ran = new Random();
-            
             //The game starts with us showing the Intro screen. Therefore we set the gamestate to Intro. Who would have thought...
             State = GameState.Intro;
             
@@ -220,17 +213,11 @@ namespace Burgerman
 
             if (State == GameState.Intro) 
             {
-                if (particleEngine.TTL <= 0)
-                {
-                    particleEngine.EmitterLocation = new Vector2((float)_ran.NextDouble() * screen.Bounds.Width, (float)_ran.NextDouble() * screen.Bounds.Height);
-                    particleEngine.TTL = 60;
-                }
-                particleEngine.Update();
                 _introBalloon.Update(gameTime);
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
                     Keyboard.GetState().IsKeyDown(Keys.Space))
                 {
-                    State = GameState.Level1;
+                    State = GameState.Level0A;
                     Restart();
                     _justpressed = false;
                 }
@@ -359,16 +346,31 @@ namespace Burgerman
         // This method is called whenever a condition requires the current level to be reset. For instance player death or too many children died.
         private void Restart()
         {
-            
+            //Reset player to starting position.
             Player.Position = new Vector2(Player.BoundingBox.Width,Player.BoundingBox.Height);
-            
+            Player.Ammo = 0;
+            Player.DistanceTravelled = 0;
             ChildrenFed = 0;
             ChildrenDied = 0;
-            Player.Ammo = 0;           
+                       
             switch (State)
             {
+                    case GameState.Level0A:
+                    Text = new Text("LEVEL A:\nFeed the hungry child \nbefore the soldier reaches her...", 4000 + Time);
+                    Level = LevelConstructor.Level0A();
+                    ChildrenTotal = 1;
+                    ChildrenFedGoal = 1;
+                    Player.Ammo = 10;
+                    break;
+                    case GameState.Level0B:
+                    Text = new Text("LEVEL B:\nDon't get killed by the helicopter...", 4000 + Time);
+                    Level = LevelConstructor.Level0B();
+                    ChildrenTotal = 0;
+                    ChildrenFedGoal = 0;
+                    Player.Ammo = 6;
+                    break;
                     case GameState.Level1:
-                    Text = new Text("LEVEL 1:\nFeed 2 hungry children... \nDon't get them killed!", 3000 + Time);
+                    Text = new Text("LEVEL 1:\nFeed 2 hungry children...", 3000 + Time);
                     Level = LevelConstructor.Level1();
                     ChildrenTotal = 3;
                     ChildrenFedGoal = 2;
@@ -384,6 +386,13 @@ namespace Burgerman
                     case GameState.Level3:
                     Text = new Text("LEVEL 3:\nJust chill...", 3000 + Time);
                     Level = LevelConstructor.Level3();
+                    ChildrenTotal = 0;
+                    ChildrenFedGoal = 0;
+                    Player.Ammo = 0;
+                    break;
+                    case GameState.Level4:
+                    Text = new Text("LEVEL 3:\nJust chill...", 3000 + Time);
+                    Level = LevelConstructor.Level4();
                     ChildrenTotal = 0;
                     ChildrenFedGoal = 0;
                     Player.Ammo = 0;
@@ -419,23 +428,49 @@ namespace Burgerman
 
             switch (State)
             {
+                    case GameState.Level0A:
+                    if (ChildrenFed >= 1)
+                    {
+                        State = GameState.Level0B;
+                        Text = new Text("Well Done!", 3000 + Time);
+                        _restarting = true;
+                        _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
+                    break;
+                    case GameState.Level0B:
+                    if (Player.DistanceTravelled > Level.LevelLength)
+                    {
+                        State = GameState.Level1;
+                        Text = new Text("Well Done!", 3000 + Time);
+                        _restarting = true;
+                        _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
+                    break;
                     case GameState.Level1:
                     if (ChildrenFed >= 2)
                     {
                         State = GameState.Level2;
-                        Restart();
+                        Text = new Text("Well Done!", 3000 + Time);
+                        _restarting = true;
+                        _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
                     }
                     break;
                     case GameState.Level2:
                     if (ChildrenFed >= 5)
                     {
                         State = GameState.Level3;
-                        Restart();
+                        Text = new Text("Well Done!", 3000 + Time);
+                        _restarting = true;
+                        _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
                     }
                     break;
                     case GameState.Level3:
-                    if (ChildrenFed >= 7)
+                    if (Player.DistanceTravelled > Level.LevelLength)
                     {
+                        State = GameState.Level4;
+                        Text = new Text("Well Done!", 3000 + Time);
+                        _restarting = true;
+                        _restartTime = gameTime.TotalGameTime.TotalMilliseconds;
                         //goto level 4 or end game :)
                     }
                     break;

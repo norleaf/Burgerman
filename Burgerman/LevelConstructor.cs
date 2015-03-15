@@ -119,7 +119,32 @@ namespace Burgerman
         public Level IntroScreen()
         {
             GenerateClouds();
-            level._palms = false;
+            level.Palms = false;
+            return level;
+        }
+
+        public Level Level0A()
+        {
+            NewLevelStart();
+            level.LevelLength = width*1;
+
+            level.LevelSprites.Add(ChildProto.CloneAt(width * 0.65f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width*0.95f));
+            //Add the player last, so it will be on top of everything
+            level.LevelSprites.Add(game.Player);
+            level.Palms = true;
+            return level;
+        }
+
+        public Level Level0B()
+        {
+            NewLevelStart();
+            level.LevelLength = width * 0.3f;
+
+            level.LevelSprites.Add(HelicopterProto.CloneAt(width * 1.3f, height / 10));
+            //Add the player last, so it will be on top of everything
+            level.LevelSprites.Add(game.Player);
+            level.Palms = true;
             return level;
         }
 
@@ -144,7 +169,7 @@ namespace Burgerman
             level.LevelSprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
             //Add the player last, so it will be on top
             level.LevelSprites.Add(game.Player);
-            level._palms = true;
+            level.Palms = true;
             return level;
 
         }
@@ -191,7 +216,7 @@ namespace Burgerman
         public Level Level3()
         {
             NewLevelStart();
-            level.LevelLength = width*2f;
+            level.LevelLength = width;
             
             level.LevelSprites.Add(CowProto.CloneAt(width * 0.2f));
             level.LevelSprites.Add(CowProto.CloneAt(width * 0.3f)); 

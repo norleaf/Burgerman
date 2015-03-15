@@ -17,7 +17,7 @@ namespace Burgerman
         public float LevelLength { get; set; }
         private double _timeSinceLastTree;
         private int _treeDelay = 7000;
-        public bool _palms;
+        public bool Palms { get; set; }
         private Random _ran;
         private Game1 game;
 
@@ -87,7 +87,7 @@ namespace Burgerman
             }
 
             //Is it time to spawn a new tree?
-            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay && _palms)
+            if (gameTime.TotalGameTime.TotalMilliseconds > _timeSinceLastTree + _treeDelay && Palms)
             {
                 float scale = ((float)_ran.Next(7, 11) / 10);
                 int offset = (int)game.ScreenSize.X + _ran.Next(200);
