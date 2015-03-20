@@ -30,6 +30,6 @@ Prioriteret liste af sidste forbedringer:
 Soldat animationer
 Effekter når ballon rammes - screenshake, blink, burgers falder ud
 Soldat skyder kun fremad
-ko muh
+(x) ko muh
 explosion til helicopter
 

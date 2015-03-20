@@ -27,6 +27,7 @@ namespace Burgerman
         private Screen screen = Screen.AllScreens.First(e => e.Primary);
         public SoundEffect ShotSound { get; set; }
         public SoundEffect ChildFedSound { get; set; }
+        public SoundEffect ChildDeadSound { get; set; }
         public SoundEffect MooSound { get; set; }
         private SpriteBatch _spriteBatch;
         public static Vector2 Gravity = new Vector2(0,0.1f);
@@ -124,6 +125,7 @@ namespace Burgerman
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
             ChildFedSound = Content.Load<SoundEffect>("./sounds/BurgerPickUp");
             MooSound = Content.Load<SoundEffect>("./sounds/moo");
+            ChildDeadSound = Content.Load<SoundEffect>("./sounds/ChildDead");
 
             List<Texture2D> textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("star"));
