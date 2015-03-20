@@ -167,7 +167,6 @@ namespace Burgerman
             level.LevelSprites.Add(SoldierProto.CloneAt(width + 50));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.5f + 50));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.5f + 50));
-            level.LevelSprites.Add(JetProto.CloneAt(width * 2f, height * 1 / 10)); //TEmporary Jet!
             level.LevelSprites.Add(JetProto.CloneAt(width * 2, height * 5 / 10));
             level.LevelSprites.Add(JetProto.CloneAt(width * 5, height * 1 / 10));
             level.LevelSprites.Add(JetProto.CloneAt(width * 6, height * 6 / 10));
