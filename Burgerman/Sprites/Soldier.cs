@@ -91,6 +91,38 @@ namespace Burgerman
                 _state = State.Waiting;
                 SlideSpeed = Sprite.DefaultSlideSpeed;
                 Game1.Instance.Level.MarkDead(other);
+                Game1.Instance.Level.MarkDead(this);
+
+                AnimatedSprite eatingSoldier = new AnimatedSprite(game.SoldierEatingTexture, new Vector2(Position.X, Game1.GroundLevel-45));
+
+                Animation eating = new Animation(eatingSoldier, 100);
+                eating.Loop = true;
+                eating.Frames.Add(new Rectangle(0, 45, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 45, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 45, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 45, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 45, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+
+                eatingSoldier.setAnimation(eating);
+                game.Level.SpawnSpriteAtRuntime(eatingSoldier);
             }
         }
     }

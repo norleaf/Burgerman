@@ -41,6 +41,7 @@ namespace Burgerman
         private Texture2D _backgroundTexture;
         public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D SoldierDeathTexture { get; private set; }
+        public Texture2D SoldierEatingTexture { get; private set; }
         public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
@@ -169,6 +170,8 @@ namespace Burgerman
             
             ChildDeathTexture = Content.Load<Texture2D>("diechild");
             SoldierDeathTexture = Content.Load<Texture2D>("diesoldier");
+            SoldierEatingTexture = Content.Load<Texture2D>("eatingsoldier");
+            
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
 
             //These classes are spawned during the game and are needed by the classes that spawn 
