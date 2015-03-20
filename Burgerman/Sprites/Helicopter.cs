@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -138,10 +139,22 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
+            AnimatedSprite explodingHelicopter = new AnimatedSprite(game.ExplosionTexture, Position);
+            explodingHelicopter.persistentSprite = false;
+            Animation exploding = new Animation(explodingHelicopter, 100);
+            exploding.Loop = false;
+            exploding.Frames.Add(new Rectangle(0, 0, 200, 200));
+            exploding.Frames.Add(new Rectangle(200, 0, 200, 200));
+            exploding.Frames.Add(new Rectangle(0, 0, 200, 200));
+            exploding.Frames.Add(new Rectangle(200, 0, 200, 200));
+
             if (other is Jet)
             {
                 game.ScreenShake = new ScreenShake(30, 4);
                 game.Level.MarkDead(this);
+
+                explodingHelicopter.setAnimation(exploding);
+                game.Level.SpawnSpriteAtRuntime(explodingHelicopter);
             }
             if (other is Bullet)
             {
@@ -150,8 +163,12 @@ namespace Burgerman
                 {
                     game.ScreenShake = new ScreenShake(30, 4);
                     game.Level.MarkDead(this);
+
+                    explodingHelicopter.setAnimation(exploding);
+                    game.Level.SpawnSpriteAtRuntime(explodingHelicopter);
                 }
             }
+
         }
     }
 }
