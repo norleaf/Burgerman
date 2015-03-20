@@ -66,7 +66,6 @@ namespace Burgerman
         {
             if (other is Bullet)
             {
-                game.SoldierDeathSound.Play(0.2f, 0f, 0f);
                 Bullet bullet = (Bullet)other;
                 bool soldiershot = bullet.Shooter is Soldier;
                 if (!soldiershot)
@@ -84,6 +83,7 @@ namespace Burgerman
                     fall.Frames.Add(new Rectangle(219, 0, 146, 58));
                     corpse.setAnimation(fall);
                     game.Level.SpawnSpriteAtRuntime(corpse);
+                    game.SoldierDeathSound.Play(0.2f, 0f, 0f);
                 }
             }
             if (other is Burger)
