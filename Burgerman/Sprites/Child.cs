@@ -53,7 +53,7 @@ namespace Burgerman
         {
             if (other is Soldier && _state != State.Leaving )
             {
-                game.ChildDeadSound.Play(0.2f, 0.4f, 0f);
+                game.ChildDeathSound.Play(0.2f, 0.4f, 0f);
                 Die();
                 game.Text = new Text("Child killed!", 2000 + game.Time);
             }
@@ -69,7 +69,7 @@ namespace Burgerman
 
             if (other is Bullet)
             {
-                game.ChildDeadSound.Play(0.2f, 0.4f, 0f);
+                game.ChildDeathSound.Play(0.2f, 0.4f, 0f);
                 Die();
                 game.Text = new Text("Child shot!", 2000 + game.Time);
                 game.Level.MarkDead(other);
