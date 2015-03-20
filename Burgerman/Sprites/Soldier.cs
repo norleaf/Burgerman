@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    public class Soldier: AnimatedSprite, ICollidable
+    public class Soldier : AnimatedSprite, ICollidable
     {
         private double _millisecondsAtLastShot;
         private int _firingDelay = 4000;
@@ -16,10 +16,10 @@ namespace Burgerman
         public Soldier(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
-           // Scale *= 0.5f;
+            // Scale *= 0.5f;
             Name = "Soldier";
             game = Game1.Instance;
-            SlideSpeed = new Vector2(-1,0);
+            SlideSpeed = new Vector2(-1, 0);
             Animation running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
             running.Frames.Add(new Rectangle(64, 0, 64, 55));
@@ -32,7 +32,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+
             if (Position.X < -30)
             {
                 Game1.Instance.Level.MarkDead(this);
@@ -41,12 +41,13 @@ namespace Burgerman
             {
                 Shoot(gameTime);
             }
-            
+
         }
 
         private void Shoot(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay && Position.X < game.ScreenSize.X)
+            if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay && Position.X < game.ScreenSize.X
+                && game.Player.Position.X < Position.X)
             {
                 Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2, this);
                 game.ShotSound.Play();
@@ -62,9 +63,9 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            if (other is Bullet )
+            if (other is Bullet)
             {
-                Bullet bullet = (Bullet) other;
+                Bullet bullet = (Bullet)other;
                 bool soldiershot = bullet.Shooter is Soldier;
                 if (!soldiershot)
                 {
