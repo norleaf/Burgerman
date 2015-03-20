@@ -190,6 +190,7 @@ namespace Burgerman
             {
                 //The balloon collects the cow and gains 3 burgers
                 game.Level.MarkDead(other);
+                game.MooSound.Play(0.5f,0,0);
                 Ammo += 3;
             }
         }
