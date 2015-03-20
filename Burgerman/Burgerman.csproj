@@ -67,6 +67,7 @@
     <Compile Include="BloodFountain.cs" />
     <Compile Include="FireworksEmitter.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="ScreenShake.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Sprites\BackgroundSprite.cs" />
