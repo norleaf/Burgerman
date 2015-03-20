@@ -9,7 +9,7 @@ namespace Burgerman
 {
     class Burger : AnimatedSprite
     {
-        private Vector2 Velocity { get; set; }
+        public Vector2 Velocity { get; set; }
         
 
         public Burger(Texture2D spriteTexture, Vector2 position) : base(spriteTexture, position)

@@ -157,6 +157,19 @@ namespace Burgerman
             game.Level.SpawnSpriteAtRuntime(burger);
         }
 
+        private void LooseBurgers()
+        {
+            Ammo -= 3;
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2 spawnpoint = Vector2.Add(Position, new Vector2(BoundingBox.Width / 2, BoundingBox.Height - 20));
+                Burger burger = new Burger(game.BurgerTexture, spawnpoint);
+                burger.Velocity = new Vector2(Ran.Next(3)-1,Ran.Next(3)-1);
+                game.Level.SpawnSpriteAtRuntime(burger);
+            }
+            
+        }
+
         public void CollideWith(Sprite other)
         {
             if (other is Bullet)
@@ -166,7 +179,7 @@ namespace Burgerman
                 {
                     if (Ammo >= 3)
                     {
-                        Ammo -= 3;
+                        LooseBurgers();
                         game.Level.MarkDead(other);
                         game.ScreenShake = new ScreenShake(30,6);
                     }
