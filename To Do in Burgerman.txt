@@ -31,6 +31,7 @@ Soldat animationer DONE!
 Effekter når ballon rammes - screenshake, blink, burgers falder ud DONE!
 Soldat skyder kun fremad DONE!
 ko muh    DONE!
-explosion til helicopter
-Lydeffekter!
+explosion til helicopter DONE!
+Lydeffekter! DONE!
+Soldat dræber spisende soldat og spiser burger
 

@@ -51,7 +51,8 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay && Position.X < game.ScreenSize.X
                 && game.Player.Position.X < Position.X)
             {
-                Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2, this);
+                Vector2 spawnpoint = new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2);
+                Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(spawnpoint.X,spawnpoint.Y, this);
                 game.ShotSound.Play();
                 game.Level.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
