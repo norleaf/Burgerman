@@ -14,6 +14,7 @@ namespace Burgerman
         private Animation animation;
         protected State _state;
         public bool blink;
+        public bool persistentSprite = true;
 
         public enum State
         {
@@ -41,6 +42,10 @@ namespace Burgerman
 
         public virtual void AnimationComplete()
         {
+            if (!persistentSprite)
+            {
+                Game1.Instance.Level.MarkDead(this);
+            }
             
         }
 
