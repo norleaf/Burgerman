@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,6 +73,17 @@ namespace Burgerman
                 {
                     Game1.Instance.Level.MarkDead(this);
                     Game1.Instance.Level.MarkDead(other);
+
+                    AnimatedSprite corpse = new AnimatedSprite(game.SoldierDeathTexture, Position);
+
+                    Animation fall = new Animation(corpse, 200);
+                    fall.Loop = false;
+                    fall.Frames.Add(new Rectangle(0, 0, 73, 58));
+                    fall.Frames.Add(new Rectangle(73, 0, 73, 58));
+                    fall.Frames.Add(new Rectangle(146, 0, 73, 58));
+                    fall.Frames.Add(new Rectangle(219, 0, 146, 58));
+                    corpse.setAnimation(fall);
+                    game.Level.SpawnSpriteAtRuntime(corpse);
                 }
             }
             if (other is Burger)
