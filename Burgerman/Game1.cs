@@ -139,6 +139,11 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
+            textures.Clear();
+            textures.Add(Content.Load<Texture2D>("helidebris"));
+
+            ParticleEngine helicopterDebrisEmitter = new HelicopterDebris(textures,new Vector2());
+
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
             Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));

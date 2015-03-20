@@ -140,18 +140,26 @@ namespace Burgerman
         {
             if (other is Jet)
             {
-                game.ScreenShake = new ScreenShake(30, 4);
-                game.Level.MarkDead(this);
+                Die();
             }
             if (other is Bullet)
             {
                 Bullet bullet = (Bullet) other;
                 if (!bullet.Shooter.Equals(this))
                 {
-                    game.ScreenShake = new ScreenShake(30, 4);
-                    game.Level.MarkDead(this);
+                    Die();
                 }
             }
+        }
+
+        public void Die()
+        {
+            game.ScreenShake = new ScreenShake(30, 4);
+            game.Level.MarkDead(this);
+            Console.WriteLine(Center);
+            Console.WriteLine(game.LevelConstructor);
+            Console.WriteLine(game.Level.ParticleEngines);
+            game.Level.ParticleEngines.Add(game.LevelConstructor.HelicopterDebris.Clone(Center));
         }
     }
 }
