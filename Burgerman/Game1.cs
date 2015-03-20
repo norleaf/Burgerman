@@ -246,15 +246,19 @@ namespace Burgerman
             // A method to skip levels for testing purposes.
             if (Keyboard.GetState().IsKeyDown(Keys.End) && _justpressed)
             {
-                if (State == GameState.Level2){ 
-                    State = GameState.Level3;
-                    Restart();
-                }
-                if (State == GameState.Level1)
+                switch (State)
                 {
-                    State = GameState.Level2;
-                    Restart();
+                    case GameState.Level0A:
+                        State = GameState.Level1;
+                        break;
+                    case GameState.Level1:
+                        State = GameState.Level2;
+                        break;
+                    case GameState.Level2:
+                        State = GameState.Level3;
+                        break;
                 }
+                Restart();
                 _justpressed = false;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.End) && Keyboard.GetState().IsKeyUp(Keys.Space))
@@ -391,7 +395,7 @@ namespace Burgerman
                     Player.Ammo = 0;
                     break;
                     case GameState.Level4:
-                    Text = new Text("LEVEL 3:\nJust chill...", 3000 + Time);
+                    Text = new Text("Game Over, You won...\nNow contemplate the meaninglessness of life", 30000 + Time);
                     Level = LevelConstructor.Level4();
                     ChildrenTotal = 0;
                     ChildrenFedGoal = 0;
