@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Burgerman.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -62,6 +63,57 @@ namespace Burgerman
             return new Soldier(SpriteTexture, new Vector2(x, Game1.GroundLevel - BoundingBox.Height));
         }
 
+        public void ReceiveBurger()
+        {
+            EatingSoldier eatingSoldier = new EatingSoldier(game.SoldierEatingTexture, new Vector2(Position.X, Game1.GroundLevel - 45));
+
+            Animation eating = new Animation(eatingSoldier, 100);
+
+            eating.Loop = true;
+            eating.Frames.Add(new Rectangle(0, 45, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 45, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 45, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 45, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 45, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(0, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(59, 0, 59, 45));
+            eating.Frames.Add(new Rectangle(118, 0, 59, 45));
+
+            eatingSoldier.setAnimation(eating);
+            game.Level.SpawnSpriteAtRuntime(eatingSoldier);
+        }
+
+        public override void Die()
+        {
+            game.Level.MarkDead(this);
+            AnimatedSprite corpse = new AnimatedSprite(game.SoldierDeathTexture, Position);
+
+            Animation fall = new Animation(corpse, 200);
+            fall.Loop = false;
+            fall.Frames.Add(new Rectangle(0, 0, 73, 58));
+            fall.Frames.Add(new Rectangle(73, 0, 73, 58));
+            fall.Frames.Add(new Rectangle(146, 0, 73, 58));
+            fall.Frames.Add(new Rectangle(219, 0, 146, 58));
+            corpse.setAnimation(fall);
+            game.Level.SpawnSpriteAtRuntime(corpse);
+            game.SoldierDeathSound.Play(0.2f, 0f, 0f);
+        }
+
         public void CollideWith(Sprite other)
         {
             if (other is Bullet)
@@ -70,20 +122,8 @@ namespace Burgerman
                 bool soldiershot = bullet.Shooter is Soldier;
                 if (!soldiershot)
                 {
-                    Game1.Instance.Level.MarkDead(this);
                     Game1.Instance.Level.MarkDead(other);
-
-                    AnimatedSprite corpse = new AnimatedSprite(game.SoldierDeathTexture, Position);
-
-                    Animation fall = new Animation(corpse, 200);
-                    fall.Loop = false;
-                    fall.Frames.Add(new Rectangle(0, 0, 73, 58));
-                    fall.Frames.Add(new Rectangle(73, 0, 73, 58));
-                    fall.Frames.Add(new Rectangle(146, 0, 73, 58));
-                    fall.Frames.Add(new Rectangle(219, 0, 146, 58));
-                    corpse.setAnimation(fall);
-                    game.Level.SpawnSpriteAtRuntime(corpse);
-                    game.SoldierDeathSound.Play(0.2f, 0f, 0f);
+                    Die();
                 }
             }
             if (other is Burger)
@@ -93,36 +133,13 @@ namespace Burgerman
                 Game1.Instance.Level.MarkDead(other);
                 Game1.Instance.Level.MarkDead(this);
 
-                AnimatedSprite eatingSoldier = new AnimatedSprite(game.SoldierEatingTexture, new Vector2(Position.X, Game1.GroundLevel-45));
-
-                Animation eating = new Animation(eatingSoldier, 100);
-                eating.Loop = true;
-                eating.Frames.Add(new Rectangle(0, 45, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 45, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 45, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 45, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 45, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(0, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(59, 0, 59, 45));
-                eating.Frames.Add(new Rectangle(118, 0, 59, 45));
-
-                eatingSoldier.setAnimation(eating);
-                game.Level.SpawnSpriteAtRuntime(eatingSoldier);
+                ReceiveBurger();
+            }
+            if (other is EatingSoldier)
+            {
+                game.Level.MarkDead(this);
+                other.Die();
+                ReceiveBurger();
             }
         }
     }

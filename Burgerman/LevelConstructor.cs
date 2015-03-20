@@ -129,7 +129,8 @@ namespace Burgerman
             level.LevelLength = width*1;
 
             level.LevelSprites.Add(ChildProto.CloneAt(width * 0.65f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width*0.95f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 0.95f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.1f));
             //Add the player last, so it will be on top of everything
             level.LevelSprites.Add(game.Player);
             level.Palms = true;

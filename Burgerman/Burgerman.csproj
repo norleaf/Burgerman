@@ -80,6 +80,7 @@
     <Compile Include="CollissionHandler.cs" />
     <Compile Include="Sprites\Cow.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Sprites\EatingSoldier.cs" />
     <Compile Include="Sprites\Ground.cs" />
     <Compile Include="Sprites\Helicopter.cs" />
     <Compile Include="Sprites\Hut.cs" />
