@@ -263,6 +263,9 @@ namespace Burgerman
                     case GameState.Level0A:
                         State = GameState.Level1;
                         break;
+                    case GameState.Level0B:
+                        State = GameState.Level1;
+                        break;
                     case GameState.Level1:
                         State = GameState.Level2;
                         break;
