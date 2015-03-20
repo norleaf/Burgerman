@@ -216,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Burgerman_TemporaryKey.pfx" />
+    <None Include="Content\sounds\Explosion.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\sounds\SoldierDeath.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
