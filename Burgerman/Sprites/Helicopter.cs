@@ -140,6 +140,7 @@ namespace Burgerman
         {
             if (other is Jet)
             {
+                game.HelicopterExplosionSound.Play(0.2f, 0f, 0f);
                 game.ScreenShake = new ScreenShake(30, 4);
                 game.Level.MarkDead(this);
             }
@@ -148,6 +149,7 @@ namespace Burgerman
                 Bullet bullet = (Bullet) other;
                 if (!bullet.Shooter.Equals(this))
                 {
+                    game.HelicopterExplosionSound.Play(0.2f, 0f, 0f);
                     game.ScreenShake = new ScreenShake(30, 4);
                     game.Level.MarkDead(this);
                 }

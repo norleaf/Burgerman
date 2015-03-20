@@ -30,6 +30,7 @@ namespace Burgerman
         public SoundEffect ChildDeathSound { get; set; }
         public SoundEffect MooSound { get; set; }
         public SoundEffect SoldierDeathSound { get; set; }
+        public SoundEffect HelicopterExplosionSound { get; set; }
 
         public ScreenShake ScreenShake { get; set; }
         private SpriteBatch _spriteBatch;
@@ -132,6 +133,7 @@ namespace Burgerman
             MooSound = Content.Load<SoundEffect>("./sounds/moo");
             ChildDeathSound = Content.Load<SoundEffect>("./sounds/ChildDead");
             SoldierDeathSound = Content.Load<SoundEffect>("./sounds/SoldierDeath");
+            HelicopterExplosionSound = Content.Load<SoundEffect>("./sounds/Explosion");
 
             List<Texture2D> textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("star"));
