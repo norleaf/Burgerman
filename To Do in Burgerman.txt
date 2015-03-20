@@ -1,0 +1,35 @@
+(x)	slutdistance til banen
+(x)	børn får X og V når de henholdsvis dør og får en burger
+(x)	kuglerne skal være tydeligere. 
+	soldat spiser burger animation
+	tank
+	jeep
+(x)	skyer implementeres		
+	point system 
+	powerups
+(?)	health til ballon
+	screenshake
+(x)	ballon mister burgers når man blir ramt
+(x)	lille randomness på heli skud
+	flere køer
+
+LYDE:
+(x)	barn får burger
+	barn dør
+(x)	helikopter dør
+(x)	helikopter skyder
+	helikopter summen
+	jet brøl
+	muh
+	melodi
+	
+
+
+Prioriteret liste af sidste forbedringer:
+
+Soldat animationer
+Effekter når ballon rammes - screenshake, blink, burgers falder ud
+Soldat skyder kun fremad
+ko muh
+explosion til helicopter
+
