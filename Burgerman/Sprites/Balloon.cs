@@ -168,10 +168,12 @@ namespace Burgerman
                     {
                         Ammo -= 3;
                         game.Level.MarkDead(other);
+                        game.ScreenShake = new ScreenShake(30,6);
                     }
                     else
                     {
                         Die();
+                        game.ScreenShake = new ScreenShake(45, 12);
                         game.Text = new Text("You got shot! Restarting mission...", 2000 + game.Time);
                         game.Level.MarkDead(other);
                     }
@@ -183,6 +185,7 @@ namespace Burgerman
                 if (Vector2.Distance(Center, other.Center) < (BoundingBox.Height + BoundingBox.Width) / 4f + (other.BoundingBox.Height + other.BoundingBox.Width) / 4f)
                 {
                     Die();
+                    game.ScreenShake = new ScreenShake(45, 18);
                     game.Text = new Text("Hit by air plane! Restarting mission...", 2000 + game.Time);
                 }
             }

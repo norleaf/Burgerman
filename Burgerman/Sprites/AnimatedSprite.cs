@@ -68,7 +68,7 @@ namespace Burgerman
                 else
                 {
                     // Yes, so just draw the specified SourceRect
-                    spriteBatch.Draw(SpriteTexture, Position, SourceRectangle, Color.White, Rotation, Origin, Scale,
+                    spriteBatch.Draw(SpriteTexture, Position+Sprite.Shake, SourceRectangle, Color.White, Rotation, Origin, Scale,
                         SpriteEffects.None, 0f);
                 }
             }

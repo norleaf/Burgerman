@@ -28,6 +28,8 @@ namespace Burgerman
         public SoundEffect ShotSound { get; set; }
         public SoundEffect ChildFedSound { get; set; }
         public SoundEffect MooSound { get; set; }
+
+        public ScreenShake ScreenShake { get; set; }
         private SpriteBatch _spriteBatch;
         public static Vector2 Gravity = new Vector2(0,0.1f);
         public Balloon Player { get; private set; }
@@ -284,7 +286,7 @@ namespace Burgerman
             }
 
             Text.Update(gameTime);
-          
+            if(ScreenShake != null) ScreenShake.Update();
             base.Update(gameTime);
         }
 
@@ -303,6 +305,7 @@ namespace Burgerman
             
            // if (State == GameState.Intro) particleEngine.Draw(_spriteBatch);
             
+
             //Draw the colorgradient background. Might want to change this to a big image??
             for (int i = 0; i < ScreenSize.X; i++)
             {
@@ -318,7 +321,7 @@ namespace Burgerman
             }
             //HERE WE DRAW ALL SPRITES CONTAINED IN THE LISTS IN OUR CURRENT LEVEL
             Level.Draw(_spriteBatch);
-
+            
             DrawHUD();
             Text.Draw(_spriteBatch);
             _spriteBatch.End();

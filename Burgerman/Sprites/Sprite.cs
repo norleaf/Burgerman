@@ -55,6 +55,8 @@ namespace Burgerman
 
         public virtual SpriteEffects SpriteEffect { get; set; }
 
+        public static Vector2 Shake { get; set; }
+
         public virtual Rectangle BoundingBox
         {
             get
@@ -85,7 +87,7 @@ namespace Burgerman
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, 0f);
+            spriteBatch.Draw(SpriteTexture, Position+Sprite.Shake, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, 0f);
         }
 
         public virtual Sprite CloneAt(float x, float y)
