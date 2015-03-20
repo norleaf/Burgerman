@@ -28,7 +28,7 @@ namespace Burgerman
         {
             TTL--;
             int total = 100;
-            if (TTL <= 0)
+            if (TTL >= 0)
             {
                 for (int i = 0; i < total; i++)
                 {

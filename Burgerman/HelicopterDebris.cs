@@ -11,13 +11,14 @@ namespace Burgerman
     {
         public HelicopterDebris(List<Texture2D> textures, Vector2 location) : base(textures, location)
         {
+            TTL = 3;
         }
 
         public override void Update()
         {
             TTL--;
             int total = 100;
-            if (TTL <= 0)
+            if (TTL >= 0)
             {
                 for (int i = 0; i < total; i++)
                 {
@@ -54,8 +55,9 @@ namespace Burgerman
 
             float size = (float)random.NextDouble();
             int ttl = 60 + random.Next(140);
-
-            return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
+            Particle particle = new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
+            particle.Gravity = new Vector2(0,0.09f);
+            return particle;
         }
 
         public ParticleEngine Clone(Vector2 center)

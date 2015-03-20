@@ -142,10 +142,11 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
-            textures.Clear();
-            textures.Add(Content.Load<Texture2D>("helidebris"));
+            List<Texture2D> textures2 = new List<Texture2D>();
+            textures2.Add(Content.Load<Texture2D>("helidebris"));
 
-            ParticleEngine helicopterDebrisEmitter = new HelicopterDebris(textures,new Vector2());
+            HelicopterDebris helicopterDebrisEmitter = new HelicopterDebris(textures2,new Vector2());
+
 
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
@@ -193,7 +194,7 @@ namespace Burgerman
 
             //Here we initialise our level contructor. It will hold all of our object prototypes.
             LevelConstructor = new LevelConstructor(ChildProto, SoldierProto, HutProto, JetProto, HelicopterProto, CowProto, CloudProto, MountainProto, PalmTreeProto, GroundProto, BulletProto);
-            
+            LevelConstructor.HelicopterDebris = helicopterDebrisEmitter;
             //This is a 1 pixel wide color gradient image that we draw a lot to fill the screen. Wonder if a big picture would be better?
             _backgroundTexture = Content.Load<Texture2D>("background");
             _background = new Sprite(_backgroundTexture,vectorZero);

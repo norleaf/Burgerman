@@ -16,6 +16,7 @@ namespace Burgerman
         public float AngularVelocity { get; set; }
         public Color Color { get; set; }
         public float Size { get; set; }
+        public Vector2 Gravity { get; set; }
         public int TTL { get; set; }
 
         public Particle(Texture2D texture, Vector2 position, Vector2 velocity,
@@ -29,12 +30,13 @@ namespace Burgerman
             Color = color;
             Size = size;
             TTL = ttl;
+            Gravity = new Vector2(0,0.01f);
         }
 
         public void Update()
         {
             TTL--;
-            Velocity += Game1.Gravity*0.1f;
+            Velocity += Gravity;
             Velocity *= 0.99f;
             Position += Velocity;
             
