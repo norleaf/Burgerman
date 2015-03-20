@@ -61,6 +61,7 @@ namespace Burgerman
             {
                 _fed = true;
                 _state = State.Leaving;
+                game.ChildFedSound.Play(0.2f, 0f, 0f);
                 game.Level.MarkDead(other);
                 game.ChildrenFed++;
             }
