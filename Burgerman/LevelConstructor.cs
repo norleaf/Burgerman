@@ -28,6 +28,8 @@ namespace Burgerman
         public Ground GroundProto { get; set; }
         public Bullet BulletProto { get; set; }
 
+        public HelicopterDebris HelicopterDebris { get; set; }
+
         public LevelConstructor(Child childProto, Soldier soldierProto, Hut hutProto, Jet jetProto, Helicopter helicopterProto,Cow cowProto, Cloud cloudProto, Mountain mountainProto,
             PalmTree palm, Ground ground, Bullet bullet)
         {
@@ -103,6 +105,7 @@ namespace Burgerman
             level.NewSprites.Clear();
             level.LevelSprites.Clear();
             level.DeadSprites.Clear();
+            level.ParticleEngines.Clear();
         }
 
         

@@ -43,6 +43,7 @@ namespace Burgerman
         public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D SoldierDeathTexture { get; private set; }
         public Texture2D SoldierEatingTexture { get; private set; }
+        public Texture2D ExplosionTexture { get; private set; }
         public Texture2D BalloonDeathTexture { get; private set; }
         public Texture2D BurgerTexture { get; private set; }
         public Texture2D HeadTexture { get; private set; }
@@ -141,6 +142,12 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
+            List<Texture2D> textures2 = new List<Texture2D>();
+            textures2.Add(Content.Load<Texture2D>("helidebris"));
+
+            HelicopterDebris helicopterDebrisEmitter = new HelicopterDebris(textures2,new Vector2());
+
+
             //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
             Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));
@@ -173,6 +180,8 @@ namespace Burgerman
             ChildDeathTexture = Content.Load<Texture2D>("diechild");
             SoldierDeathTexture = Content.Load<Texture2D>("diesoldier");
             SoldierEatingTexture = Content.Load<Texture2D>("eatingsoldier");
+
+            ExplosionTexture = Content.Load<Texture2D>("explosionflash");
             
             BalloonDeathTexture = Content.Load<Texture2D>("./balloon/balloonburning");
 
@@ -185,7 +194,7 @@ namespace Burgerman
 
             //Here we initialise our level contructor. It will hold all of our object prototypes.
             LevelConstructor = new LevelConstructor(ChildProto, SoldierProto, HutProto, JetProto, HelicopterProto, CowProto, CloudProto, MountainProto, PalmTreeProto, GroundProto, BulletProto);
-            
+            LevelConstructor.HelicopterDebris = helicopterDebrisEmitter;
             //This is a 1 pixel wide color gradient image that we draw a lot to fill the screen. Wonder if a big picture would be better?
             _backgroundTexture = Content.Load<Texture2D>("background");
             _background = new Sprite(_backgroundTexture,vectorZero);

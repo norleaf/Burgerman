@@ -139,29 +139,6 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            
-
-            if (other is Jet)
-            {
-                
-                Die();
-                
-                
-            }
-            if (other is Bullet)
-            {
-                Bullet bullet = (Bullet) other;
-                if (!bullet.Shooter.Equals(this))
-                {
-
-                   Die();
-                }
-            }
-
-
-        }
-        public override void Die()
-        {
             AnimatedSprite explodingHelicopter = new AnimatedSprite(game.ExplosionTexture, Position);
             explodingHelicopter.persistentSprite = false;
             Animation exploding = new Animation(explodingHelicopter, 100);
@@ -170,13 +147,47 @@ namespace Burgerman
             exploding.Frames.Add(new Rectangle(200, 0, 200, 200));
             exploding.Frames.Add(new Rectangle(0, 0, 200, 200));
             exploding.Frames.Add(new Rectangle(200, 0, 200, 200));
-            explodingHelicopter.setAnimation(exploding);
-            game.Level.SpawnSpriteAtRuntime(explodingHelicopter);
 
-            game.HelicopterExplosionSound.Play(0.2f, 0f, 0f);
+            if (other is Jet)
+            {
+<<<<<<< HEAD
+                Die();
+=======
+                game.HelicopterExplosionSound.Play(0.2f, 0f, 0f);
+                game.ScreenShake = new ScreenShake(30, 4);
+                game.Level.MarkDead(this);
+
+                explodingHelicopter.setAnimation(exploding);
+                game.Level.SpawnSpriteAtRuntime(explodingHelicopter);
+>>>>>>> origin/master
+            }
+            if (other is Bullet)
+            {
+                Bullet bullet = (Bullet) other;
+                if (!bullet.Shooter.Equals(this))
+                {
+<<<<<<< HEAD
+                    Die();
+=======
+                    game.HelicopterExplosionSound.Play(0.2f, 0f, 0f);
+                    game.ScreenShake = new ScreenShake(30, 4);
+                    game.Level.MarkDead(this);
+
+                    explodingHelicopter.setAnimation(exploding);
+                    game.Level.SpawnSpriteAtRuntime(explodingHelicopter);
+>>>>>>> origin/master
+                }
+            }
+
+        }
+
+        public void Die()
+        {
             game.ScreenShake = new ScreenShake(30, 4);
             game.Level.MarkDead(this);
-           
+            Console.WriteLine(Center);
+            Console.WriteLine(game.LevelConstructor);
+            Console.WriteLine(game.Level.ParticleEngines);
             game.Level.ParticleEngines.Add(game.LevelConstructor.HelicopterDebris.Clone(Center));
         }
     }
