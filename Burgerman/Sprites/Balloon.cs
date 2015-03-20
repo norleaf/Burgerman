@@ -72,6 +72,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            blink = false;
             MoveVector = new Vector2(0,0);
             DistanceTravelled += -Sprite.DefaultSlideSpeed.X;
             if (Keyboard.GetState().IsKeyDown(Keys.Z) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
@@ -166,6 +167,7 @@ namespace Burgerman
                 Burger burger = new Burger(game.BurgerTexture, spawnpoint);
                 burger.Velocity = new Vector2(Ran.Next(3)-1,Ran.Next(3)-1);
                 game.Level.SpawnSpriteAtRuntime(burger);
+                blink = true;
             }
             
         }

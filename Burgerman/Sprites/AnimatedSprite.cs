@@ -13,6 +13,7 @@ namespace Burgerman
     {
         private Animation animation;
         protected State _state;
+        public bool blink;
 
         public enum State
         {
@@ -68,8 +69,8 @@ namespace Burgerman
                 else
                 {
                     // Yes, so just draw the specified SourceRect
-                    spriteBatch.Draw(SpriteTexture, Position+Sprite.Shake, SourceRectangle, Color.White, Rotation, Origin, Scale,
-                        SpriteEffects.None, 0f);
+                    spriteBatch.Draw(SpriteTexture, Position+Sprite.Shake, SourceRectangle, Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0f);
+                    if (blink) spriteBatch.Draw(SpriteTexture, Position + Sprite.Shake, SourceRectangle, Color.Black, Rotation, Origin, Scale, SpriteEffects.None, 0f);
                 }
             }
         }
