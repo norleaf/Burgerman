@@ -15,21 +15,22 @@
 
 LYDE:
 (x)	barn får burger
-	barn dør
+(x)	barn dør
 (x)	helikopter dør
 (x)	helikopter skyder
 	helikopter summen
 	jet brøl
-	muh
+(x)	muh
 	melodi
 	
 
 
 Prioriteret liste af sidste forbedringer:
 
-Soldat animationer
-Effekter når ballon rammes - screenshake, blink, burgers falder ud
-Soldat skyder kun fremad
-(x) ko muh
+Soldat animationer DONE!
+Effekter når ballon rammes - screenshake, blink, burgers falder ud DONE!
+Soldat skyder kun fremad DONE!
+ko muh    DONE!
 explosion til helicopter
+Lydeffekter!
 
