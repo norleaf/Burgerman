@@ -29,6 +29,7 @@ namespace Burgerman
         public Bullet BulletProto { get; set; }
 
         public HelicopterDebris HelicopterDebris { get; set; }
+        public FireworksEmitter Fireworks { get; set; }
 
         public LevelConstructor(Child childProto, Soldier soldierProto, Hut hutProto, Jet jetProto, Helicopter helicopterProto,Cow cowProto, Cloud cloudProto, Mountain mountainProto,
             PalmTree palm, Ground ground, Bullet bullet)
@@ -122,6 +123,7 @@ namespace Burgerman
         public Level IntroScreen()
         {
             GenerateClouds();
+            level.ParticleEngines.Add(Fireworks);
             level.Palms = false;
             return level;
         }
@@ -152,6 +154,11 @@ namespace Burgerman
             return level;
         }
 
+        //   1
+        //  11
+        //   1
+        //   1
+        //  111
         public Level Level1()
         {
             NewLevelStart();
@@ -230,29 +237,34 @@ namespace Burgerman
             level.LevelSprites.Add(CowProto.CloneAt(width * 1.1f));
             level.LevelSprites.Add(CowProto.CloneAt(width * 1.2f));
             level.LevelSprites.Add(CowProto.CloneAt(width * 1.5f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.5f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.50f));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.55f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.575f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.6f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.60f));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.65f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.7f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.70f));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.75f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.775f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.825f));
             level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.85f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.875f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.905f));
-            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.925f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.90f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 1.95f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.00f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.05f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.15f));
+            level.LevelSprites.Add(SoldierProto.CloneAt(width * 2.20f));
             //Add the player last, so it will be on top
             level.LevelSprites.Add(game.Player);
             return level;
         }
 
+        //  4  4
+        //  4  4
+        //  4444
+        //     4
+        //     4
         public Level Level4()
         {
             NewLevelStart();
             level.LevelLength = width * 2f;
-
+            level.ParticleEngines.Add(Fireworks);
 
             //Add the player last, so it will be on top
             level.LevelSprites.Add(game.Player);

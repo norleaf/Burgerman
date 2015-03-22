@@ -64,9 +64,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BloodFountain.cs" />
-    <Compile Include="FireworksEmitter.cs" />
-    <Compile Include="HelicopterDebris.cs" />
+    <Compile Include="ParticleEngines\BloodFountain.cs" />
+    <Compile Include="ParticleEngines\BulletTracer.cs" />
+    <Compile Include="ParticleEngines\FireworksEmitter.cs" />
+    <Compile Include="ParticleEngines\HelicopterDebris.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="ScreenShake.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
@@ -91,8 +92,8 @@
     <Compile Include="LevelConstructor.cs" />
     <Compile Include="Sprites\Mountain.cs" />
     <Compile Include="Sprites\PalmTree.cs" />
-    <Compile Include="Particle.cs" />
-    <Compile Include="ParticleEngine2D.cs" />
+    <Compile Include="ParticleEngines\Particle.cs" />
+    <Compile Include="ParticleEngines\ParticleEngine2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -131,10 +132,16 @@
     <Content Include="Content\balloon\balloonburning.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\blackbottom.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\blood.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bullet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bulletTracer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\burger.png">

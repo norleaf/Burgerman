@@ -40,6 +40,7 @@ namespace Burgerman
         public bool ChildDead { get; set; }
 
         private Texture2D _backgroundTexture;
+        private Texture2D _blackbottom;
         public Texture2D ChildDeathTexture { get; private set; }
         public Texture2D SoldierDeathTexture { get; private set; }
         public Texture2D SoldierEatingTexture { get; private set; }
@@ -49,6 +50,7 @@ namespace Burgerman
         public Texture2D HeadTexture { get; private set; }
         public Texture2D HeadOKTexture { get; private set; }
         public Texture2D HeadDEADTexture { get; private set; }
+        public Texture2D BulletTracer { get; private set; }
         private Sprite _background; 
         private IntroBalloon _introBalloon;
         public SpriteFont Font { get; set; }
@@ -129,6 +131,7 @@ namespace Burgerman
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level();
            
+            //SOUNDS
             ShotSound = Content.Load<SoundEffect>("./sounds/shot");
             ChildFedSound = Content.Load<SoundEffect>("./sounds/BurgerPickUp");
             MooSound = Content.Load<SoundEffect>("./sounds/moo");
@@ -140,7 +143,7 @@ namespace Burgerman
             textures.Add(Content.Load<Texture2D>("star"));
             textures.Add(Content.Load<Texture2D>("star"));
             textures.Add(Content.Load<Texture2D>("star"));
-            ParticleEngine fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
+            FireworksEmitter fireworks = new FireworksEmitter(textures, new Vector2(400, 240));
 
             List<Texture2D> textures2 = new List<Texture2D>();
             textures2.Add(Content.Load<Texture2D>("helidebris"));
@@ -148,7 +151,6 @@ namespace Burgerman
             HelicopterDebris helicopterDebrisEmitter = new HelicopterDebris(textures2,new Vector2());
 
 
-            //_font = Content.Load<SpriteFont>()
             Texture2D titleTexture = Content.Load<Texture2D>("title");
             Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));
             
@@ -161,8 +163,6 @@ namespace Burgerman
             // This is the player balloon object. It will be the only one created so lets keep track of it so we don't loose it.
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");
             Player = new Balloon(ballonTexture, new Vector2(0, 0));
-           
-
 
             // THESE ARE THE NEW PROTOTYPES THAT WILL BE USED IN LEVELCONSTRUCTOR!//////////////////////////////////////
             Vector2 vectorZero = new Vector2(0,0);
@@ -191,20 +191,24 @@ namespace Burgerman
             HeadTexture = Content.Load<Texture2D>("childhead");
             HeadOKTexture = Content.Load<Texture2D>("childheadOK");
             HeadDEADTexture = Content.Load<Texture2D>("childheadDEAD");
+            BulletTracer = Content.Load<Texture2D>("bulletTracer");
 
             //Here we initialise our level contructor. It will hold all of our object prototypes.
             LevelConstructor = new LevelConstructor(ChildProto, SoldierProto, HutProto, JetProto, HelicopterProto, CowProto, CloudProto, MountainProto, PalmTreeProto, GroundProto, BulletProto);
             LevelConstructor.HelicopterDebris = helicopterDebrisEmitter;
+            LevelConstructor.Fireworks = fireworks;
+            
             //This is a 1 pixel wide color gradient image that we draw a lot to fill the screen. Wonder if a big picture would be better?
             _backgroundTexture = Content.Load<Texture2D>("background");
             _background = new Sprite(_backgroundTexture,vectorZero);
+
+            _blackbottom = Content.Load<Texture2D>("blackbottom");
 
             //The game starts with us showing the Intro screen. Therefore we set the gamestate to Intro. Who would have thought...
             State = GameState.Intro;
             
             // We use the levelconstructor to set the level to the intro screen.
             Level = LevelConstructor.IntroScreen();
-            Level.ParticleEngines.Add(fireworks);
             Level.LevelSprites.Add(_introBalloon);
             Level.LevelSprites.Add(intro);
 
@@ -290,7 +294,7 @@ namespace Burgerman
                 Restart();
                 _justpressed = false;
             }
-            if (Keyboard.GetState().IsKeyUp(Keys.End) && Keyboard.GetState().IsKeyUp(Keys.Space))
+            if (Keyboard.GetState().IsKeyUp(Keys.End) && Keyboard.GetState().IsKeyUp(Keys.Space) && GamePad.GetState(PlayerIndex.One).IsButtonUp(Buttons.Start))
             {
                 _justpressed = true;
             }
@@ -335,13 +339,13 @@ namespace Burgerman
                 _background.Position = new Vector2(1 * i, 0);
                 _background.Draw(_spriteBatch);
             }
-            
-            if (State != GameState.Intro)
-            {
-                
-                    
-                
+            if (State != GameState.Intro) { 
+                 for (int i = 0; i < ScreenSize.X/64; i++)
+                 {
+                     _spriteBatch.Draw(texture: _blackbottom, position: new Vector2( i * _blackbottom.Width, GroundLevel+10), drawRectangle: null, sourceRectangle: null, origin: new Vector2(0, 0), rotation: 0f, scale: new Vector2(1, 5));
+                 }
             }
+            
             //HERE WE DRAW ALL SPRITES CONTAINED IN THE LISTS IN OUR CURRENT LEVEL
             Level.Draw(_spriteBatch);
             
@@ -425,7 +429,7 @@ namespace Burgerman
                     Player.Ammo = 0;
                     break;
                     case GameState.Level4:
-                    Text = new Text("Game Over, You won...\nNow contemplate the meaninglessness of life", 30000 + Time);
+                    Text = new Text("Game Over, You won!\nNow contemplate\nthe meaning of life\nwithout any challenge...", 30000 + Time);
                     Level = LevelConstructor.Level4();
                     ChildrenTotal = 0;
                     ChildrenFedGoal = 0;
@@ -440,7 +444,7 @@ namespace Burgerman
 
         public void CheckLevelDone(GameTime gameTime)
         {
-            if (ChildrenTotal - ChildrenDied < ChildrenFedGoal - ChildrenFed && !_restarting)
+            if (ChildrenTotal - ChildrenDied < ChildrenFedGoal && !_restarting)
             {
                 Text = new Text("Not enough children left to complete level goal.", 2000 + Time);
                 _restartTime = gameTime.TotalGameTime.TotalMilliseconds;

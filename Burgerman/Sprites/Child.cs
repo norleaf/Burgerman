@@ -41,11 +41,17 @@ namespace Burgerman
                     case State.Leaving:
                     setAnimation(_walking);
                     MoveHorizontally(-1);
-                    if (Position.X < -BoundingBox.Width)
-                    {
-                        game.Level.MarkDead(this);
-                    }
+                 
                     break;
+            }
+            if (Position.X < -BoundingBox.Width)
+            {
+                if (!_fed)
+                {
+                    game.ChildrenDied++;
+                }
+                game.Level.MarkDead(this);
+
             }
         }
 
@@ -74,13 +80,6 @@ namespace Burgerman
                 game.Text = new Text("Child shot!", 2000 + game.Time);
                 game.Level.MarkDead(other);
             }
-
-            if (Position.X < -BoundingBox.Width)
-            {
-                game.ChildrenDied++;
-                game.Level.MarkDead(this);
-            }
-            
         }
 
         public override void Die()
@@ -91,7 +90,7 @@ namespace Burgerman
                 game.ChildrenFed--;
             }
             game.Level.MarkDead(this);
-            game.ChildDead = true;
+           // game.ChildDead = true;
             AnimatedSprite corpse = new AnimatedSprite(game.ChildDeathTexture, Position);
             
             Animation fall = new Animation(corpse,200);

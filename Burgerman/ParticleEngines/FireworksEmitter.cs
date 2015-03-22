@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
 {
-    class FireworksEmitter : ParticleEngine
+    public class FireworksEmitter : ParticleEngine
     {
         public int timeToNext;
         public FireworksEmitter(List<Texture2D> textures, Vector2 location) : base(textures, location)
@@ -20,7 +20,7 @@ namespace Burgerman
             timeToNext--;
             if (timeToNext <= 0)
             {
-                EmitterLocation = new Vector2((float)random.NextDouble() * Game1.Instance.ScreenSize.X, (float)random.NextDouble() * Game1.Instance.ScreenSize.Y);
+                EmitterLocation = new Vector2((float)random.NextDouble() * Game1.Instance.ScreenSize.X, (float)random.NextDouble() * Game1.Instance.ScreenSize.Y * 0.6f);
                 TTL = 2;
                 timeToNext = 60;
             }
