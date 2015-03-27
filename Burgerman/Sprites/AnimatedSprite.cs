@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Burgerman;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman
@@ -23,7 +17,8 @@ namespace Burgerman
             Jumping,
             Entering,
             Fighting,
-            Leaving
+            Leaving,
+            Eating
         }
 
         public AnimatedSprite(Texture2D spriteTexture, Vector2 position)

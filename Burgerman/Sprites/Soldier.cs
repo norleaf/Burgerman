@@ -1,9 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Burgerman.Sprites;
+﻿using Burgerman.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,14 +10,21 @@ namespace Burgerman
         private int _firingDelay = 4000;
         private Game1 game;
 
+        private Texture2D walkingSoldierTexture;
+
+        private Animation running;
+
+        private int eatingTime;
+
         public Soldier(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
             // Scale *= 0.5f;
             Name = "Soldier";
             game = Game1.Instance;
+            walkingSoldierTexture = spriteTexture;
             SlideSpeed = new Vector2(-1, 0);
-            Animation running = new Animation(this, 200);
+            running = new Animation(this, 200);
             running.Frames.Add(new Rectangle(0, 0, 64, 55));
             running.Frames.Add(new Rectangle(64, 0, 64, 55));
             running.Frames.Add(new Rectangle(128, 0, 64, 55));
@@ -43,6 +45,18 @@ namespace Burgerman
             {
                 Shoot(gameTime);
             }
+            if (_state == State.Eating)
+            {
+                eatingTime--;
+                if (eatingTime <= 0)
+                {
+                    _state = State.Walking;
+                    SpriteTexture = walkingSoldierTexture;
+                    setAnimation(running);
+                    Position = new Vector2(Position.X, Game1.GroundLevel - BoundingBox.Height - 11);
+                    SlideSpeed = new Vector2(-1, 0);
+                }
+            }
 
         }
 
@@ -52,7 +66,7 @@ namespace Burgerman
                 && game.Player.Position.X < Position.X)
             {
                 Vector2 spawnpoint = new Vector2(Position.X + BoundingBox.Width / 3f, Position.Y + SpriteTexture.Height / 3 * 2);
-                Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(spawnpoint.X,spawnpoint.Y, this);
+                Bullet bullet = (Bullet)game.LevelConstructor.BulletProto.CloneBullet(spawnpoint.X, spawnpoint.Y, this);
                 game.ShotSound.Play();
                 game.Level.SpawnSpriteAtRuntime(bullet);
                 _millisecondsAtLastShot = gameTime.TotalGameTime.TotalMilliseconds;
@@ -66,9 +80,9 @@ namespace Burgerman
 
         public void ReceiveBurger()
         {
-            EatingSoldier eatingSoldier = new EatingSoldier(game.SoldierEatingTexture, new Vector2(Position.X, Game1.GroundLevel - 45));
+            SpriteTexture = game.SoldierEatingTexture;
 
-            Animation eating = new Animation(eatingSoldier, 100);
+            Animation eating = new Animation(this, 100);
 
             eating.Loop = true;
             eating.Frames.Add(new Rectangle(0, 45, 59, 45));
@@ -95,13 +109,27 @@ namespace Burgerman
             eating.Frames.Add(new Rectangle(59, 0, 59, 45));
             eating.Frames.Add(new Rectangle(118, 0, 59, 45));
 
-            eatingSoldier.setAnimation(eating);
-            game.Level.SpawnSpriteAtRuntime(eatingSoldier);
+            setAnimation(eating);
+
+            eatingTime = 300;
+
+            _state = State.Eating;
+            SlideSpeed = new Vector2(-0.5f, 0);
+            Position = new Vector2(Position.X, Game1.GroundLevel - 45);
         }
 
         public override void Die()
         {
+            //If statements to correct groundlevel for death animations when coming from various states.
             game.Level.MarkDead(this);
+            if (_state == State.Eating)
+            {
+                Position = new Vector2(Position.X, Position.Y - 7);
+            }
+            if (_state == State.Walking)
+            {
+                Position = new Vector2(Position.X, Position.Y + 3);
+            }
             AnimatedSprite corpse = new AnimatedSprite(game.SoldierDeathTexture, Position);
 
             Animation fall = new Animation(corpse, 200);
@@ -129,11 +157,7 @@ namespace Burgerman
             }
             if (other is Burger)
             {
-                _state = State.Waiting;
-                SlideSpeed = Sprite.DefaultSlideSpeed;
                 Game1.Instance.Level.MarkDead(other);
-                Game1.Instance.Level.MarkDead(this);
-
                 ReceiveBurger();
             }
             if (other is EatingSoldier)

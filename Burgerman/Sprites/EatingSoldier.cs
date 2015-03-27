@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Burgerman.Sprites
@@ -30,5 +26,6 @@ namespace Burgerman.Sprites
             game.Level.SpawnSpriteAtRuntime(corpse);
             game.SoldierDeathSound.Play(0.2f, 0f, 0f);
         }
+
     }
 }
