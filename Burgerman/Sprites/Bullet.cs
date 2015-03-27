@@ -35,7 +35,7 @@ namespace Burgerman
         public override void Update(GameTime gameTime)
         {
             Position = Vector2.Add(Position, _moveVector *_speed);
-            Tracer.EmitterLocation = Position;
+            Tracer.EmitterLocation = Center;
             Tracer.Update();
             if (Position.X < -100 || Position.X > game.ScreenSize.X+100 || Position.Y < -10 || Position.Y > Game1.GroundLevel)
             {

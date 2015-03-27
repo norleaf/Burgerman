@@ -18,7 +18,7 @@ namespace Burgerman.ParticleEngines
         public override void Update()
         {
             TTL--;
-            int total = 100;
+            int total = 20;
             if (TTL >= 0)
             {
                 for (int i = 0; i < total; i++)
@@ -49,7 +49,7 @@ namespace Burgerman.ParticleEngines
             Vector2 velocity = new Vector2(
                                     (float)(random.NextDouble() * 2 - 1),
                                     (float)(random.NextDouble() * 2 - 1));
-            velocity.Normalize();
+            //velocity.Normalize();
            // velocity *= (float)random.NextDouble() * 3.5f + 0.3f;
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
