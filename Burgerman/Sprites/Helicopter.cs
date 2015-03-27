@@ -37,13 +37,13 @@ namespace Burgerman
             flying.Frames.Add(new Rectangle(200, 0, 200, 74));
             //_millisecondsAtEntry = gameTime.TotalGameTime.TotalMilliseconds;
             setAnimation(flying);
-            _state = State.Entering;
+            CurrentState = State.Entering;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            switch (_state)
+            switch (CurrentState)
             {
                 case State.Entering: // The helicopter starts off screen and flies to its position
                     Enter(gameTime);
@@ -65,7 +65,7 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastSalvo + _waitTime)
             {
                 _millisecondsAtLastSalvo = gameTime.TotalGameTime.TotalMilliseconds;
-                _state = State.Fighting;
+                CurrentState = State.Fighting;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Burgerman
             }
             else
             {
-                _state = State.Fighting;
+                CurrentState = State.Fighting;
                 _millisecondsAtLastSalvo = gameTime.TotalGameTime.TotalMilliseconds;
             }
         }
@@ -98,7 +98,7 @@ namespace Burgerman
         {
             if (_salvos <= 0)  // Are the total amount of salvos fired then we leave
             {
-                _state = State.Leaving;
+                CurrentState = State.Leaving;
             }
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastShot + _firingDelay)
             {
@@ -124,7 +124,7 @@ namespace Burgerman
             if (gameTime.TotalGameTime.TotalMilliseconds > _millisecondsAtLastSalvo + _salvoLength)
             {
                 _millisecondsAtLastSalvo = gameTime.TotalGameTime.TotalMilliseconds;
-                _state = State.Waiting;
+                CurrentState = State.Waiting;
                 _salvos--;
             }
         }

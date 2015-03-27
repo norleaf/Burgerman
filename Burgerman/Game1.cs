@@ -149,15 +149,12 @@ namespace Burgerman
 
             HelicopterDebris helicopterDebrisEmitter = new HelicopterDebris(textures2,new Vector2());
 
-
             Texture2D titleTexture = Content.Load<Texture2D>("title");
             Sprite intro = new Sprite(titleTexture,new Vector2(ScreenSize.X * 0.4f,ScreenSize.X * 0.1f));
-            
             
             //This is the balloon used on the intro screen
             Texture2D introBalloonTexture2D = Content.Load<Texture2D>("introBalloon");
             _introBalloon = new IntroBalloon(introBalloonTexture2D, new Vector2(50,ScreenSize.Y));
-
             
             // This is the player balloon object. It will be the only one created so lets keep track of it so we don't loose it.
             Texture2D ballonTexture = Content.Load<Texture2D>("./balloon/balloon");

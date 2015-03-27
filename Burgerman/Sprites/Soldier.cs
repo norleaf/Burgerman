@@ -30,7 +30,7 @@ namespace Burgerman
             running.Frames.Add(new Rectangle(128, 0, 64, 55));
             running.Frames.Add(new Rectangle(192, 0, 64, 55));
             setAnimation(running);
-            _state = State.Walking;
+            CurrentState = State.Walking;
         }
 
         public override void Update(GameTime gameTime)
@@ -41,23 +41,22 @@ namespace Burgerman
             {
                 Game1.Instance.Level.MarkDead(this);
             }
-            if (_state == State.Walking)
+            if (CurrentState == State.Walking)
             {
                 Shoot(gameTime);
             }
-            if (_state == State.Eating)
+            if (CurrentState == State.Eating)
             {
                 eatingTime--;
                 if (eatingTime <= 0)
                 {
-                    _state = State.Walking;
+                    CurrentState = State.Walking;
                     SpriteTexture = walkingSoldierTexture;
                     setAnimation(running);
                     Position = new Vector2(Position.X, Game1.GroundLevel - BoundingBox.Height - 11);
                     SlideSpeed = new Vector2(-1, 0);
                 }
             }
-
         }
 
         private void Shoot(GameTime gameTime)
@@ -113,7 +112,7 @@ namespace Burgerman
 
             eatingTime = 300;
 
-            _state = State.Eating;
+            CurrentState = State.Eating;
             SlideSpeed = new Vector2(-0.5f, 0);
             Position = new Vector2(Position.X, Game1.GroundLevel - 45);
         }
@@ -122,14 +121,15 @@ namespace Burgerman
         {
             //If statements to correct groundlevel for death animations when coming from various states.
             game.Level.MarkDead(this);
-            if (_state == State.Eating)
+            if (CurrentState == State.Eating)
             {
                 Position = new Vector2(Position.X, Position.Y - 7);
             }
-            if (_state == State.Walking)
+            if (CurrentState == State.Walking)
             {
                 Position = new Vector2(Position.X, Position.Y + 3);
             }
+
             AnimatedSprite corpse = new AnimatedSprite(game.SoldierDeathTexture, Position);
 
             Animation fall = new Animation(corpse, 200);
@@ -160,11 +160,16 @@ namespace Burgerman
                 Game1.Instance.Level.MarkDead(other);
                 ReceiveBurger();
             }
-            if (other is EatingSoldier)
+            if (other is Soldier)
             {
-                game.Level.MarkDead(this);
-                other.Die();
-                ReceiveBurger();
+                Soldier otherSoldier = (Soldier)other;
+                if (otherSoldier.CurrentState == State.Eating)
+                {
+
+                    other.Die();
+                    ReceiveBurger();
+                }
+                
             }
         }
     }

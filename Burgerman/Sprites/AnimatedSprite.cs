@@ -6,7 +6,7 @@ namespace Burgerman
     public class AnimatedSprite : Sprite
     {
         private Animation animation;
-        protected State _state;
+        public State CurrentState;
         public bool blink;
         public bool persistentSprite = true;
 

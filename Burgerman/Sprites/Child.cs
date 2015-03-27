@@ -29,13 +29,13 @@ namespace Burgerman
             
             setAnimation(_waiting);
        
-            _state = State.Waiting;
+            CurrentState = State.Waiting;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            switch (_state)
+            switch (CurrentState)
             {
                     case State.Leaving:
                     setAnimation(_walking);
@@ -56,7 +56,7 @@ namespace Burgerman
 
         public void CollideWith(Sprite other)
         {
-            if (other is Soldier && _state != State.Leaving )
+            if (other is Soldier && CurrentState != State.Leaving )
             {
                 game.ChildDeathSound.Play(0.2f, 0.4f, 0f);
                 Die();
@@ -66,7 +66,7 @@ namespace Burgerman
             if (other is Burger && !_fed)
             {
                 _fed = true;
-                _state = State.Leaving;
+                CurrentState = State.Leaving;
                 game.ChildFedSound.Play(0.2f, 0f, 0f);
                 game.Level.MarkDead(other);
                 game.ChildrenFed++;
