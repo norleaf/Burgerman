@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 using Burgerman.Sprites;
 using Microsoft.Xna.Framework;
@@ -30,6 +31,7 @@ namespace Burgerman
         public SoundEffect MooSound { get; set; }
         public SoundEffect SoldierDeathSound { get; set; }
         public SoundEffect HelicopterExplosionSound { get; set; }
+        public SoundEffect bgMusic { get; set; }
 
         public ScreenShake ScreenShake { get; set; }
         private SpriteBatch _spriteBatch;
@@ -137,6 +139,7 @@ namespace Burgerman
             ChildDeathSound = Content.Load<SoundEffect>("./sounds/ChildDead");
             SoldierDeathSound = Content.Load<SoundEffect>("./sounds/SoldierDeath");
             HelicopterExplosionSound = Content.Load<SoundEffect>("./sounds/Explosion");
+            bgMusic = Content.Load<SoundEffect>("./sounds/newJazz");
 
             List<Texture2D> textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("star"));
@@ -213,6 +216,14 @@ namespace Burgerman
 
             Font = Content.Load<SpriteFont>("superfont");
             Text = new Text("",0);
+
+            SoundEffectInstance bgm = bgMusic.CreateInstance();
+            bgm.Volume = 0.5f;
+            bgm.IsLooped = true;
+            bgm.Play();
+
+
+
 
         }
 
@@ -300,7 +311,7 @@ namespace Burgerman
             if (State != GameState.Pause) { 
                 // HERE WE UPDATE ALL SPRITES IN THE CURRENT LEVEL
                 Level.Update(gameTime);
-
+                
                 // Check to see if ANYTHING collided
                 CollisionHandler.Update(gameTime);
                 
